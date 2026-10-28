@@ -1,0 +1,873 @@
+# GUÍA DE CSS — ¿dónde cambio cada cosa?
+
+Esta guía te dice **en qué archivo y línea** está cada cosa. Los CSS ya tienen un comentario encima de cada regla y un comentario al final de cada línea explicando qué hace.
+
+> Nota: no reordené las reglas dentro de los archivos. En CSS gana la regla que está **más abajo** (o más específica), y moverlas habría cambiado cómo se ve la página. Comprobé con capturas de pantalla que la página se ve **idéntica** antes y después de comentar. Esta guía reemplaza el "orden": te lleva directo a cada cosa.
+
+## 1. Orden de carga (el último gana)
+
+**index.html** (página pública): `styles.css` → `tema.css` → `vibra.css` → `marca.css`
+
+**admin.html** (panel): `styles.css` → `tema.css` → `admin.css` → `marca.css`
+
+- `styles.css`: Tailwind ya compilado (una sola línea enorme, lo genera una herramienta; **no se edita a mano**). Ahí viven las variables base (`:root{--background…}`).
+- `tema.css`: colores del modo claro.
+- `vibra.css`: efectos de la página pública (fondo animado, vidrio, música, Mi membresía).
+- `admin.css`: todo el panel administrativo.
+- `marca.css`: **ajustes finales de marca (verde lechuga, negro/blanco)**. Como carga al último, si algo no cambia donde esperas, mira aquí primero. (`marca.css` de la raíz es una copia idéntica.)
+
+## 2. Atajos: "me piden cambiar…"
+
+| Si piden cambiar… | Ve a… |
+|---|---|
+| El **color de la marca** (verde lechuga) | `marca.css:13` → variable `--lechuga` (y `--primary`) |
+| Fondo negro / blanco del sitio | `marca.css` (`--background`, `--surface`) y modo claro en `tema.css` |
+| Letras / color de todo el texto | `marca.css` → `--foreground` y `--muted-foreground` |
+| Fondo animado del gimnasio (landing) | `vibra.css:62` → reglas `.fondo-gym`, `.fg-*` |
+| Botones de la página | sección **Botones** de abajo |
+| Menú superior | sección **Menú de navegación** de abajo |
+| Panel admin (tablas, formularios, login) | `admin.css` |
+| Colores del modo claro | `tema.css:14` (`:root.light`) |
+
+## 3. Índice automático por tema
+
+Formato: `archivo:línea` → selector.
+
+
+### Body, html y variables globales (:root)
+
+- `tema.css:14` → `:root.light`
+- `tema.css:44` → `:root.light .texto-degradado`
+- `tema.css:76` → `:root.light .btn-tema:hover`
+- `tema.css:107` → `:root.light .btn-tema .icono-sol`
+- `tema.css:112` → `:root.light .btn-tema .icono-luna`
+- `vibra.css:19` → `:root`
+- `vibra.css:41` → `:root.light`
+- `vibra.css:219` → `:root.light .panel:hover`
+- `vibra.css:263` → `:root.light main section h2::after`
+- `vibra.css:630` → `:root.light .mm-estado--ok`
+- `vibra.css:635` → `:root.light .mm-estado--vencida`
+- `vibra.css:1130` → `:root`
+- `vibra.css:1148` → `:root.light`
+- `vibra.css:1161` → `:root.light .fondo-gym`
+- `vibra.css:1282` → `:root.light .fg-brasas`
+- `vibra.css:1362` → `:root.light .logo-hero-texto`
+- `vibra.css:1477` → `:root:not(.light) main section:nth-of-type(odd)`
+- `vibra.css:1482` → `:root.light main section:nth-of-type(odd)`
+- `vibra.css:1487` → `:root:not(.light) main > section:first-child::after`
+- `vibra.css:1511` → `:root.light .panel input, :root.light .panel textarea`
+- `vibra.css:1542` → `html`
+- `vibra.css:1611` → `body`
+- `vibra.css:1724` → `:root.light`
+- `vibra.css:1764` → `:root.light .fondo-gym`
+- `vibra.css:1769` → `:root.light .fg-orbe`
+- `vibra.css:1774` → `:root.light .fg-rejilla, :root.light .fg-pulso, :root.light .fg-brasas`
+- `vibra.css:1779` → `:root.light .fg-rayos`
+- `vibra.css:1785` → `:root.light .fg-grano`
+- `vibra.css:1792` → `:root.light .logo-m`
+- `vibra.css:1797` → `:root.light .logo-hero-fila .logo-m`
+- `vibra.css:1802` → `:root.light .logo-tipeo`
+- `vibra.css:1807` → `:root.light .logo-cursor`
+- `vibra.css:1813` → `:root.light .logo-hero-texto`
+- `vibra.css:1819` → `:root.light .logo-hero-linea`
+- `vibra.css:1825` → `:root.light header.fixed::after`
+- `vibra.css:1830` → `:root.light .bg-primary, :root.light .mm-boton`
+- `vibra.css:1835` → `:root.light .brillo-rojo`
+- `vibra.css:1840` → `:root.light .mm-barra span`
+- `vibra.css:1845` → `:root.light main section h2::after`
+- `vibra.css:1850` → `:root.light input:focus-visible, :root.light textarea:focus-visible, :…`
+- `vibra.css:1856` → `:root.light ::selection`
+- `vibra.css:1862` → `:root.light html, html.light`
+- `vibra.css:1867` → `:root.light ::-webkit-scrollbar-thumb`
+- `vibra.css:1872` → `:root.light .avatar-inicial`
+- `vibra.css:1877` → `:root.light .mm-card::before`
+- `vibra.css:1882` → `:root.light .panel input, :root.light .panel textarea`
+- `vibra.css:1887` → `:root.light .btn-tema:hover`
+- `vibra.css:1892` → `:root.light .reproductor-flotante`
+- `vibra.css:1968` → `:root.light`
+- `vibra.css:1985` → `:root.light .pulso-rojo`
+- `vibra.css:1992` → `:root.light .logo-m`
+- `vibra.css:1997` → `:root.light .logo-hero-fila .logo-m`
+- `admin.css:12` → `:root`
+- `admin.css:28` → `body`
+- `admin.css:677` → `:root.light .campo-imagen, :root.light .modal-form label, :root.light …`
+- `admin.css:682` → `:root.light .modal-overlay`
+- `admin.css:703` → `:root`
+- `admin.css:714` → `:root.light`
+- `admin.css:725` → `body`
+- `marca.css:13` → `:root`
+- `marca.css:54` → `:root.light`
+- `marca.css:86` → `html,body`
+- `marca.css:92` → `:root.light .texto-degradado,.texto-degradado`
+- `marca.css:231` → `:root.light .admin-sidebar,:root.light .admin-content,:root.light .adm…`
+- `marca.css:656` → `:root`
+- `marca.css:668` → `:root.light #nav-principal a:not(#nav-iniciar),:root.light #nav-princi…`
+- `marca.css:678` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:688` → `:root.light .logo-tipeo`
+- `marca.css:748` → `:root.light #nav-principal a:not(#nav-iniciar)`
+- `marca.css:753` → `:root.light #nav-principal a:not(#nav-iniciar):hover`
+- `marca.css:758` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:786` → `:root.light main>section:first-child>div[style*="gradient-oscuro"]`
+- `marca.css:802` → `:root:not(.light) #musica .panel, :root:not(.light) #contacto .panel, …`
+- `marca.css:812` → `:root:not(.light) #membresias .mm-card::before`
+- `marca.css:817` → `:root:not(.light) #musica .musica-reproduciendo, :root:not(.light) #mu…`
+- `marca.css:822` → `:root:not(.light) #contacto .panel input, :root:not(.light) #contacto …`
+- `marca.css:829` → `:root.light`
+- `marca.css:845` → `:root.light .fondo-gym`
+- `marca.css:850` → `:root.light .panel:hover`
+- `marca.css:855` → `:root.light .logo-tipeo`
+- `marca.css:860` → `:root.light .logo-cursor`
+- `marca.css:866` → `:root.light .logo-hero-texto`
+- `marca.css:872` → `:root.light .logo-hero-linea`
+- `marca.css:878` → `:root.light header.fixed::after`
+- `marca.css:883` → `:root.light .mm-boton`
+- `marca.css:890` → `:root.light .mm-barra span`
+- `marca.css:895` → `:root.light main section h2::after`
+- `marca.css:900` → `:root.light main section:nth-of-type(odd)`
+- `marca.css:905` → `:root.light .mm-card::before`
+- `marca.css:910` → `:root.light .avatar-inicial`
+- `marca.css:915` → `:root.light .btn-tema:hover`
+- `marca.css:920` → `:root.light .reproductor-flotante`
+- `marca.css:925` → `:root.light input:focus-visible,:root.light textarea:focus-visible,:ro…`
+- `marca.css:931` → `:root.light ::selection`
+- `marca.css:937` → `html.light`
+- `marca.css:942` → `:root.light ::-webkit-scrollbar-thumb`
+- `marca.css:961` → `:root:not(.light):not(#_) body, :root:not(.light):not(#_) body *:not(.…`
+- `marca.css:969` → `:root:not(.light):not(#_) .texto-degradado, :root:not(.light):not(#_) …`
+- `marca.css:978` → `:root:not(.light):not(#_) ::placeholder`
+- `marca.css:987` → `:root:not(.light):not(#_) #nav-principal a:hover, :root:not(.light):no…`
+
+
+### Fondos (color, imagen, degradado, vidrio)
+
+- `tema.css:44` → `:root.light .texto-degradado`
+- `tema.css:69` → `.btn-tema:hover`
+- `tema.css:76` → `:root.light .btn-tema:hover`
+- `tema.css:87` → `.btn-tema-login`
+- `vibra.css:62` → `.fondo-gym`
+- `vibra.css:80` → `.fg-orbe--1`
+- `vibra.css:90` → `.fg-orbe--2`
+- `vibra.css:100` → `.fg-orbe--3`
+- `vibra.css:148` → `.fg-rejilla`
+- `vibra.css:169` → `.fg-rayos`
+- `vibra.css:192` → `.fg-grano`
+- `vibra.css:203` → `.panel`
+- `vibra.css:226` → `.panel.tarjeta-con-fondo`
+- `vibra.css:236` → `header.fixed`
+- `vibra.css:250` → `main section h2::after`
+- `vibra.css:263` → `:root.light main section h2::after`
+- `vibra.css:290` → `.nav-usuario`
+- `vibra.css:312` → `.nav-usuario-salir`
+- `vibra.css:326` → `.nav-usuario-salir:hover`
+- `vibra.css:376` → `.toast`
+- `vibra.css:416` → `a.reservada`
+- `vibra.css:448` → `.sesion-aviso`
+- `vibra.css:537` → `.avatar-inicial`
+- `vibra.css:568` → `.mm-card::before`
+- `vibra.css:616` → `.mm-estado--ok`
+- `vibra.css:623` → `.mm-estado--vencida`
+- `vibra.css:696` → `.mm-barra`
+- `vibra.css:705` → `.mm-barra span`
+- `vibra.css:719` → `.mm-boton`
+- `vibra.css:742` → `.mm-pendiente, .mm-reservas`
+- `vibra.css:802` → `.btn-reproducir-todo`
+- `vibra.css:823` → `.item-cancion`
+- `vibra.css:841` → `.item-cancion.sonando`
+- `vibra.css:858` → `.ic-mini`
+- `vibra.css:939` → `.ic-ecualizador i`
+- `vibra.css:971` → `.reproductor-flotante`
+- `vibra.css:996` → `.rp-video`
+- `vibra.css:1067` → `.rp-btn:hover`
+- `vibra.css:1073` → `.rp-btn--grande`
+- `vibra.css:1081` → `.rp-btn--grande:hover`
+- `vibra.css:1156` → `.fondo-gym`
+- `vibra.css:1161` → `:root.light .fondo-gym`
+- `vibra.css:1289` → `.logo-nav`
+- `vibra.css:1314` → `.logo-cursor`
+- `vibra.css:1341` → `.logo-hero-texto`
+- `vibra.css:1362` → `:root.light .logo-hero-texto`
+- `vibra.css:1368` → `.logo-hero-linea`
+- `vibra.css:1407` → `header.fixed::after`
+- `vibra.css:1420` → `.bg-primary`
+- `vibra.css:1432` → `a.bg-primary::after, button.bg-primary::after, .mm-boton::after`
+- `vibra.css:1453` → `.mm-boton`
+- `vibra.css:1477` → `:root:not(.light) main section:nth-of-type(odd)`
+- `vibra.css:1482` → `:root.light main section:nth-of-type(odd)`
+- `vibra.css:1487` → `:root:not(.light) main > section:first-child::after`
+- `vibra.css:1506` → `.panel input, .panel textarea`
+- `vibra.css:1511` → `:root.light .panel input, :root.light .panel textarea`
+- `vibra.css:1536` → `::selection`
+- `vibra.css:1552` → `::-webkit-scrollbar-thumb`
+- `vibra.css:1558` → `::-webkit-scrollbar-track`
+- `vibra.css:1637` → `.logo-nav`
+- `vibra.css:1662` → `.logo-tipeo`
+- `vibra.css:1764` → `:root.light .fondo-gym`
+- `vibra.css:1779` → `:root.light .fg-rayos`
+- `vibra.css:1802` → `:root.light .logo-tipeo`
+- `vibra.css:1807` → `:root.light .logo-cursor`
+- `vibra.css:1813` → `:root.light .logo-hero-texto`
+- `vibra.css:1819` → `:root.light .logo-hero-linea`
+- `vibra.css:1825` → `:root.light header.fixed::after`
+- `vibra.css:1830` → `:root.light .bg-primary, :root.light .mm-boton`
+- `vibra.css:1840` → `:root.light .mm-barra span`
+- `vibra.css:1845` → `:root.light main section h2::after`
+- `vibra.css:1856` → `:root.light ::selection`
+- `vibra.css:1867` → `:root.light ::-webkit-scrollbar-thumb`
+- `vibra.css:1872` → `:root.light .avatar-inicial`
+- `vibra.css:1877` → `:root.light .mm-card::before`
+- `vibra.css:1882` → `:root.light .panel input, :root.light .panel textarea`
+- `vibra.css:1887` → `:root.light .btn-tema:hover`
+- `admin.css:28` → `body`
+- `admin.css:47` → `.login-card`
+- `admin.css:92` → `.login-card input`
+- `admin.css:102` → `.login-card button`
+- `admin.css:137` → `.admin-sidebar`
+- `admin.css:191` → `.admin-nav button:hover`
+- `admin.css:197` → `.admin-nav button.activo`
+- `admin.css:214` → `.admin-user button`
+- `admin.css:252` → `.btn-primario`
+- `admin.css:273` → `.admin-content`
+- `admin.css:304` → `.admin-tabla tbody tr:hover`
+- `admin.css:315` → `.admin-tabla .col-acciones button`
+- `admin.css:347` → `.modal-overlay`
+- `admin.css:359` → `.modal-card`
+- `admin.css:416` → `.modal-form input, .modal-form select, .modal-form textarea`
+- `admin.css:458` → `.btn-cancelar`
+- `admin.css:465` → `.btn-guardar`
+- `admin.css:555` → `.campo-imagen`
+- `admin.css:592` → `.campo-imagen-file::file-selector-button`
+- `admin.css:605` → `.campo-imagen-quitar`
+- `admin.css:640` → `.login-card, .admin-sidebar, .admin-topbar, .admin-content, .modal-car…`
+- `admin.css:653` → `.modal-overlay`
+- `admin.css:665` → `.admin-tabla tbody tr:hover`
+- `admin.css:670` → `.modal-form label, .panel-contenido label`
+- `admin.css:677` → `:root.light .campo-imagen, :root.light .modal-form label, :root.light …`
+- `admin.css:682` → `:root.light .modal-overlay`
+- `admin.css:792` → `.admin-nav button:hover`
+- `admin.css:797` → `.admin-nav button.activo`
+- `admin.css:824` → `.admin-tabla tbody tr:hover`
+- `marca.css:86` → `html,body`
+- `marca.css:92` → `:root.light .texto-degradado,.texto-degradado`
+- `marca.css:118` → `button.bg-primary,a.bg-primary,.btn-primario,.btn-guardar,.login-card …`
+- `marca.css:129` → `.admin-nav button.activo`
+- `marca.css:142` → `#instalaciones [style*="gradient-oscuro"],#entrenadores [style*="gradi…`
+- `marca.css:187` → `.login-wrap`
+- `marca.css:192` → `.login-card`
+- `marca.css:207` → `.login-card input`
+- `marca.css:214` → `.login-card button`
+- `marca.css:225` → `.admin-sidebar,.admin-content,.admin-topbar,.modal-card,.panel-conteni…`
+- `marca.css:231` → `:root.light .admin-sidebar,:root.light .admin-content,:root.light .adm…`
+- `marca.css:278` → `.asis-buscar input`
+- `marca.css:353` → `.asis-cabecera:hover`
+- `marca.css:364` → `.asis-avatar`
+- `marca.css:408` → `.asis-estado.vigente`
+- `marca.css:497` → `.asis-nav:hover`
+- `marca.css:549` → `.asis-dia.en-periodo:hover:not(:disabled)`
+- `marca.css:561` → `.asis-dia.asistio`
+- `marca.css:601` → `.asis-dias-input`
+- `marca.css:673` → `#nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:678` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:695` → `footer`
+- `marca.css:712` → `#nav-principal a:not(#nav-iniciar)`
+- `marca.css:722` → `#nav-principal a:not(#nav-iniciar):hover,#nav-principal a:not(#nav-ini…`
+- `marca.css:728` → `#nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:758` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:763` → `#nav-iniciar`
+- `marca.css:776` → `main>section:first-child>div[style*="gradient-oscuro"]`
+- `marca.css:786` → `:root.light main>section:first-child>div[style*="gradient-oscuro"]`
+- `marca.css:791` → `#instalaciones`
+- `marca.css:802` → `:root:not(.light) #musica .panel, :root:not(.light) #contacto .panel, …`
+- `marca.css:817` → `:root:not(.light) #musica .musica-reproduciendo, :root:not(.light) #mu…`
+- `marca.css:822` → `:root:not(.light) #contacto .panel input, :root:not(.light) #contacto …`
+- `marca.css:845` → `:root.light .fondo-gym`
+- `marca.css:855` → `:root.light .logo-tipeo`
+- `marca.css:860` → `:root.light .logo-cursor`
+- `marca.css:866` → `:root.light .logo-hero-texto`
+- `marca.css:872` → `:root.light .logo-hero-linea`
+- `marca.css:878` → `:root.light header.fixed::after`
+- `marca.css:883` → `:root.light .mm-boton`
+- `marca.css:890` → `:root.light .mm-barra span`
+- `marca.css:895` → `:root.light main section h2::after`
+- `marca.css:900` → `:root.light main section:nth-of-type(odd)`
+- `marca.css:905` → `:root.light .mm-card::before`
+- `marca.css:910` → `:root.light .avatar-inicial`
+- `marca.css:915` → `:root.light .btn-tema:hover`
+- `marca.css:931` → `:root.light ::selection`
+- `marca.css:942` → `:root.light ::-webkit-scrollbar-thumb`
+- `marca.css:969` → `:root:not(.light):not(#_) .texto-degradado, :root:not(.light):not(#_) …`
+
+
+### Letras (color, tamaño, tipo, mayúsculas)
+
+- `tema.css:53` → `.btn-tema`
+- `vibra.css:301` → `.nav-usuario-nombre`
+- `vibra.css:312` → `.nav-usuario-salir`
+- `vibra.css:326` → `.nav-usuario-salir:hover`
+- `vibra.css:334` → `.hero-nombre`
+- `vibra.css:360` → `.enlace-admin`
+- `vibra.css:376` → `.toast`
+- `vibra.css:404` → `.toast--error`
+- `vibra.css:416` → `a.reservada`
+- `vibra.css:448` → `.sesion-aviso`
+- `vibra.css:459` → `.campo-codigo`
+- `vibra.css:476` → `.sesion-link`
+- `vibra.css:491` → `.sesion-status`
+- `vibra.css:498` → `.sesion-status--ok`
+- `vibra.css:503` → `.sesion-status--error`
+- `vibra.css:515` → `.estrella-btn`
+- `vibra.css:526` → `.estrella-btn.activa`
+- `vibra.css:537` → `.avatar-inicial`
+- `vibra.css:591` → `.mm-chip`
+- `vibra.css:600` → `.mm-nombre`
+- `vibra.css:606` → `.mm-estado`
+- `vibra.css:616` → `.mm-estado--ok`
+- `vibra.css:623` → `.mm-estado--vencida`
+- `vibra.css:630` → `:root.light .mm-estado--ok`
+- `vibra.css:635` → `:root.light .mm-estado--vencida`
+- `vibra.css:657` → `.mm-dias-num`
+- `vibra.css:666` → `.mm-dias-txt`
+- `vibra.css:682` → `.mm-datos dt`
+- `vibra.css:690` → `.mm-datos dd`
+- `vibra.css:719` → `.mm-boton`
+- `vibra.css:742` → `.mm-pendiente, .mm-reservas`
+- `vibra.css:777` → `.mm-dias-num`
+- `vibra.css:785` → `.musica-estado`
+- `vibra.css:792` → `.musica-estado--error`
+- `vibra.css:797` → `.btn-corazon.guardada, .ic-corazon.guardada`
+- `vibra.css:802` → `.btn-reproducir-todo`
+- `vibra.css:875` → `.ic-titulo`
+- `vibra.css:884` → `.ic-canal`
+- `vibra.css:893` → `.ic-corazon`
+- `vibra.css:905` → `.ic-corazon:hover`
+- `vibra.css:911` → `.item-cancion .item-playlist-quitar`
+- `vibra.css:921` → `.item-cancion .item-playlist-quitar:hover`
+- `vibra.css:1027` → `.reproductor-titulo`
+- `vibra.css:1073` → `.rp-btn--grande`
+- `vibra.css:1087` → `.reproductor-flotante .btn-cerrar-reproductor`
+- `vibra.css:1289` → `.logo-nav`
+- `vibra.css:1341` → `.logo-hero-texto`
+- `vibra.css:1536` → `::selection`
+- `vibra.css:1587` → `.logo-nav`
+- `vibra.css:1604` → `#nav-principal a:not(#nav-iniciar)`
+- `vibra.css:1618` → `.hero-nombre`
+- `vibra.css:1637` → `.logo-nav`
+- `vibra.css:1662` → `.logo-tipeo`
+- `vibra.css:1691` → `.logo-hero-fila`
+- `vibra.css:1705` → `.logo-hero-texto`
+- `vibra.css:1715` → `.logo-nav`
+- `vibra.css:1856` → `:root.light ::selection`
+- `vibra.css:1904` → `.logo-nav`
+- `vibra.css:1928` → `#nav-principal a:not(#nav-iniciar)`
+- `vibra.css:1949` → `.logo-nav`
+- `vibra.css:1959` → `#nav-principal a:not(#nav-iniciar)`
+- `admin.css:28` → `body`
+- `admin.css:69` → `.login-card h1`
+- `admin.css:75` → `.login-sub`
+- `admin.css:82` → `.login-card label`
+- `admin.css:92` → `.login-card input`
+- `admin.css:102` → `.login-card button`
+- `admin.css:122` → `.login-error`
+- `admin.css:163` → `.admin-brand span`
+- `admin.css:178` → `.admin-nav button`
+- `admin.css:191` → `.admin-nav button:hover`
+- `admin.css:197` → `.admin-nav button.activo`
+- `admin.css:203` → `.admin-user`
+- `admin.css:214` → `.admin-user button`
+- `admin.css:225` → `.admin-user button:hover`
+- `admin.css:246` → `.admin-topbar h1`
+- `admin.css:252` → `.btn-primario`
+- `admin.css:281` → `.admin-tabla`
+- `admin.css:296` → `.admin-tabla th`
+- `admin.css:315` → `.admin-tabla .col-acciones button`
+- `admin.css:326` → `.admin-tabla .col-acciones button:hover`
+- `admin.css:332` → `.admin-tabla .col-acciones .btn-eliminar:hover`
+- `admin.css:338` → `.admin-vacio`
+- `admin.css:379` → `.modal-header h2`
+- `admin.css:385` → `.modal-cerrar-btn`
+- `admin.css:394` → `.modal-cerrar-btn:hover`
+- `admin.css:407` → `.modal-form label`
+- `admin.css:416` → `.modal-form input, .modal-form select, .modal-form textarea`
+- `admin.css:446` → `.modal-form-acciones button`
+- `admin.css:458` → `.btn-cancelar`
+- `admin.css:465` → `.btn-guardar`
+- `admin.css:471` → `.form-error`
+- `admin.css:485` → `.panel-contenido h3`
+- `admin.css:506` → `.panel-contenido-ok`
+- `admin.css:584` → `.campo-imagen-file`
+- `admin.css:592` → `.campo-imagen-file::file-selector-button`
+- `admin.css:605` → `.campo-imagen-quitar`
+- `admin.css:616` → `.campo-imagen-quitar:hover`
+- `admin.css:622` → `.campo-imagen-ayuda`
+- `admin.css:689` → `.campo-imagen-error`
+- `admin.css:725` → `body`
+- `admin.css:742` → `.admin-brand span`
+- `admin.css:756` → `.login-card h1`
+- `admin.css:767` → `.login-card button, .btn-primario`
+- `admin.css:774` → `.login-error`
+- `admin.css:786` → `.admin-nav button`
+- `admin.css:797` → `.admin-nav button.activo`
+- `admin.css:808` → `.admin-topbar h1`
+- `admin.css:814` → `.admin-tabla`
+- `admin.css:819` → `.admin-tabla th`
+- `admin.css:829` → `.admin-tabla .col-acciones .btn-eliminar:hover`
+- `admin.css:862` → `.permisos-ayuda`
+- `marca.css:86` → `html,body`
+- `marca.css:92` → `:root.light .texto-degradado,.texto-degradado`
+- `marca.css:100` → `h1,h2,h3,h4,p,span,li,label,a,td,th,small,strong,input,textarea,select`
+- `marca.css:105` → `input,textarea,select`
+- `marca.css:110` → `::placeholder`
+- `marca.css:118` → `button.bg-primary,a.bg-primary,.btn-primario,.btn-guardar,.login-card …`
+- `marca.css:124` → `button.bg-primary *,a.bg-primary *`
+- `marca.css:129` → `.admin-nav button.activo`
+- `marca.css:192` → `.login-card`
+- `marca.css:202` → `.login-card h1,.login-sub,.login-card label`
+- `marca.css:207` → `.login-card input`
+- `marca.css:214` → `.login-card button`
+- `marca.css:220` → `.admin-shell,.admin-content,.admin-sidebar,.admin-topbar,.modal-card,.…`
+- `marca.css:236` → `.admin-tabla th,.admin-tabla td`
+- `marca.css:266` → `.asis-buscar svg`
+- `marca.css:278` → `.asis-buscar input`
+- `marca.css:296` → `.asis-contador`
+- `marca.css:302` → `.asis-aviso`
+- `marca.css:320` → `.asis-vacio`
+- `marca.css:339` → `.asis-cabecera`
+- `marca.css:364` → `.asis-avatar`
+- `marca.css:391` → `.asis-quien small,.asis-resumen small`
+- `marca.css:397` → `.asis-estado`
+- `marca.css:408` → `.asis-estado.vigente`
+- `marca.css:415` → `.asis-estado.vencida`
+- `marca.css:421` → `.asis-resumen`
+- `marca.css:430` → `.asis-resumen b`
+- `marca.css:435` → `.asis-flecha`
+- `marca.css:469` → `.asis-mes`
+- `marca.css:480` → `.asis-nav`
+- `marca.css:516` → `.asis-sem`
+- `marca.css:524` → `.asis-dia`
+- `marca.css:541` → `.asis-dia.en-periodo`
+- `marca.css:561` → `.asis-dia.asistio`
+- `marca.css:570` → `.asis-dia.asistio::after`
+- `marca.css:591` → `.asis-dias`
+- `marca.css:601` → `.asis-dias-input`
+- `marca.css:619` → `.asis-nota`
+- `marca.css:663` → `#nav-principal a:not(#nav-iniciar),#nav-principal a:not(#nav-iniciar):…`
+- `marca.css:668` → `:root.light #nav-principal a:not(#nav-iniciar),:root.light #nav-princi…`
+- `marca.css:683` → `.logo-tipeo`
+- `marca.css:688` → `:root.light .logo-tipeo`
+- `marca.css:700` → `footer,footer *`
+- `marca.css:712` → `#nav-principal a:not(#nav-iniciar)`
+- `marca.css:722` → `#nav-principal a:not(#nav-iniciar):hover,#nav-principal a:not(#nav-ini…`
+- `marca.css:748` → `:root.light #nav-principal a:not(#nav-iniciar)`
+- `marca.css:753` → `:root.light #nav-principal a:not(#nav-iniciar):hover`
+- `marca.css:763` → `#nav-iniciar`
+- `marca.css:883` → `:root.light .mm-boton`
+- `marca.css:931` → `:root.light ::selection`
+- `marca.css:961` → `:root:not(.light):not(#_) body, :root:not(.light):not(#_) body *:not(.…`
+- `marca.css:978` → `:root:not(.light):not(#_) ::placeholder`
+- `marca.css:987` → `:root:not(.light):not(#_) #nav-principal a:hover, :root:not(.light):no…`
+
+
+### Botones
+
+- `tema.css:53` → `.btn-tema`
+- `tema.css:69` → `.btn-tema:hover`
+- `tema.css:76` → `:root.light .btn-tema:hover`
+- `tema.css:81` → `.btn-tema svg`
+- `tema.css:87` → `.btn-tema-login`
+- `tema.css:97` → `.btn-tema .icono-sol`
+- `tema.css:102` → `.btn-tema .icono-luna`
+- `tema.css:107` → `:root.light .btn-tema .icono-sol`
+- `tema.css:112` → `:root.light .btn-tema .icono-luna`
+- `vibra.css:515` → `.estrella-btn`
+- `vibra.css:526` → `.estrella-btn.activa`
+- `vibra.css:532` → `.estrella-btn:hover`
+- `vibra.css:719` → `.mm-boton`
+- `vibra.css:736` → `.mm-boton:hover`
+- `vibra.css:797` → `.btn-corazon.guardada, .ic-corazon.guardada`
+- `vibra.css:802` → `.btn-reproducir-todo`
+- `vibra.css:818` → `.btn-reproducir-todo:hover`
+- `vibra.css:1048` → `.rp-btn`
+- `vibra.css:1061` → `.rp-btn svg`
+- `vibra.css:1067` → `.rp-btn:hover`
+- `vibra.css:1073` → `.rp-btn--grande`
+- `vibra.css:1081` → `.rp-btn--grande:hover`
+- `vibra.css:1087` → `.reproductor-flotante .btn-cerrar-reproductor`
+- `vibra.css:1425` → `a.bg-primary, button.bg-primary, .mm-boton, .btn-reproducir-todo`
+- `vibra.css:1432` → `a.bg-primary::after, button.bg-primary::after, .mm-boton::after`
+- `vibra.css:1443` → `a.bg-primary:hover::after, button.bg-primary:hover::after, .mm-boton:h…`
+- `vibra.css:1453` → `.mm-boton`
+- `vibra.css:1830` → `:root.light .bg-primary, :root.light .mm-boton`
+- `vibra.css:1887` → `:root.light .btn-tema:hover`
+- `admin.css:102` → `.login-card button`
+- `admin.css:117` → `.login-card button:hover`
+- `admin.css:178` → `.admin-nav button`
+- `admin.css:191` → `.admin-nav button:hover`
+- `admin.css:197` → `.admin-nav button.activo`
+- `admin.css:214` → `.admin-user button`
+- `admin.css:225` → `.admin-user button:hover`
+- `admin.css:252` → `.btn-primario`
+- `admin.css:266` → `.btn-primario:hover`
+- `admin.css:315` → `.admin-tabla .col-acciones button`
+- `admin.css:326` → `.admin-tabla .col-acciones button:hover`
+- `admin.css:332` → `.admin-tabla .col-acciones .btn-eliminar:hover`
+- `admin.css:385` → `.modal-cerrar-btn`
+- `admin.css:394` → `.modal-cerrar-btn:hover`
+- `admin.css:446` → `.modal-form-acciones button`
+- `admin.css:458` → `.btn-cancelar`
+- `admin.css:465` → `.btn-guardar`
+- `admin.css:592` → `.campo-imagen-file::file-selector-button`
+- `admin.css:767` → `.login-card button, .btn-primario`
+- `admin.css:786` → `.admin-nav button`
+- `admin.css:792` → `.admin-nav button:hover`
+- `admin.css:797` → `.admin-nav button.activo`
+- `admin.css:829` → `.admin-tabla .col-acciones .btn-eliminar:hover`
+- `marca.css:118` → `button.bg-primary,a.bg-primary,.btn-primario,.btn-guardar,.login-card …`
+- `marca.css:124` → `button.bg-primary *,a.bg-primary *`
+- `marca.css:129` → `.admin-nav button.activo`
+- `marca.css:135` → `button`
+- `marca.css:214` → `.login-card button`
+- `marca.css:663` → `#nav-principal a:not(#nav-iniciar),#nav-principal a:not(#nav-iniciar):…`
+- `marca.css:668` → `:root.light #nav-principal a:not(#nav-iniciar),:root.light #nav-princi…`
+- `marca.css:883` → `:root.light .mm-boton`
+- `marca.css:915` → `:root.light .btn-tema:hover`
+
+
+### Menú de navegación
+
+- `vibra.css:290` → `.nav-usuario`
+- `vibra.css:301` → `.nav-usuario-nombre`
+- `vibra.css:312` → `.nav-usuario-salir`
+- `vibra.css:326` → `.nav-usuario-salir:hover`
+- `vibra.css:1289` → `.logo-nav`
+- `vibra.css:1579` → `.logo-nav`
+- `vibra.css:1587` → `.logo-nav`
+- `vibra.css:1599` → `#nav-principal`
+- `vibra.css:1604` → `#nav-principal a:not(#nav-iniciar)`
+- `vibra.css:1637` → `.logo-nav`
+- `vibra.css:1715` → `.logo-nav`
+- `vibra.css:1904` → `.logo-nav`
+- `vibra.css:1912` → `.logo-nav .logo-m`
+- `vibra.css:1918` → `#nav-iniciar`
+- `vibra.css:1923` → `#nav-principal`
+- `vibra.css:1928` → `#nav-principal a:not(#nav-iniciar)`
+- `vibra.css:1949` → `.logo-nav`
+- `vibra.css:1954` → `#nav-principal`
+- `vibra.css:1959` → `#nav-principal a:not(#nav-iniciar)`
+- `admin.css:169` → `.admin-nav`
+- `admin.css:178` → `.admin-nav button`
+- `admin.css:191` → `.admin-nav button:hover`
+- `admin.css:197` → `.admin-nav button.activo`
+- `admin.css:537` → `.admin-nav`
+- `admin.css:786` → `.admin-nav button`
+- `admin.css:792` → `.admin-nav button:hover`
+- `admin.css:797` → `.admin-nav button.activo`
+- `marca.css:129` → `.admin-nav button.activo`
+- `marca.css:480` → `.asis-nav`
+- `marca.css:497` → `.asis-nav:hover`
+- `marca.css:503` → `.asis-nav:focus-visible`
+- `marca.css:663` → `#nav-principal a:not(#nav-iniciar),#nav-principal a:not(#nav-iniciar):…`
+- `marca.css:668` → `:root.light #nav-principal a:not(#nav-iniciar),:root.light #nav-princi…`
+- `marca.css:673` → `#nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:678` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:712` → `#nav-principal a:not(#nav-iniciar)`
+- `marca.css:722` → `#nav-principal a:not(#nav-iniciar):hover,#nav-principal a:not(#nav-ini…`
+- `marca.css:728` → `#nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:738` → `#nav-principal a:not(#nav-iniciar):hover::after`
+- `marca.css:743` → `#nav-principal a:not(#nav-iniciar).active::after,#nav-principal a:not(…`
+- `marca.css:748` → `:root.light #nav-principal a:not(#nav-iniciar)`
+- `marca.css:753` → `:root.light #nav-principal a:not(#nav-iniciar):hover`
+- `marca.css:758` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:763` → `#nav-iniciar`
+- `marca.css:961` → `:root:not(.light):not(#_) body, :root:not(.light):not(#_) body *:not(.…`
+- `marca.css:987` → `:root:not(.light):not(#_) #nav-principal a:hover, :root:not(.light):no…`
+
+
+### Bordes, sombras y esquinas
+
+- `tema.css:53` → `.btn-tema`
+- `tema.css:69` → `.btn-tema:hover`
+- `vibra.css:72` → `.fg-orbe`
+- `vibra.css:203` → `.panel`
+- `vibra.css:213` → `.panel:hover`
+- `vibra.css:219` → `:root.light .panel:hover`
+- `vibra.css:226` → `.panel.tarjeta-con-fondo`
+- `vibra.css:250` → `main section h2::after`
+- `vibra.css:290` → `.nav-usuario`
+- `vibra.css:312` → `.nav-usuario-salir`
+- `vibra.css:376` → `.toast`
+- `vibra.css:404` → `.toast--error`
+- `vibra.css:416` → `a.reservada`
+- `vibra.css:448` → `.sesion-aviso`
+- `vibra.css:537` → `.avatar-inicial`
+- `vibra.css:606` → `.mm-estado`
+- `vibra.css:616` → `.mm-estado--ok`
+- `vibra.css:623` → `.mm-estado--vencida`
+- `vibra.css:696` → `.mm-barra`
+- `vibra.css:705` → `.mm-barra span`
+- `vibra.css:719` → `.mm-boton`
+- `vibra.css:742` → `.mm-pendiente, .mm-reservas`
+- `vibra.css:751` → `.mm-pendiente`
+- `vibra.css:802` → `.btn-reproducir-todo`
+- `vibra.css:823` → `.item-cancion`
+- `vibra.css:835` → `.item-cancion:hover`
+- `vibra.css:841` → `.item-cancion.sonando`
+- `vibra.css:858` → `.ic-mini`
+- `vibra.css:939` → `.ic-ecualizador i`
+- `vibra.css:971` → `.reproductor-flotante`
+- `vibra.css:996` → `.rp-video`
+- `vibra.css:1007` → `.rp-video iframe, .rp-video #yt-player`
+- `vibra.css:1048` → `.rp-btn`
+- `vibra.css:1187` → `.fg-pulso i`
+- `vibra.css:1245` → `.fg-brasas::before, .fg-brasas::after`
+- `vibra.css:1314` → `.logo-cursor`
+- `vibra.css:1368` → `.logo-hero-linea`
+- `vibra.css:1448` → `.brillo-rojo`
+- `vibra.css:1460` → `.panel`
+- `vibra.css:1465` → `.panel:hover`
+- `vibra.css:1470` → `.panel.tarjeta-con-fondo`
+- `vibra.css:1499` → `input:focus-visible, textarea:focus-visible, select:focus-visible`
+- `vibra.css:1516` → `.campo-invalido`
+- `vibra.css:1552` → `::-webkit-scrollbar-thumb`
+- `vibra.css:1807` → `:root.light .logo-cursor`
+- `vibra.css:1819` → `:root.light .logo-hero-linea`
+- `vibra.css:1835` → `:root.light .brillo-rojo`
+- `vibra.css:1850` → `:root.light input:focus-visible, :root.light textarea:focus-visible, :…`
+- `vibra.css:1892` → `:root.light .reproductor-flotante`
+- `admin.css:47` → `.login-card`
+- `admin.css:92` → `.login-card input`
+- `admin.css:102` → `.login-card button`
+- `admin.css:178` → `.admin-nav button`
+- `admin.css:214` → `.admin-user button`
+- `admin.css:225` → `.admin-user button:hover`
+- `admin.css:252` → `.btn-primario`
+- `admin.css:273` → `.admin-content`
+- `admin.css:315` → `.admin-tabla .col-acciones button`
+- `admin.css:326` → `.admin-tabla .col-acciones button:hover`
+- `admin.css:332` → `.admin-tabla .col-acciones .btn-eliminar:hover`
+- `admin.css:359` → `.modal-card`
+- `admin.css:416` → `.modal-form input, .modal-form select, .modal-form textarea`
+- `admin.css:446` → `.modal-form-acciones button`
+- `admin.css:458` → `.btn-cancelar`
+- `admin.css:555` → `.campo-imagen`
+- `admin.css:566` → `.campo-imagen-preview`
+- `admin.css:592` → `.campo-imagen-file::file-selector-button`
+- `admin.css:605` → `.campo-imagen-quitar`
+- `admin.css:616` → `.campo-imagen-quitar:hover`
+- `admin.css:628` → `.celda-miniatura`
+- `admin.css:640` → `.login-card, .admin-sidebar, .admin-topbar, .admin-content, .modal-car…`
+- `admin.css:648` → `.login-card, .modal-card`
+- `admin.css:660` → `.admin-content`
+- `admin.css:670` → `.modal-form label, .panel-contenido label`
+- `admin.css:696` → `.campo-imagen--error`
+- `admin.css:750` → `.login-card`
+- `admin.css:829` → `.admin-tabla .col-acciones .btn-eliminar:hover`
+- `admin.css:835` → `.admin-content`
+- `marca.css:135` → `button`
+- `marca.css:192` → `.login-card`
+- `marca.css:207` → `.login-card input`
+- `marca.css:225` → `.admin-sidebar,.admin-content,.admin-topbar,.modal-card,.panel-conteni…`
+- `marca.css:278` → `.asis-buscar input`
+- `marca.css:302` → `.asis-aviso`
+- `marca.css:327` → `.asis-usuario`
+- `marca.css:334` → `.asis-usuario.abierto`
+- `marca.css:364` → `.asis-avatar`
+- `marca.css:397` → `.asis-estado`
+- `marca.css:408` → `.asis-estado.vigente`
+- `marca.css:415` → `.asis-estado.vencida`
+- `marca.css:480` → `.asis-nav`
+- `marca.css:497` → `.asis-nav:hover`
+- `marca.css:524` → `.asis-dia`
+- `marca.css:541` → `.asis-dia.en-periodo`
+- `marca.css:549` → `.asis-dia.en-periodo:hover:not(:disabled)`
+- `marca.css:561` → `.asis-dia.asistio`
+- `marca.css:580` → `.asis-dia.hoy`
+- `marca.css:601` → `.asis-dias-input`
+- `marca.css:644` → `.brillo-rojo,.pulso-rojo,[class*="drop-shadow"]`
+- `marca.css:705` → `footer .red-social`
+- `marca.css:712` → `#nav-principal a:not(#nav-iniciar)`
+- `marca.css:791` → `#instalaciones`
+- `marca.css:802` → `:root:not(.light) #musica .panel, :root:not(.light) #contacto .panel, …`
+- `marca.css:850` → `:root.light .panel:hover`
+- `marca.css:860` → `:root.light .logo-cursor`
+- `marca.css:872` → `:root.light .logo-hero-linea`
+- `marca.css:920` → `:root.light .reproductor-flotante`
+- `marca.css:925` → `:root.light input:focus-visible,:root.light textarea:focus-visible,:ro…`
+
+
+### Animaciones
+
+- `vibra.css:80` → `.fg-orbe--1`
+- `vibra.css:90` → `.fg-orbe--2`
+- `vibra.css:100` → `.fg-orbe--3`
+- `vibra.css:110` → `@keyframes fg-flota-1`
+- `vibra.css:122` → `@keyframes fg-flota-2`
+- `vibra.css:134` → `@keyframes fg-flota-3`
+- `vibra.css:148` → `.fg-rejilla`
+- `vibra.css:159` → `@keyframes fg-rejilla`
+- `vibra.css:169` → `.fg-rayos`
+- `vibra.css:178` → `@keyframes fg-barrido`
+- `vibra.css:334` → `.hero-nombre`
+- `vibra.css:344` → `@keyframes hero-nombre-in`
+- `vibra.css:431` → `.caja-sesion.pulso`
+- `vibra.css:436` → `@keyframes caja-pulso`
+- `vibra.css:939` → `.ic-ecualizador i`
+- `vibra.css:957` → `@keyframes eq`
+- `vibra.css:971` → `.reproductor-flotante`
+- `vibra.css:1109` → `.fg-orbe, .fg-rejilla, .fg-rayos, .ic-ecualizador i, .caja-sesion.puls…`
+- `vibra.css:1187` → `.fg-pulso i`
+- `vibra.css:1212` → `@keyframes fg-pulso`
+- `vibra.css:1245` → `.fg-brasas::before, .fg-brasas::after`
+- `vibra.css:1270` → `@keyframes fg-brasas`
+- `vibra.css:1314` → `.logo-cursor`
+- `vibra.css:1327` → `@keyframes logo-cursor`
+- `vibra.css:1341` → `.logo-hero-texto`
+- `vibra.css:1368` → `.logo-hero-linea`
+- `vibra.css:1381` → `@keyframes logo-brillo`
+- `vibra.css:1393` → `@keyframes logo-linea`
+- `vibra.css:1516` → `.campo-invalido`
+- `vibra.css:1522` → `@keyframes sacudir`
+- `vibra.css:1566` → `.fg-pulso i, .fg-brasas::before, .fg-brasas::after, .logo-hero-texto, …`
+- `vibra.css:1973` → `@keyframes pulso-azul`
+- `vibra.css:1985` → `:root.light .pulso-rojo`
+- `marca.css:644` → `.brillo-rojo,.pulso-rojo,[class*="drop-shadow"]`
+
+
+### Responsive (celular / tablet)
+
+- `vibra.css:762` → `@media (max-width: 640px)`
+- `vibra.css:765` → `.mm-cuerpo`
+- `vibra.css:772` → `.mm-datos`
+- `vibra.css:777` → `.mm-dias-num`
+- `vibra.css:1095` → `@media (max-width: 480px)`
+- `vibra.css:1098` → `.rp-video`
+- `vibra.css:1584` → `@media (max-width: 1279px)`
+- `vibra.css:1587` → `.logo-nav`
+- `vibra.css:1594` → `.logo-cursor`
+- `vibra.css:1599` → `#nav-principal`
+- `vibra.css:1604` → `#nav-principal a:not(#nav-iniciar)`
+- `vibra.css:1712` → `@media (max-width: 1279px)`
+- `vibra.css:1715` → `.logo-nav`
+- `vibra.css:1946` → `@media (max-width: 1279px)`
+- `vibra.css:1949` → `.logo-nav`
+- `vibra.css:1954` → `#nav-principal`
+- `vibra.css:1959` → `#nav-principal a:not(#nav-iniciar)`
+- `admin.css:513` → `@media (max-width: 560px)`
+- `admin.css:516` → `.panel-contenido-grid3`
+- `admin.css:522` → `@media (max-width: 800px)`
+- `admin.css:525` → `.admin-shell`
+- `admin.css:530` → `.admin-sidebar`
+- `admin.css:537` → `.admin-nav`
+- `admin.css:542` → `.admin-user`
+- `admin.css:547` → `.admin-main`
+- `marca.css:627` → `@media (max-width:640px)`
+- `marca.css:630` → `.asis-cabecera`
+- `marca.css:636` → `.asis-resumen`
+
+
+### Tema claro
+
+- `tema.css:14` → `:root.light`
+- `tema.css:44` → `:root.light .texto-degradado`
+- `tema.css:76` → `:root.light .btn-tema:hover`
+- `tema.css:107` → `:root.light .btn-tema .icono-sol`
+- `tema.css:112` → `:root.light .btn-tema .icono-luna`
+- `vibra.css:41` → `:root.light`
+- `vibra.css:219` → `:root.light .panel:hover`
+- `vibra.css:263` → `:root.light main section h2::after`
+- `vibra.css:630` → `:root.light .mm-estado--ok`
+- `vibra.css:635` → `:root.light .mm-estado--vencida`
+- `vibra.css:1148` → `:root.light`
+- `vibra.css:1161` → `:root.light .fondo-gym`
+- `vibra.css:1282` → `:root.light .fg-brasas`
+- `vibra.css:1362` → `:root.light .logo-hero-texto`
+- `vibra.css:1477` → `:root:not(.light) main section:nth-of-type(odd)`
+- `vibra.css:1482` → `:root.light main section:nth-of-type(odd)`
+- `vibra.css:1487` → `:root:not(.light) main > section:first-child::after`
+- `vibra.css:1511` → `:root.light .panel input, :root.light .panel textarea`
+- `vibra.css:1724` → `:root.light`
+- `vibra.css:1764` → `:root.light .fondo-gym`
+- `vibra.css:1769` → `:root.light .fg-orbe`
+- `vibra.css:1774` → `:root.light .fg-rejilla, :root.light .fg-pulso, :root.light .fg-brasas`
+- `vibra.css:1779` → `:root.light .fg-rayos`
+- `vibra.css:1785` → `:root.light .fg-grano`
+- `vibra.css:1792` → `:root.light .logo-m`
+- `vibra.css:1797` → `:root.light .logo-hero-fila .logo-m`
+- `vibra.css:1802` → `:root.light .logo-tipeo`
+- `vibra.css:1807` → `:root.light .logo-cursor`
+- `vibra.css:1813` → `:root.light .logo-hero-texto`
+- `vibra.css:1819` → `:root.light .logo-hero-linea`
+- `vibra.css:1825` → `:root.light header.fixed::after`
+- `vibra.css:1830` → `:root.light .bg-primary, :root.light .mm-boton`
+- `vibra.css:1835` → `:root.light .brillo-rojo`
+- `vibra.css:1840` → `:root.light .mm-barra span`
+- `vibra.css:1845` → `:root.light main section h2::after`
+- `vibra.css:1850` → `:root.light input:focus-visible, :root.light textarea:focus-visible, :…`
+- `vibra.css:1856` → `:root.light ::selection`
+- `vibra.css:1862` → `:root.light html, html.light`
+- `vibra.css:1867` → `:root.light ::-webkit-scrollbar-thumb`
+- `vibra.css:1872` → `:root.light .avatar-inicial`
+- `vibra.css:1877` → `:root.light .mm-card::before`
+- `vibra.css:1882` → `:root.light .panel input, :root.light .panel textarea`
+- `vibra.css:1887` → `:root.light .btn-tema:hover`
+- `vibra.css:1892` → `:root.light .reproductor-flotante`
+- `vibra.css:1968` → `:root.light`
+- `vibra.css:1985` → `:root.light .pulso-rojo`
+- `vibra.css:1992` → `:root.light .logo-m`
+- `vibra.css:1997` → `:root.light .logo-hero-fila .logo-m`
+- `admin.css:677` → `:root.light .campo-imagen, :root.light .modal-form label, :root.light …`
+- `admin.css:682` → `:root.light .modal-overlay`
+- `admin.css:714` → `:root.light`
+- `marca.css:54` → `:root.light`
+- `marca.css:92` → `:root.light .texto-degradado,.texto-degradado`
+- `marca.css:231` → `:root.light .admin-sidebar,:root.light .admin-content,:root.light .adm…`
+- `marca.css:668` → `:root.light #nav-principal a:not(#nav-iniciar),:root.light #nav-princi…`
+- `marca.css:678` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:688` → `:root.light .logo-tipeo`
+- `marca.css:748` → `:root.light #nav-principal a:not(#nav-iniciar)`
+- `marca.css:753` → `:root.light #nav-principal a:not(#nav-iniciar):hover`
+- `marca.css:758` → `:root.light #nav-principal a:not(#nav-iniciar)::after`
+- `marca.css:786` → `:root.light main>section:first-child>div[style*="gradient-oscuro"]`
+- `marca.css:802` → `:root:not(.light) #musica .panel, :root:not(.light) #contacto .panel, …`
+- `marca.css:812` → `:root:not(.light) #membresias .mm-card::before`
+- `marca.css:817` → `:root:not(.light) #musica .musica-reproduciendo, :root:not(.light) #mu…`
+- `marca.css:822` → `:root:not(.light) #contacto .panel input, :root:not(.light) #contacto …`
+- `marca.css:829` → `:root.light`
+- `marca.css:845` → `:root.light .fondo-gym`
+- `marca.css:850` → `:root.light .panel:hover`
+- `marca.css:855` → `:root.light .logo-tipeo`
+- `marca.css:860` → `:root.light .logo-cursor`
+- `marca.css:866` → `:root.light .logo-hero-texto`
+- `marca.css:872` → `:root.light .logo-hero-linea`
+- `marca.css:878` → `:root.light header.fixed::after`
+- `marca.css:883` → `:root.light .mm-boton`
+- `marca.css:890` → `:root.light .mm-barra span`
+- `marca.css:895` → `:root.light main section h2::after`
+- `marca.css:900` → `:root.light main section:nth-of-type(odd)`
+- `marca.css:905` → `:root.light .mm-card::before`
+- `marca.css:910` → `:root.light .avatar-inicial`
+- `marca.css:915` → `:root.light .btn-tema:hover`
+- `marca.css:920` → `:root.light .reproductor-flotante`
+- `marca.css:925` → `:root.light input:focus-visible,:root.light textarea:focus-visible,:ro…`
+- `marca.css:931` → `:root.light ::selection`
+- `marca.css:937` → `html.light`
+- `marca.css:942` → `:root.light ::-webkit-scrollbar-thumb`
+- `marca.css:949` → `main>section:first-child>div[class*="bg-background"], main>section:fir…`
+- `marca.css:961` → `:root:not(.light):not(#_) body, :root:not(.light):not(#_) body *:not(.…`
+- `marca.css:969` → `:root:not(.light):not(#_) .texto-degradado, :root:not(.light):not(#_) …`
+- `marca.css:978` → `:root:not(.light):not(#_) ::placeholder`
+- `marca.css:987` → `:root:not(.light):not(#_) #nav-principal a:hover, :root:not(.light):no…`
+
+
+## 4. Capa premium (nueva)
+
+`css/premium.css` se carga **al final** en `index.html` (después de `marca.css`). Contiene la paleta oficial (`--negro`, `--panel`, `--lima`, `--blanco`, `--gris`), el encabezado, el menú móvil, la portada de dos columnas y el soporte de movimiento reducido. Para cambiar un color de marca, edita las variables al inicio de ese archivo. El logo del sitio es `assets/logo-m-lima.png`.
+
+## 4. Ajustes recientes — `css/ajustes.css` (carga al último)
+
+- Mi progreso (tarjetas grandes + emojis animados), selectores negros con letra blanca y texto negro del tema claro (inicio y panel admin) viven en `css/ajustes.css`.
+- El "antes" (peso/altura de registro) ya no se puede editar: `server/progreso.js` solo acepta `peso_despues` y `altura_despues`.
+
+## 5. Código único de usuario (LK 1, LK 2 …)
+
+- Base de datos: tabla `codigos_usuario` (se crea sola en `server/db.js`). Un disparador asigna el código al crear cada usuario y, al arrancar, se les asigna a los que ya existían. Nunca se repite.
+- Se muestra bajo el nombre en: usuarios, clientes, entrenadores, pagos (y recibo), clases, reservas, asistencias, música, mensajes, notificaciones, barra del panel y página del usuario (menú, portada, tarjetas, recibo).
+- Estilo: `.codigo-usuario` al final de `css/ajustes.css`.

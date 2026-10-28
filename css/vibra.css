@@ -1,0 +1,2056 @@
+/* ============================================================
+   VIBRA — efectos y secciones de la página pública (landing)
+   Qué es: fondo animado del gimnasio, tarjetas de vidrio, Mi membresía,
+   música, reproductor flotante, animaciones y ajustes responsive.
+   Qué cambiar aquí: animaciones, fondos animados, tarjetas, reproductor.
+   Cada regla lleva arriba un comentario y cada línea explica su propiedad.
+   ============================================================ */
+
+/* ============================================================
+   Vibra Megatlón — fondo animado, vidrio y componentes nuevos
+   Se carga DESPUÉS de styles.css y tema.css.
+   Tema oscuro: negro con destellos rojos/naranjas de gimnasio.
+   Tema claro:  blancos con toda la gama de azules.
+   ============================================================ */
+
+/* Los elementos con [hidden] no deben mostrarse aunque tengan display propio */
+
+/* estilo general */
+[hidden] {
+  display: none !important; /* Tipo de caja (cómo se muestra) → Oculta el elemento (!important: manda sobre otras reglas) */
+}
+
+/* estilo general */
+:root {
+  --v-ease: cubic-bezier(.22, .8, .24, 1); /* Variable «v, ease» */
+  /* colores del fondo (oscuro) */
+  --fg-base-1: #040405; /* Variable «fondo animado, base, 1» */
+  --fg-base-2: #0b0b0e; /* Variable «fondo animado, base, 2» */
+  --fg-orbe-1: rgba(155, 219, 77, .55); /* Variable «fondo animado, orbe, 1» */
+  --fg-orbe-2: rgba(120, 190, 50, .38); /* Variable «fondo animado, orbe, 2» */
+  --fg-orbe-3: rgba(90, 150, 30, .55); /* Variable «fondo animado, orbe, 3» */
+  --fg-linea: rgba(255, 255, 255, .045); /* Variable «fondo animado, linea» */
+  --fg-rayo: rgba(155, 219, 77, .085); /* Variable «fondo animado, rayo» */
+  --fg-barrido: rgba(255, 255, 255, .06); /* Variable «fondo animado, barrido» */
+  --fg-grano: .07; /* Variable «fondo animado, grano» */
+  --fg-viñeta: rgba(0, 0, 0, .55); /* Variable «fondo animado, viñeta» (se usa con var(--fg-viñeta) en otras reglas) */
+  /* vidrio de los paneles */
+  --vidrio-fondo: color-mix(in oklab, var(--surface) 58%, transparent); /* Variable «vidrio, fondo» */
+  --vidrio-borde: rgba(255, 255, 255, .1); /* Variable «vidrio, borde» */
+  --vidrio-brillo: rgba(255, 255, 255, .07); /* Variable «vidrio, brillo» */
+  --vidrio-sombra: 0 24px 60px -28px rgba(0, 0, 0, .9); /* Variable «vidrio, sombra» */
+  --vidrio-hover: 0 0 46px -14px rgba(155, 219, 77, .55), 0 24px 60px -28px rgba(0, 0, 0, .9); /* Variable «vidrio» */
+}
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  --fg-base-1: #f6faff; /* Variable «fondo animado, base, 1» */
+  --fg-base-2: #e3efff; /* Variable «fondo animado, base, 2» */
+  --fg-orbe-1: rgba(33, 150, 243, .42); /* Variable «fondo animado, orbe, 1» */
+  --fg-orbe-2: rgba(0, 188, 212, .34); /* Variable «fondo animado, orbe, 2» */
+  --fg-orbe-3: rgba(63, 81, 181, .32); /* Variable «fondo animado, orbe, 3» */
+  --fg-linea: rgba(21, 101, 192, .09); /* Variable «fondo animado, linea» */
+  --fg-rayo: rgba(30, 136, 229, .10); /* Variable «fondo animado, rayo» */
+  --fg-barrido: rgba(255, 255, 255, .75); /* Variable «fondo animado, barrido» */
+  --fg-grano: .035; /* Variable «fondo animado, grano» */
+  --fg-viñeta: rgba(21, 101, 192, .12); /* Variable «fondo animado, viñeta» (se usa con var(--fg-viñeta) en otras reglas) */
+  --vidrio-fondo: color-mix(in oklab, #ffffff 68%, transparent); /* Variable «vidrio, fondo» */
+  --vidrio-borde: rgba(33, 118, 210, .2); /* Variable «vidrio, borde» */
+  --vidrio-brillo: rgba(255, 255, 255, .9); /* Variable «vidrio, brillo» */
+  --vidrio-sombra: 0 24px 60px -30px rgba(21, 101, 192, .5); /* Variable «vidrio, sombra» */
+  --vidrio-hover: 0 0 46px -14px rgba(33, 150, 243, .6), 0 24px 60px -30px rgba(21, 101, 192, .55); /* Variable «vidrio» */
+}
+
+/* ---------------- Fondo animado (detrás de todo) ---------------- */
+
+/* fondo, gym */
+.fondo-gym {
+  position: fixed; /* Tipo de posición → Fija en la pantalla */
+  inset: 0; /* Distancia a los 4 bordes */
+  z-index: -1; /* Orden de capas (más alto = encima) */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  pointer-events: none; /* Si responde al mouse → No responde al mouse */
+  background: radial-gradient(120% 80% at 50% 110%, var(--fg-viñeta), transparent 60%),
+    linear-gradient(180deg, var(--fg-base-1) 0%, var(--fg-base-2) 50%, var(--fg-base-1) 100%); /* Fondo (color, imagen o degradado) */
+}
+
+/* fondo animado, orbe */
+.fg-orbe {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  border-radius: 50%; /* Esquinas redondeadas */
+  filter: blur(90px); /* Filtro visual (brillo, desenfoque…) */
+  will-change: transform; /* Aviso de animación al navegador */
+}
+
+/* fondo animado, orbe, 1 */
+.fg-orbe--1 {
+  width: 52vmax; /* Ancho */
+  height: 52vmax; /* Alto */
+  left: -14vmax; /* Distancia desde la izquierda */
+  top: -18vmax; /* Distancia desde arriba */
+  background: radial-gradient(circle, var(--fg-orbe-1), transparent 68%); /* Fondo (color, imagen o degradado) */
+  animation: fg-flota-1 22s ease-in-out infinite alternate; /* Animación */
+}
+
+/* fondo animado, orbe, 2 */
+.fg-orbe--2 {
+  width: 46vmax; /* Ancho */
+  height: 46vmax; /* Alto */
+  right: -16vmax; /* Distancia desde la derecha */
+  top: 12vh; /* Distancia desde arriba */
+  background: radial-gradient(circle, var(--fg-orbe-2), transparent 68%); /* Fondo (color, imagen o degradado) */
+  animation: fg-flota-2 27s ease-in-out infinite alternate; /* Animación */
+}
+
+/* fondo animado, orbe, 3 */
+.fg-orbe--3 {
+  width: 58vmax; /* Ancho */
+  height: 58vmax; /* Alto */
+  left: 18vw; /* Distancia desde la izquierda */
+  bottom: -30vmax; /* Distancia desde abajo */
+  background: radial-gradient(circle, var(--fg-orbe-3), transparent 70%); /* Fondo (color, imagen o degradado) */
+  animation: fg-flota-3 31s ease-in-out infinite alternate; /* Animación */
+}
+
+/* ANIMACIÓN «fg-flota-1» (se usa con animation:) */
+@keyframes fg-flota-1 {
+  /* Fotograma from */
+  from {
+    transform: translate(0, 0) scale(1); /* Mover / girar / escalar */
+  }
+  /* Fotograma to */
+  to {
+    transform: translate(14vw, 16vh) scale(1.25); /* Mover / girar / escalar */
+  }
+}
+
+/* ANIMACIÓN «fg-flota-2» (se usa con animation:) */
+@keyframes fg-flota-2 {
+  /* Fotograma from */
+  from {
+    transform: translate(0, 0) scale(1.1); /* Mover / girar / escalar */
+  }
+  /* Fotograma to */
+  to {
+    transform: translate(-16vw, 22vh) scale(.85); /* Mover / girar / escalar */
+  }
+}
+
+/* ANIMACIÓN «fg-flota-3» (se usa con animation:) */
+@keyframes fg-flota-3 {
+  /* Fotograma from */
+  from {
+    transform: translate(0, 0) scale(.9); /* Mover / girar / escalar */
+  }
+  /* Fotograma to */
+  to {
+    transform: translate(-12vw, -14vh) scale(1.2); /* Mover / girar / escalar */
+  }
+}
+
+/* Rejilla tipo piso de gimnasio, con máscara que la desvanece */
+
+/* fondo animado, rejilla */
+.fg-rejilla {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: -64px 0 0 0; /* Distancia a los 4 bordes */
+  background-image: linear-gradient(var(--fg-linea) 1px, transparent 1px),
+    linear-gradient(90deg, var(--fg-linea) 1px, transparent 1px); /* Imagen o degradado de fondo */
+  background-size: 64px 64px; /* Tamaño de la imagen de fondo */
+  -webkit-mask-image: radial-gradient(ellipse at 50% 30%, #000 10%, transparent 75%); /* Propiedad «-webkit-mask-image» */
+  mask-image: radial-gradient(ellipse at 50% 30%, #000 10%, transparent 75%); /* Propiedad «mask-image» */
+  animation: fg-rejilla 14s linear infinite; /* Animación */
+}
+
+/* ANIMACIÓN «fg-rejilla» (se usa con animation:) */
+@keyframes fg-rejilla {
+  /* Fotograma to */
+  to {
+    transform: translateY(64px); /* Mover / girar / escalar */
+  }
+}
+
+/* Rayos diagonales + un barrido de luz que cruza la pantalla */
+
+/* fondo animado, rayos */
+.fg-rayos {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: 0; /* Distancia a los 4 bordes */
+  background: repeating-linear-gradient(115deg, transparent 0 150px, var(--fg-rayo) 150px 152px),
+    linear-gradient(105deg, transparent 42%, var(--fg-barrido) 50%, transparent 58%); /* Fondo (color, imagen o degradado) */
+  background-size: auto, 250% 100%; /* Tamaño de la imagen de fondo */
+  animation: fg-barrido 11s ease-in-out infinite; /* Animación */
+}
+
+/* ANIMACIÓN «fg-barrido» (se usa con animation:) */
+@keyframes fg-barrido {
+  /* Fotograma 0% */
+  0% {
+    background-position: 0 0, 130% 0; /* Posición de la imagen de fondo */
+  }
+  /* Fotograma 100% */
+  100% {
+    background-position: 0 0, -130% 0; /* Posición de la imagen de fondo */
+  }
+}
+
+/* Grano fino para que el negro no se vea plano */
+
+/* fondo animado, grano */
+.fg-grano {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: 0; /* Distancia a los 4 bordes */
+  opacity: var(--fg-grano); /* Transparencia */
+  mix-blend-mode: overlay; /* Mezcla con lo de atrás */
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); /* Imagen o degradado de fondo */
+}
+
+/* ---------------- Paneles de vidrio difuminado ---------------- */
+
+/* panel/tarjeta */
+.panel {
+  background-color: var(--vidrio-fondo); /* Color de fondo */
+  -webkit-backdrop-filter: blur(16px) saturate(140%); /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: blur(16px) saturate(140%); /* Desenfoque del fondo detrás (vidrio) */
+  border: 1px solid var(--vidrio-borde); /* Borde (grosor, estilo y color) */
+  box-shadow: var(--vidrio-sombra), inset 0 1px 0 var(--vidrio-brillo); /* Sombra */
+  transition: box-shadow .45s var(--v-ease), border-color .45s var(--v-ease), transform .5s var(--v-ease); /* Animación suave al cambiar */
+}
+
+/* panel/tarjeta (al pasar el mouse) */
+.panel:hover {
+  border-color: color-mix(in oklab, var(--primary) 50%, var(--vidrio-borde)); /* Color del borde */
+  box-shadow: var(--vidrio-hover), inset 0 1px 0 var(--vidrio-brillo); /* Sombra */
+}
+
+/* TEMA CLARO · tema claro, panel/tarjeta (al pasar el mouse) */
+:root.light .panel:hover {
+  border-color: rgba(33, 150, 243, .55); /* Color del borde */
+}
+
+/* Las tarjetas con foto ya traen su propio fondo: no llevan vidrio */
+
+/* panel/tarjeta, tarjeta, con, fondo */
+.panel.tarjeta-con-fondo {
+  background-color: transparent; /* Color de fondo */
+  -webkit-backdrop-filter: none; /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: none; /* Desenfoque del fondo detrás (vidrio) */
+  border-color: rgba(255, 255, 255, .14); /* Color del borde */
+}
+
+/* Menú superior: también con vidrio cuando ya tiene fondo */
+
+/* encabezado, fixed */
+header.fixed {
+  -webkit-backdrop-filter: blur(10px); /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: blur(10px); /* Desenfoque del fondo detrás (vidrio) */
+}
+
+/* Título de sección con barra que crece al aparecer */
+
+/* contenido principal, sección, título 2 */
+main section h2 {
+  position: relative; /* Tipo de posición → Relativa: sirve de referencia a sus hijos */
+  padding-bottom: .9rem; /* Espacio interior abajo */
+}
+
+/* contenido principal, sección, título 2 (decoración (::before/::after)) */
+main section h2::after {
+  content: ""; /* Contenido insertado (decoración) */
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  left: 0; /* Distancia desde la izquierda */
+  bottom: 0; /* Distancia desde abajo */
+  height: 3px; /* Alto */
+  width: 0; /* Ancho */
+  border-radius: 3px; /* Esquinas redondeadas */
+  background: linear-gradient(90deg, var(--primary), #9bdb4d); /* Fondo (color, imagen o degradado) */
+  transition: width .9s var(--v-ease) .25s; /* Animación suave al cambiar */
+}
+
+/* TEMA CLARO · tema claro, contenido principal, sección, título 2 (decoración (::before/::after)) */
+:root.light main section h2::after {
+  background: linear-gradient(90deg, #1976d2, #00bcd4); /* Fondo (color, imagen o degradado) */
+}
+
+/* visto, título 2, contenedor (decoración (::before/::after)) */
+.visto h2::after,
+.contenedor:not(.revelar) h2::after {
+  width: 4.5rem; /* Ancho */
+}
+
+/* Entrada suave al hacer scroll (la pone landing.js) */
+
+/* aparece al hacer scroll */
+.revelar {
+  opacity: 0; /* Transparencia */
+  transform: translateY(30px); /* Mover / girar / escalar */
+  transition: opacity .9s var(--v-ease), transform .9s var(--v-ease); /* Animación suave al cambiar */
+}
+
+/* aparece al hacer scroll, visto */
+.revelar.visto {
+  opacity: 1; /* Transparencia */
+  transform: none; /* Mover / girar / escalar */
+}
+
+/* ---------------- Cabecera: chip de sesión ---------------- */
+
+/* menú, usuario */
+.nav-usuario {
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: .6rem; /* Separación entre hijos */
+  padding: .3rem .35rem .3rem 1rem; /* Espacio interior */
+  border: 1px solid var(--vidrio-borde); /* Borde (grosor, estilo y color) */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  background: var(--vidrio-fondo); /* Fondo (color, imagen o degradado) */
+}
+
+/* menú, usuario, nombre */
+.nav-usuario-nombre {
+  max-width: 9rem; /* Ancho máximo */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  text-overflow: ellipsis; /* Qué pasa si el texto no cabe */
+  white-space: nowrap; /* Salto de línea del texto */
+  font-size: .8rem; /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  color: var(--primary); /* Color de las letras */
+}
+
+/* menú, usuario, salir */
+.nav-usuario-salir {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: .68rem; /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  letter-spacing: .12em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  padding: .3rem .7rem; /* Espacio interior */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  background: color-mix(in oklab, var(--foreground) 10%, transparent); /* Fondo (color, imagen o degradado) */
+  transition: background-color .2s ease, color .2s ease; /* Animación suave al cambiar */
+}
+
+/* menú, usuario, salir (al pasar el mouse) */
+.nav-usuario-salir:hover {
+  background: var(--primary); /* Fondo (color, imagen o degradado) */
+  color: var(--primary-foreground); /* Color de las letras */
+}
+
+/* Portada: nombre del usuario en rojo junto al título */
+
+/* portada, nombre */
+.hero-nombre {
+  display: inline-block; /* Tipo de caja (cómo se muestra) → Bloque en línea */
+  margin-left: .28em; /* Espacio exterior izquierda */
+  color: var(--primary); /* Color de las letras */
+  -webkit-text-fill-color: var(--primary); /* Propiedad «-webkit-text-fill-color» */
+  text-shadow: 0 0 40px color-mix(in oklab, var(--primary) 60%, transparent); /* Sombra del texto */
+  animation: hero-nombre-in .7s var(--v-ease) both; /* Animación */
+}
+
+/* ANIMACIÓN «hero-nombre-in» (se usa con animation:) */
+@keyframes hero-nombre-in {
+  /* Fotograma from */
+  from {
+    opacity: 0; /* Transparencia */
+    transform: translateY(14px) scale(.96); /* Mover / girar / escalar */
+  }
+  /* Fotograma to */
+  to {
+    opacity: 1; /* Transparencia */
+    transform: none; /* Mover / girar / escalar */
+  }
+}
+
+/* Acceso al panel: discreto, en el pie de página */
+
+/* enlace, panel admin */
+.enlace-admin {
+  margin-left: 1rem; /* Espacio exterior izquierda */
+  font-size: .68rem; /* Tamaño de la letra */
+  opacity: .28; /* Transparencia */
+  letter-spacing: .08em; /* Espacio entre letras */
+  transition: opacity .25s ease; /* Animación suave al cambiar */
+}
+
+/* enlace, panel admin (al pasar el mouse) */
+.enlace-admin:hover {
+  opacity: .8; /* Transparencia */
+}
+
+/* ---------------- Avisos flotantes ---------------- */
+
+/* toast */
+.toast {
+  position: fixed; /* Tipo de posición → Fija en la pantalla */
+  left: 50%; /* Distancia desde la izquierda */
+  bottom: 1.4rem; /* Distancia desde abajo */
+  z-index: 80; /* Orden de capas (más alto = encima) */
+  max-width: min(92vw, 30rem); /* Ancho máximo */
+  padding: .75rem 1.2rem; /* Espacio interior */
+  border-radius: .9rem; /* Esquinas redondeadas */
+  background: var(--vidrio-fondo); /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--vidrio-borde); /* Borde (grosor, estilo y color) */
+  -webkit-backdrop-filter: blur(16px); /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: blur(16px); /* Desenfoque del fondo detrás (vidrio) */
+  box-shadow: 0 18px 40px -16px rgba(0, 0, 0, .7); /* Sombra */
+  font-size: .88rem; /* Tamaño de la letra */
+  text-align: center; /* Alineación del texto → Texto centrado */
+  opacity: 0; /* Transparencia */
+  transform: translate(-50%, 16px); /* Mover / girar / escalar */
+  pointer-events: none; /* Si responde al mouse → No responde al mouse */
+  transition: opacity .3s ease, transform .3s var(--v-ease); /* Animación suave al cambiar */
+}
+
+/* toast */
+.toast--visible {
+  opacity: 1; /* Transparencia */
+  transform: translate(-50%, 0); /* Mover / girar / escalar */
+}
+
+/* toast, error */
+.toast--error {
+  border-color: var(--destructive); /* Color del borde */
+  color: var(--destructive); /* Color de las letras */
+}
+
+/* cargando */
+[data-accion].cargando {
+  opacity: .6; /* Transparencia */
+  pointer-events: none; /* Si responde al mouse → No responde al mouse */
+}
+
+/* enlaces, reservada */
+a.reservada {
+  background: transparent !important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  color: var(--primary) !important; /* Color de las letras (!important: manda sobre otras reglas) */
+  border: 1px solid var(--primary); /* Borde (grosor, estilo y color) */
+  box-shadow: none !important; /* Sombra (!important: manda sobre otras reglas) */
+}
+
+/* ---------------- Inicio de sesión ("Da el primer paso") ---------------- */
+
+/* caja, sesión */
+.caja-sesion {
+  align-self: start; /* Alineación propia */
+}
+
+/* caja, sesión, pulso */
+.caja-sesion.pulso {
+  animation: caja-pulso 1.4s var(--v-ease); /* Animación */
+}
+
+/* ANIMACIÓN «caja-pulso» (se usa con animation:) */
+@keyframes caja-pulso {
+  /* Fotograma 0%, 100% */
+  0%, 100% {
+    box-shadow: var(--vidrio-sombra), inset 0 1px 0 var(--vidrio-brillo); /* Sombra */
+  }
+  /* Fotograma 35% */
+  35% {
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--primary) 70%, transparent), 0 0 60px -6px color-mix(in oklab, var(--primary) 70%, transparent); /* Sombra */
+  }
+}
+
+/* sesión, aviso */
+.sesion-aviso {
+  margin-bottom: 1rem; /* Espacio exterior abajo */
+  padding: .65rem .85rem; /* Espacio interior */
+  border-radius: .6rem; /* Esquinas redondeadas */
+  font-size: .85rem; /* Tamaño de la letra */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+  background: color-mix(in oklab, var(--primary) 16%, transparent); /* Fondo (color, imagen o degradado) */
+  border: 1px solid color-mix(in oklab, var(--primary) 50%, transparent); /* Borde (grosor, estilo y color) */
+}
+
+/* campo, código */
+.campo-codigo {
+  height: 3rem !important; /* Alto (!important: manda sobre otras reglas) */
+  text-align: center; /* Alineación del texto → Texto centrado */
+  font-size: 1.5rem !important; /* Tamaño de la letra (!important: manda sobre otras reglas) */
+  letter-spacing: .5em; /* Espacio entre letras */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  padding-left: 1.1rem !important; /* Espacio interior izquierda (!important: manda sobre otras reglas) */
+}
+
+/* sesión, links */
+.sesion-links {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  gap: 1rem; /* Separación entre hijos */
+}
+
+/* sesión, link */
+.sesion-link {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: .8rem; /* Tamaño de la letra */
+  color: var(--primary); /* Color de las letras */
+  text-decoration: underline; /* Subrayado del texto */
+  text-underline-offset: 3px; /* Propiedad «text-underline-offset» */
+}
+
+/* sesión, link (al pasar el mouse) */
+.sesion-link:hover {
+  opacity: .75; /* Transparencia */
+}
+
+/* sesión, mensaje de estado */
+.sesion-status {
+  margin-top: 1rem; /* Espacio exterior arriba */
+  font-size: .85rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* sesión, mensaje de estado, confirmación */
+.sesion-status--ok {
+  color: var(--primary); /* Color de las letras */
+}
+
+/* sesión, mensaje de estado, error */
+.sesion-status--error {
+  color: var(--destructive); /* Color de las letras */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+}
+
+/* estrellas, campos de texto */
+.estrellas-input {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  gap: .15rem; /* Separación entre hijos */
+}
+
+/* estrella, botón */
+.estrella-btn {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: 1.7rem; /* Tamaño de la letra */
+  line-height: 1; /* Altura de línea (espacio entre renglones) */
+  color: var(--muted-foreground); /* Color de las letras */
+  opacity: .5; /* Transparencia */
+  transition: transform .15s ease, color .15s ease, opacity .15s ease; /* Animación suave al cambiar */
+}
+
+/* estrella, botón, activa */
+.estrella-btn.activa {
+  color: var(--primary); /* Color de las letras */
+  opacity: 1; /* Transparencia */
+}
+
+/* estrella, botón (al pasar el mouse) */
+.estrella-btn:hover {
+  transform: scale(1.2); /* Mover / girar / escalar */
+}
+
+/* avatar, inicial */
+.avatar-inicial {
+  width: 3.5rem; /* Ancho */
+  height: 3.5rem; /* Alto */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  font-family: var(--font-display); /* Tipo de letra */
+  font-size: 1.5rem; /* Tamaño de la letra */
+  color: #fff; /* Color de las letras */
+  flex-shrink: 0; /* Si se puede encoger */
+  background: var(--gradient-rojo, linear-gradient(135deg, #9bdb4d, #8e1b1b)); /* Fondo (color, imagen o degradado) */
+}
+
+/* ---------------- Mi membresía ---------------- */
+
+/* mi, membresía */
+.mi-membresia {
+  margin-top: 2.5rem; /* Espacio exterior arriba */
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  gap: 1rem; /* Separación entre hijos */
+}
+
+/* mi membresía, tarjeta */
+.mm-card {
+  padding: 1.75rem; /* Espacio interior */
+  position: relative; /* Tipo de posición → Relativa: sirve de referencia a sus hijos */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+}
+
+/* mi membresía, tarjeta (decoración (::before/::after)) */
+.mm-card::before {
+  content: ""; /* Contenido insertado (decoración) */
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: 0; /* Distancia a los 4 bordes */
+  pointer-events: none; /* Si responde al mouse → No responde al mouse */
+  background: radial-gradient(60% 90% at 0% 0%, color-mix(in oklab, var(--primary) 22%, transparent), transparent 70%); /* Fondo (color, imagen o degradado) */
+}
+
+/* mi membresía, tarjeta */
+.mm-card > * {
+  position: relative; /* Tipo de posición → Relativa: sirve de referencia a sus hijos */
+}
+
+/* mi membresía, cabecera */
+.mm-cabecera {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: flex-start; /* Alineación vertical de los hijos */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  gap: 1rem; /* Separación entre hijos */
+  flex-wrap: wrap; /* Permite pasar a otra línea */
+}
+
+/* mi membresía, chip */
+.mm-chip {
+  font-size: .68rem; /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  letter-spacing: .3em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  color: var(--primary); /* Color de las letras */
+}
+
+/* mi membresía, nombre */
+.mm-nombre {
+  font-size: 2rem; /* Tamaño de la letra */
+  margin-top: .3rem; /* Espacio exterior arriba */
+}
+
+/* mi membresía, estado */
+.mm-estado {
+  font-size: .7rem; /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  letter-spacing: .18em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  padding: .35rem .8rem; /* Espacio interior */
+  border-radius: 9999px; /* Esquinas redondeadas */
+}
+
+/* mi membresía, estado, confirmación */
+.mm-estado--ok {
+  background: rgba(46, 204, 113, .16); /* Fondo (color, imagen o degradado) */
+  color: #2ecc71; /* Color de las letras */
+  border: 1px solid rgba(46, 204, 113, .45); /* Borde (grosor, estilo y color) */
+}
+
+/* mi membresía, estado, vencida */
+.mm-estado--vencida {
+  background: rgba(155, 219, 77, .16); /* Fondo (color, imagen o degradado) */
+  color: #9bdb4d; /* Color de las letras */
+  border: 1px solid rgba(155, 219, 77, .45); /* Borde (grosor, estilo y color) */
+}
+
+/* TEMA CLARO · tema claro, mi membresía, estado, confirmación */
+:root.light .mm-estado--ok {
+  color: #1b8f4b; /* Color de las letras */
+}
+
+/* TEMA CLARO · tema claro, mi membresía, estado, vencida */
+:root.light .mm-estado--vencida {
+  color: #78aa3b; /* Color de las letras */
+}
+
+/* mi membresía, cuerpo */
+.mm-cuerpo {
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  grid-template-columns: auto 1fr; /* Columnas de la cuadrícula */
+  gap: 2rem; /* Separación entre hijos */
+  align-items: center; /* Alineación vertical de los hijos */
+  margin-top: 1.4rem; /* Espacio exterior arriba */
+}
+
+/* mi membresía, días */
+.mm-dias {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  align-items: center; /* Alineación vertical de los hijos */
+  min-width: 8rem; /* Ancho mínimo */
+}
+
+/* mi membresía, días, num */
+.mm-dias-num {
+  font-family: var(--font-display); /* Tipo de letra */
+  font-size: 5.5rem; /* Tamaño de la letra */
+  line-height: 1; /* Altura de línea (espacio entre renglones) */
+  color: var(--primary); /* Color de las letras */
+  text-shadow: 0 0 40px color-mix(in oklab, var(--primary) 55%, transparent); /* Sombra del texto */
+}
+
+/* mi membresía, días, txt */
+.mm-dias-txt {
+  font-size: .7rem; /* Tamaño de la letra */
+  letter-spacing: .25em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  color: var(--muted-foreground); /* Color de las letras */
+  margin-top: .3rem; /* Espacio exterior arriba */
+}
+
+/* mi membresía, datos */
+.mm-datos {
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* Columnas de la cuadrícula */
+  gap: 1rem 1.5rem; /* Separación entre hijos */
+}
+
+/* mi membresía, datos, dt */
+.mm-datos dt {
+  font-size: .68rem; /* Tamaño de la letra */
+  letter-spacing: .2em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* mi membresía, datos, dd */
+.mm-datos dd {
+  margin-top: .2rem; /* Espacio exterior arriba */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+}
+
+/* mi membresía, barra */
+.mm-barra {
+  margin-top: 1.4rem; /* Espacio exterior arriba */
+  height: .5rem; /* Alto */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  background: color-mix(in oklab, var(--foreground) 12%, transparent); /* Fondo (color, imagen o degradado) */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+}
+
+/* mi membresía, barra, span */
+.mm-barra span {
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+  height: 100%; /* Alto */
+  border-radius: inherit; /* Esquinas redondeadas */
+  background: linear-gradient(90deg, var(--primary), #9bdb4d); /* Fondo (color, imagen o degradado) */
+  transition: width 1.2s var(--v-ease); /* Animación suave al cambiar */
+}
+
+/* mi membresía, acciones */
+.mm-acciones {
+  margin-top: 1.4rem; /* Espacio exterior arriba */
+}
+
+/* mi membresía, botón */
+.mm-boton {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  display: inline-block; /* Tipo de caja (cómo se muestra) → Bloque en línea */
+  padding: .7rem 1.5rem; /* Espacio interior */
+  border-radius: .5rem; /* Esquinas redondeadas */
+  font-size: .8rem; /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  letter-spacing: .12em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  background: var(--primary); /* Fondo (color, imagen o degradado) */
+  color: var(--primary-foreground); /* Color de las letras */
+  box-shadow: 0 10px 30px -12px color-mix(in oklab, var(--primary) 80%, transparent); /* Sombra */
+  transition: transform .2s ease, filter .2s ease; /* Animación suave al cambiar */
+}
+
+/* mi membresía, botón (al pasar el mouse) */
+.mm-boton:hover {
+  transform: translateY(-2px); /* Mover / girar / escalar */
+  filter: brightness(1.1); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* mi membresía, pendiente, reservas */
+.mm-pendiente,
+.mm-reservas {
+  font-size: .85rem; /* Tamaño de la letra */
+  padding: .7rem 1rem; /* Espacio interior */
+  border-radius: .7rem; /* Esquinas redondeadas */
+  border: 1px solid var(--vidrio-borde); /* Borde (grosor, estilo y color) */
+  background: var(--vidrio-fondo); /* Fondo (color, imagen o degradado) */
+}
+
+/* mi membresía, pendiente */
+.mm-pendiente {
+  border-color: rgba(155, 219, 77, .5); /* Color del borde */
+}
+
+/* mi membresía, tarjeta, vacia */
+.mm-card--vacia {
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  gap: .5rem; /* Separación entre hijos */
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 640px de ancho (celular/tablet) */
+@media (max-width: 640px) {
+
+  /* mi membresía, cuerpo */
+  .mm-cuerpo {
+    grid-template-columns: 1fr; /* Columnas de la cuadrícula */
+    gap: 1.2rem; /* Separación entre hijos */
+    justify-items: center; /* Alineación de celdas */
+  }
+
+  /* mi membresía, datos */
+  .mm-datos {
+    width: 100%; /* Ancho */
+  }
+
+  /* mi membresía, días, num */
+  .mm-dias-num {
+    font-size: 4.5rem; /* Tamaño de la letra */
+  }
+}
+
+/* ---------------- Música ---------------- */
+
+/* música, estado */
+.musica-estado {
+  margin-top: .8rem; /* Espacio exterior arriba */
+  font-size: .85rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* música, estado, error */
+.musica-estado--error {
+  color: var(--destructive); /* Color de las letras */
+}
+
+/* botón, corazon, guardada, ic */
+.btn-corazon.guardada,
+.ic-corazon.guardada {
+  color: var(--primary); /* Color de las letras */
+}
+
+/* botón, reproducir, todo */
+.btn-reproducir-todo {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  flex-shrink: 0; /* Si se puede encoger */
+  font-size: .7rem; /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  letter-spacing: .12em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  padding: .5rem .9rem; /* Espacio interior */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  background: var(--primary); /* Fondo (color, imagen o degradado) */
+  color: var(--primary-foreground); /* Color de las letras */
+  transition: transform .2s ease; /* Animación suave al cambiar */
+}
+
+/* botón, reproducir, todo (al pasar el mouse) */
+.btn-reproducir-todo:hover {
+  transform: scale(1.05); /* Mover / girar / escalar */
+}
+
+/* elemento, canción */
+.item-cancion {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: .5rem; /* Separación entre hijos */
+  padding: .35rem .5rem; /* Espacio interior */
+  border-radius: .7rem; /* Esquinas redondeadas */
+  border: 1px solid var(--vidrio-borde); /* Borde (grosor, estilo y color) */
+  background: color-mix(in oklab, var(--foreground) 3%, transparent); /* Fondo (color, imagen o degradado) */
+  transition: border-color .25s ease, background-color .25s ease, transform .25s ease; /* Animación suave al cambiar */
+}
+
+/* elemento, canción (al pasar el mouse) */
+.item-cancion:hover {
+  border-color: color-mix(in oklab, var(--primary) 55%, var(--vidrio-borde)); /* Color del borde */
+  transform: translateX(3px); /* Mover / girar / escalar */
+}
+
+/* elemento, canción, sonando */
+.item-cancion.sonando {
+  border-color: var(--primary); /* Color del borde */
+  background: color-mix(in oklab, var(--primary) 12%, transparent); /* Fondo (color, imagen o degradado) */
+}
+
+/* ic, play */
+.ic-play {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  flex: 1; /* Reparto flexible del espacio */
+  min-width: 0; /* Ancho mínimo */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: .7rem; /* Separación entre hijos */
+}
+
+/* ic, mini */
+.ic-mini {
+  width: 4rem; /* Ancho */
+  height: 2.25rem; /* Alto */
+  object-fit: cover; /* Cómo se ajusta la imagen a su caja */
+  border-radius: .4rem; /* Esquinas redondeadas */
+  flex-shrink: 0; /* Si se puede encoger */
+  background: #000; /* Fondo (color, imagen o degradado) */
+}
+
+/* ic, textos */
+.ic-textos {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  min-width: 0; /* Ancho mínimo */
+}
+
+/* ic, titulo */
+.ic-titulo {
+  font-size: .85rem; /* Tamaño de la letra */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  text-overflow: ellipsis; /* Qué pasa si el texto no cabe */
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* ic, canal */
+.ic-canal {
+  font-size: .72rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  text-overflow: ellipsis; /* Qué pasa si el texto no cabe */
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* ic, corazon */
+.ic-corazon {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  flex-shrink: 0; /* Si se puede encoger */
+  padding: 0 .4rem; /* Espacio interior */
+  font-size: 1.25rem; /* Tamaño de la letra */
+  line-height: 1; /* Altura de línea (espacio entre renglones) */
+  color: var(--muted-foreground); /* Color de las letras */
+  transition: transform .2s ease, color .2s ease; /* Animación suave al cambiar */
+}
+
+/* ic, corazon (al pasar el mouse) */
+.ic-corazon:hover {
+  transform: scale(1.3); /* Mover / girar / escalar */
+  color: var(--primary); /* Color de las letras */
+}
+
+/* elemento, canción, playlist, quitar */
+.item-cancion .item-playlist-quitar {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  flex-shrink: 0; /* Si se puede encoger */
+  padding: 0 .5rem; /* Espacio interior */
+  font-size: 1.2rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* elemento, canción, playlist, quitar (al pasar el mouse) */
+.item-cancion .item-playlist-quitar:hover {
+  color: var(--primary); /* Color de las letras */
+  transform: scale(1.3); /* Mover / girar / escalar */
+}
+
+/* Barritas del ecualizador en la canción que suena */
+
+/* ic, ecualizador */
+.ic-ecualizador {
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: flex-end; /* Alineación vertical de los hijos */
+  gap: 2px; /* Separación entre hijos */
+  height: .9rem; /* Alto */
+  margin-left: auto; /* Espacio exterior izquierda */
+  margin-right: .3rem; /* Espacio exterior derecha */
+}
+
+/* ic, ecualizador, i */
+.ic-ecualizador i {
+  width: 3px; /* Ancho */
+  background: var(--primary); /* Fondo (color, imagen o degradado) */
+  border-radius: 1px; /* Esquinas redondeadas */
+  animation: eq .9s ease-in-out infinite alternate; /* Animación */
+}
+
+/* ic, ecualizador, i, nth */
+.ic-ecualizador i:nth-child(2) {
+  animation-delay: .25s; /* Retraso de la animación */
+}
+
+/* ic, ecualizador, i, nth */
+.ic-ecualizador i:nth-child(3) {
+  animation-delay: .5s; /* Retraso de la animación */
+}
+
+/* ANIMACIÓN «eq» (se usa con animation:) */
+@keyframes eq {
+  /* Fotograma from */
+  from {
+    height: 20%; /* Alto */
+  }
+  /* Fotograma to */
+  to {
+    height: 100%; /* Alto */
+  }
+}
+
+/* Reproductor flotante (sigue sonando mientras navegas) */
+
+/* reproductor, flotante */
+.reproductor-flotante {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+  position: fixed; /* Tipo de posición → Fija en la pantalla */
+  right: 1rem; /* Distancia desde la derecha */
+  bottom: 1rem; /* Distancia desde abajo */
+  z-index: 60; /* Orden de capas (más alto = encima) */
+  align-items: stretch; /* Alineación vertical de los hijos */
+  gap: .75rem; /* Separación entre hijos */
+  padding: .5rem .5rem .5rem .5rem; /* Espacio interior */
+  width: min(23rem, calc(100vw - 2rem)); /* Ancho */
+  border-radius: 1rem; /* Esquinas redondeadas */
+  background: var(--vidrio-fondo); /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--vidrio-borde); /* Borde (grosor, estilo y color) */
+  -webkit-backdrop-filter: blur(18px) saturate(150%); /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: blur(18px) saturate(150%); /* Desenfoque del fondo detrás (vidrio) */
+  box-shadow: 0 18px 44px -12px rgba(0, 0, 0, .75), 0 0 40px -16px color-mix(in oklab, var(--primary) 70%, transparent); /* Sombra */
+  animation: musica-aparecer .35s ease; /* Animación */
+}
+
+/* reproductor, flotante, activo */
+.reproductor-flotante.activo {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+}
+
+/* rp, video */
+.rp-video {
+  position: relative; /* Tipo de posición → Relativa: sirve de referencia a sus hijos */
+  width: 13.5rem; /* Ancho */
+  aspect-ratio: 16 / 9; /* Proporción ancho/alto */
+  flex-shrink: 0; /* Si se puede encoger */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  border-radius: .7rem; /* Esquinas redondeadas */
+  background: #000; /* Fondo (color, imagen o degradado) */
+}
+
+/* rp, video, iframe, yt, player */
+.rp-video iframe,
+.rp-video #yt-player {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: 0; /* Distancia a los 4 bordes */
+  width: 100%; /* Ancho */
+  height: 100%; /* Alto */
+  border: 0; /* Borde (grosor, estilo y color) */
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+}
+
+/* rp, info */
+.rp-info {
+  flex: 1; /* Reparto flexible del espacio */
+  min-width: 0; /* Ancho mínimo */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  padding: .15rem 0; /* Espacio interior */
+}
+
+/* reproductor, titulo */
+.reproductor-titulo {
+  max-width: none; /* Ancho máximo */
+  font-size: .78rem; /* Tamaño de la letra */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+  line-height: 1.25; /* Altura de línea (espacio entre renglones) */
+  color: var(--foreground); /* Color de las letras */
+  display: -webkit-box; /* Tipo de caja (cómo se muestra) */
+  -webkit-line-clamp: 3; /* Propiedad «-webkit-line-clamp» */
+  -webkit-box-orient: vertical; /* Propiedad «-webkit-box-orient» */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  white-space: normal; /* Salto de línea del texto */
+}
+
+/* rp, controles */
+.rp-controles {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: .25rem; /* Separación entre hijos */
+}
+
+/* rp, botón */
+.rp-btn {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  width: 1.9rem; /* Ancho */
+  height: 1.9rem; /* Alto */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  transition: background-color .2s ease, transform .2s ease; /* Animación suave al cambiar */
+}
+
+/* rp, botón, iconos */
+.rp-btn svg {
+  width: 1.05rem; /* Ancho */
+  height: 1.05rem; /* Alto */
+}
+
+/* rp, botón (al pasar el mouse) */
+.rp-btn:hover {
+  background: color-mix(in oklab, var(--foreground) 14%, transparent); /* Fondo (color, imagen o degradado) */
+  transform: scale(1.1); /* Mover / girar / escalar */
+}
+
+/* rp, botón, grande */
+.rp-btn--grande {
+  width: 2.3rem; /* Ancho */
+  height: 2.3rem; /* Alto */
+  background: var(--primary); /* Fondo (color, imagen o degradado) */
+  color: var(--primary-foreground); /* Color de las letras */
+}
+
+/* rp, botón, grande (al pasar el mouse) */
+.rp-btn--grande:hover {
+  background: var(--primary); /* Fondo (color, imagen o degradado) */
+  filter: brightness(1.12); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* reproductor, flotante, botón, cerrar */
+.reproductor-flotante .btn-cerrar-reproductor {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  top: .15rem; /* Distancia desde arriba */
+  right: .35rem; /* Distancia desde la derecha */
+  font-size: 1.2rem; /* Tamaño de la letra */
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 480px de ancho (celular/tablet) */
+@media (max-width: 480px) {
+
+  /* rp, video */
+  .rp-video {
+    width: 9.5rem; /* Ancho */
+  }
+}
+
+/* ---------------- Accesibilidad: sin animaciones si lo pide el sistema ---------------- */
+
+/* ACCESIBILIDAD: para quien pidió menos animaciones */
+@media (prefers-reduced-motion: reduce) {
+
+  /* fondo animado, orbe, rejilla, rayos, ic, ecualizador */
+  .fg-orbe,
+  .fg-rejilla,
+  .fg-rayos,
+  .ic-ecualizador i,
+  .caja-sesion.pulso,
+  .hero-nombre {
+    animation: none !important; /* Animación (!important: manda sobre otras reglas) */
+  }
+
+  /* aparece al hacer scroll */
+  .revelar {
+    opacity: 1; /* Transparencia */
+    transform: none; /* Mover / girar / escalar */
+    transition: none; /* Animación suave al cambiar */
+  }
+
+  /* contenido principal, sección, título 2 (decoración (::before/::after)) */
+  main section h2::after {
+    transition: none; /* Animación suave al cambiar */
+    width: 4.5rem; /* Ancho */
+  }
+}
+
+/* ============================================================
+   v2 — Interfaz roja: fondo vivo, logos de texto, botones con brillo
+   (se carga al final: pisa lo anterior donde haga falta)
+   ============================================================ */
+
+/* estilo general */
+:root {
+  --fg-base-1: #090204; /* Variable «fondo animado, base, 1» */
+  --fg-base-2: #1f060b; /* Variable «fondo animado, base, 2» */
+  --fg-orbe-1: rgba(155, 219, 77, .62); /* Variable «fondo animado, orbe, 1» */
+  --fg-orbe-2: rgba(155, 219, 77, .46); /* Variable «fondo animado, orbe, 2» */
+  --fg-orbe-3: rgba(121, 171, 60, .7); /* Variable «fondo animado, orbe, 3» */
+  --fg-linea: rgba(155, 219, 77, .09); /* Variable «fondo animado, linea» */
+  --fg-rayo: rgba(155, 219, 77, .12); /* Variable «fondo animado, rayo» */
+  --fg-pulso: rgba(155, 219, 77, .5); /* Variable «fondo animado, pulso» */
+  --fg-viñeta: rgba(0, 0, 0, .7); /* Variable «fondo animado, viñeta» (se usa con var(--fg-viñeta) en otras reglas) */
+  --vidrio-fondo: color-mix(in oklab, #2b0a10 52%, transparent); /* Variable «vidrio, fondo» */
+  --vidrio-borde: rgba(155, 219, 77, .24); /* Variable «vidrio, borde» */
+  --vidrio-brillo: rgba(155, 219, 77, .12); /* Variable «vidrio, brillo» */
+  --vidrio-hover: 0 0 60px -10px rgba(155, 219, 77, .65), 0 24px 60px -28px rgba(0, 0, 0, .9); /* Variable «vidrio» */
+  --panel-acento: rgba(155, 219, 77, .7); /* Variable «panel/tarjeta, acento» */
+}
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  --fg-pulso: rgba(33, 150, 243, .4); /* Variable «fondo animado, pulso» */
+  --panel-acento: rgba(33, 150, 243, .55); /* Variable «panel/tarjeta, acento» */
+}
+
+/* ----- fondo: más capas ----- */
+
+/* fondo, gym */
+.fondo-gym {
+  background: radial-gradient(90% 60% at 50% 115%, rgba(155, 219, 77, .28), transparent 65%),
+    radial-gradient(120% 80% at 50% 110%, var(--fg-viñeta), transparent 60%),
+    linear-gradient(180deg, var(--fg-base-1) 0%, var(--fg-base-2) 45%, var(--fg-base-1) 100%); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, fondo, gym */
+:root.light .fondo-gym {
+  background: radial-gradient(90% 60% at 50% 115%, rgba(33, 150, 243, .22), transparent 65%),
+    linear-gradient(180deg, var(--fg-base-1) 0%, var(--fg-base-2) 50%, var(--fg-base-1) 100%); /* Fondo (color, imagen o degradado) */
+}
+
+/* fondo animado, orbe */
+.fg-orbe {
+  filter: blur(70px); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* fondo animado, rejilla */
+.fg-rejilla {
+  animation-duration: 9s; /* Duración de la animación */
+}
+
+/* Ondas que laten desde abajo (como un latido / ecualizador) */
+
+/* fondo animado, pulso */
+.fg-pulso {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  left: 50%; /* Distancia desde la izquierda */
+  bottom: -30vmax; /* Distancia desde abajo */
+  width: 0; /* Ancho */
+  height: 0; /* Alto */
+}
+
+/* fondo animado, pulso, i */
+.fg-pulso i {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  left: 0; /* Distancia desde la izquierda */
+  top: 0; /* Distancia desde arriba */
+  width: 40vmax; /* Ancho */
+  height: 40vmax; /* Alto */
+  margin: -20vmax 0 0 -20vmax; /* Espacio exterior */
+  border-radius: 50%; /* Esquinas redondeadas */
+  border: 2px solid var(--fg-pulso); /* Borde (grosor, estilo y color) */
+  box-shadow: 0 0 60px var(--fg-pulso), inset 0 0 60px var(--fg-pulso); /* Sombra */
+  opacity: 0; /* Transparencia */
+  animation: fg-pulso 7s ease-out infinite; /* Animación */
+}
+
+/* fondo animado, pulso, i, nth */
+.fg-pulso i:nth-child(2) {
+  animation-delay: 2.3s; /* Retraso de la animación */
+}
+
+/* fondo animado, pulso, i, nth */
+.fg-pulso i:nth-child(3) {
+  animation-delay: 4.6s; /* Retraso de la animación */
+}
+
+/* ANIMACIÓN «fg-pulso» (se usa con animation:) */
+@keyframes fg-pulso {
+  /* Fotograma 0% */
+  0% {
+    transform: scale(.15); /* Mover / girar / escalar */
+    opacity: .85; /* Transparencia */
+  }
+  /* Fotograma 100% */
+  100% {
+    transform: scale(2.6); /* Mover / girar / escalar */
+    opacity: 0; /* Transparencia */
+  }
+}
+
+/* Brasas que suben */
+
+/* fondo animado, brasas */
+.fg-brasas {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: 0; /* Distancia a los 4 bordes */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+}
+
+/* fondo animado, brasas, 1 */
+.fg-brasas--1 {
+  --b: 57vw 71vh 1px 0px rgba(155, 219, 77,.95),75vw 24vh 0px 1px rgba(155, 219, 77,.85),80vw 78vh 0px 0px rgba(155, 219, 77,.85),38vw 18vh 0px 1px rgba(155, 219, 77,.95),81vw 5vh 2px 0px rgba(155, 219, 77,.85),83vw 94vh 2px 1px rgba(155, 219, 77,.9),79vw 1vh 2px 0px rgba(155, 219, 77,.9),4vw 24vh 0px 1px rgba(155, 219, 77,.9),99vw 59vh 1px 0px rgba(155, 219, 77,.95),25vw 66vh 0px 1px rgba(155, 219, 77,.85),63vw 0vh 2px 0px rgba(155, 219, 77,.85),83vw 35vh 1px 1px rgba(155, 219, 77,.9),90vw 32vh 1px 0px rgba(155, 219, 77,.95),36vw 3vh 0px 1px rgba(155, 219, 77,.9),51vw 13vh 1px 0px rgba(155, 219, 77,.9),2vw 87vh 0px 0px rgba(155, 219, 77,.9),6vw 60vh 1px 1px rgba(155, 219, 77,.85),53vw 9vh 2px 1px rgba(155, 219, 77,.9),99vw 86vh 1px 0px rgba(155, 219, 77,.9),39vw 42vh 0px 0px rgba(155, 219, 77,.9),17vw 31vh 2px 0px rgba(155, 219, 77,.9),7vw 59vh 1px 0px rgba(155, 219, 77,.95),71vw 24vh 1px 1px rgba(155, 219, 77,.9),93vw 98vh 0px 0px rgba(155, 219, 77,.95),49vw 14vh 1px 0px rgba(155, 219, 77,.9),0vw 34vh 2px 0px rgba(155, 219, 77,.9),26vw 23vh 1px 1px rgba(155, 219, 77,.95),73vw 12vh 0px 0px rgba(155, 219, 77,.9),56vw 33vh 0px 1px rgba(155, 219, 77,.85),37vw 49vh 0px 0px rgba(155, 219, 77,.9),26vw 74vh 2px 0px rgba(155, 219, 77,.9),76vw 47vh 1px 1px rgba(155, 219, 77,.85),16vw 75vh 1px 1px rgba(155, 219, 77,.9),49vw 23vh 2px 0px rgba(155, 219, 77,.85),29vw 78vh 0px 1px rgba(155, 219, 77,.9),20vw 94vh 2px 1px rgba(155, 219, 77,.9),87vw 49vh 1px 1px rgba(155, 219, 77,.9),53vw 6vh 0px 0px rgba(155, 219, 77,.9),65vw 32vh 0px 1px rgba(155, 219, 77,.95),50vw 32vh 1px 1px rgba(155, 219, 77,.85),37vw 66vh 0px 1px rgba(155, 219, 77,.9),16vw 29vh 1px 1px rgba(155, 219, 77,.95),78vw 78vh 0px 0px rgba(155, 219, 77,.9),26vw 95vh 0px 0px rgba(155, 219, 77,.85),52vw 57vh 0px 0px rgba(155, 219, 77,.9),22vw 36vh 1px 1px rgba(155, 219, 77,.95),16vw 11vh 1px 0px rgba(155, 219, 77,.85),42vw 84vh 2px 1px rgba(155, 219, 77,.95); /* Variable «b» */
+}
+
+/* fondo animado, brasas, 2 */
+.fg-brasas--2 {
+  --b: 74vw 17vh 2px 0px rgba(255,170,90,.75),60vw 45vh 2px 0px rgba(255,170,90,.75),2vw 76vh 2px 0px rgba(155, 219, 77,.8),8vw 93vh 1px 0px rgba(255,170,90,.75),9vw 9vh 1px 1px rgba(155, 219, 77,.8),94vw 5vh 2px 1px rgba(255,255,255,.4),16vw 43vh 1px 0px rgba(255,255,255,.4),60vw 9vh 1px 0px rgba(155, 219, 77,.8),73vw 1vh 2px 1px rgba(155, 219, 77,.8),48vw 74vh 0px 1px rgba(255,170,90,.75),10vw 11vh 2px 0px rgba(155, 219, 77,.8),53vw 93vh 1px 0px rgba(255,255,255,.4),88vw 74vh 1px 0px rgba(155, 219, 77,.8),69vw 10vh 2px 1px rgba(255,170,90,.75),39vw 76vh 0px 0px rgba(255,170,90,.75),29vw 89vh 0px 0px rgba(255,255,255,.4),84vw 62vh 1px 0px rgba(155, 219, 77,.8),38vw 18vh 2px 1px rgba(255,170,90,.75),66vw 21vh 1px 1px rgba(155, 219, 77,.8),63vw 30vh 1px 0px rgba(255,255,255,.4),32vw 25vh 2px 0px rgba(255,170,90,.75),27vw 49vh 0px 1px rgba(155, 219, 77,.8),26vw 17vh 0px 0px rgba(155, 219, 77,.8),5vw 91vh 0px 0px rgba(255,170,90,.75),14vw 57vh 1px 0px rgba(255,170,90,.75),52vw 48vh 2px 1px rgba(155, 219, 77,.8),86vw 40vh 2px 1px rgba(155, 219, 77,.8),41vw 9vh 0px 0px rgba(255,255,255,.4),5vw 86vh 2px 0px rgba(255,255,255,.4),45vw 39vh 2px 1px rgba(255,170,90,.75),82vw 17vh 1px 0px rgba(255,170,90,.75),3vw 98vh 1px 0px rgba(255,170,90,.75),6vw 80vh 0px 0px rgba(255,170,90,.75),80vw 68vh 2px 1px rgba(155, 219, 77,.8),9vw 87vh 0px 0px rgba(155, 219, 77,.8),32vw 22vh 2px 0px rgba(155, 219, 77,.8); /* Variable «b» */
+}
+
+/* fondo animado, brasas (decoración (::before/::after)) */
+.fg-brasas::before,
+.fg-brasas::after {
+  content: ""; /* Contenido insertado (decoración) */
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  left: 0; /* Distancia desde la izquierda */
+  top: 0; /* Distancia desde arriba */
+  width: 2px; /* Ancho */
+  height: 2px; /* Alto */
+  border-radius: 50%; /* Esquinas redondeadas */
+  box-shadow: var(--b); /* Sombra */
+  animation: fg-brasas 34s linear infinite; /* Animación */
+  will-change: transform; /* Aviso de animación al navegador */
+}
+
+/* fondo animado, brasas (decoración (::before/::after)) */
+.fg-brasas::after {
+  top: 100vh; /* Distancia desde arriba */
+}
+
+/* fondo animado, brasas, 2 (decoración (::before/::after)) */
+.fg-brasas--2::before,
+.fg-brasas--2::after {
+  animation-duration: 52s; /* Duración de la animación */
+  animation-direction: normal; /* Dirección de la animación */
+}
+
+/* ANIMACIÓN «fg-brasas» (se usa con animation:) */
+@keyframes fg-brasas {
+  /* Fotograma from */
+  from {
+    transform: translateY(0); /* Mover / girar / escalar */
+  }
+  /* Fotograma to */
+  to {
+    transform: translateY(-100vh); /* Mover / girar / escalar */
+  }
+}
+
+/* TEMA CLARO · tema claro, fondo animado, brasas */
+:root.light .fg-brasas {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+}
+
+/* ----- logos de texto ----- */
+
+/* logo, menú */
+.logo-nav {
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  min-width: 9.6ch; /* Ancho mínimo */
+  font-family: var(--font-display, inherit); /* Tipo de letra */
+  font-weight: 900; /* Grosor de la letra (negrita) */
+  font-size: 1.7rem; /* Tamaño de la letra */
+  line-height: 1; /* Altura de línea (espacio entre renglones) */
+  letter-spacing: .08em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  font-style: italic; /* Estilo de letra (cursiva) */
+  background: linear-gradient(95deg, var(--foreground) 10%, #9bdb4d 85%); /* Fondo (color, imagen o degradado) */
+  -webkit-background-clip: text; /* Hasta dónde se pinta el fondo */
+  background-clip: text; /* Hasta dónde se pinta el fondo */
+  -webkit-text-fill-color: transparent; /* Propiedad «-webkit-text-fill-color» */
+  color: transparent; /* Color de las letras */
+  filter: drop-shadow(0 0 14px rgba(155, 219, 77, .45)); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* logo, texto que se escribe solo */
+.logo-tipeo {
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* logo, cursor */
+.logo-cursor {
+  display: inline-block; /* Tipo de caja (cómo se muestra) → Bloque en línea */
+  width: 3px; /* Ancho */
+  height: 1.55rem; /* Alto */
+  margin-left: 4px; /* Espacio exterior izquierda */
+  background: #9bdb4d; /* Fondo (color, imagen o degradado) */
+  border-radius: 1px; /* Esquinas redondeadas */
+  box-shadow: 0 0 10px #9bdb4d; /* Sombra */
+  -webkit-text-fill-color: initial; /* Propiedad «-webkit-text-fill-color» */
+  animation: logo-cursor 1s steps(1) infinite; /* Animación */
+}
+
+/* ANIMACIÓN «logo-cursor» (se usa con animation:) */
+@keyframes logo-cursor {
+  /* Fotograma 50% */
+  50% {
+    opacity: 0; /* Transparencia */
+  }
+}
+
+/* logo, portada */
+.logo-hero {
+  display: inline-block; /* Tipo de caja (cómo se muestra) → Bloque en línea */
+  max-width: 100%; /* Ancho máximo */
+}
+
+/* logo, portada, texto */
+.logo-hero-texto {
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+  font-family: var(--font-display, inherit); /* Tipo de letra */
+  font-weight: 900; /* Grosor de la letra (negrita) */
+  font-style: italic; /* Estilo de letra (cursiva) */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  font-size: clamp(2.8rem, 9vw, 7.2rem); /* Tamaño de la letra */
+  line-height: .95; /* Altura de línea (espacio entre renglones) */
+  letter-spacing: .03em; /* Espacio entre letras */
+  padding-right: .15em; /* Espacio interior derecha */
+  background: linear-gradient(100deg, #fff 0%, #9bdb4d 38%, #88c043 62%, #fff 100%); /* Fondo (color, imagen o degradado) */
+  background-size: 220% 100%; /* Tamaño de la imagen de fondo */
+  -webkit-background-clip: text; /* Hasta dónde se pinta el fondo */
+  background-clip: text; /* Hasta dónde se pinta el fondo */
+  -webkit-text-fill-color: transparent; /* Propiedad «-webkit-text-fill-color» */
+  color: transparent; /* Color de las letras */
+  filter: drop-shadow(0 0 28px rgba(155, 219, 77, .6)); /* Filtro visual (brillo, desenfoque…) */
+  animation: logo-brillo 5s ease-in-out infinite; /* Animación */
+}
+
+/* TEMA CLARO · tema claro, logo, portada, texto */
+:root.light .logo-hero-texto {
+  background-image: linear-gradient(100deg, #111 0%, #9bdb4d 45%, #6c9936 65%, #111 100%); /* Imagen o degradado de fondo */
+  filter: drop-shadow(0 0 22px rgba(155, 219, 77, .35)); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* logo, portada, linea */
+.logo-hero-linea {
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+  height: 6px; /* Alto */
+  width: 62%; /* Ancho */
+  margin-top: .7rem; /* Espacio exterior arriba */
+  border-radius: 6px; /* Esquinas redondeadas */
+  transform-origin: left; /* Punto de giro */
+  background: linear-gradient(90deg, #9bdb4d, #9bdb4d 60%, transparent); /* Fondo (color, imagen o degradado) */
+  box-shadow: 0 0 22px rgba(155, 219, 77, .7); /* Sombra */
+  animation: logo-linea 1.1s var(--v-ease) .3s both; /* Animación */
+}
+
+/* ANIMACIÓN «logo-brillo» (se usa con animation:) */
+@keyframes logo-brillo {
+  /* Fotograma 0%, 100% */
+  0%, 100% {
+    background-position: 0% 0; /* Posición de la imagen de fondo */
+  }
+  /* Fotograma 50% */
+  50% {
+    background-position: 100% 0; /* Posición de la imagen de fondo */
+  }
+}
+
+/* ANIMACIÓN «logo-linea» (se usa con animation:) */
+@keyframes logo-linea {
+  /* Fotograma from */
+  from {
+    transform: scaleX(0); /* Mover / girar / escalar */
+  }
+  /* Fotograma to */
+  to {
+    transform: scaleX(1); /* Mover / girar / escalar */
+  }
+}
+
+/* ----- barra superior ----- */
+
+/* encabezado, fixed (decoración (::before/::after)) */
+header.fixed::after {
+  content: ""; /* Contenido insertado (decoración) */
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  left: 0; /* Distancia desde la izquierda */
+  right: 0; /* Distancia desde la derecha */
+  bottom: 0; /* Distancia desde abajo */
+  height: 1px; /* Alto */
+  background: linear-gradient(90deg, transparent, rgba(155, 219, 77, .75), transparent); /* Fondo (color, imagen o degradado) */
+}
+
+/* ----- botones rojos con degradado y brillo ----- */
+
+/* fondo, color principal */
+.bg-primary {
+  background-image: linear-gradient(135deg, #9bdb4d 0%, #80b53f 62%, #5d842e 100%); /* Imagen o degradado de fondo */
+}
+
+/* enlaces, fondo, color principal, botones, mi membresía, botón */
+a.bg-primary,
+button.bg-primary,
+.mm-boton,
+.btn-reproducir-todo {
+  position: relative; /* Tipo de posición → Relativa: sirve de referencia a sus hijos */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  isolation: isolate; /* Aísla las capas */
+}
+
+/* enlaces, fondo, color principal, botones, mi membresía, botón (decoración (::before/::after)) */
+a.bg-primary::after,
+button.bg-primary::after,
+.mm-boton::after {
+  content: ""; /* Contenido insertado (decoración) */
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: 0; /* Distancia a los 4 bordes */
+  z-index: -1; /* Orden de capas (más alto = encima) */
+  transform: translateX(-120%); /* Mover / girar / escalar */
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, .45) 50%, transparent 70%); /* Fondo (color, imagen o degradado) */
+  transition: transform .75s var(--v-ease); /* Animación suave al cambiar */
+}
+
+/* enlaces, fondo, color principal, botones, mi membresía, botón (al pasar el mouse, decoración (::before/::after)) */
+a.bg-primary:hover::after,
+button.bg-primary:hover::after,
+.mm-boton:hover::after {
+  transform: translateX(120%); /* Mover / girar / escalar */
+}
+
+/* brillo, rojo */
+.brillo-rojo {
+  box-shadow: 0 0 34px -4px rgba(155, 219, 77, .7); /* Sombra */
+}
+
+/* mi membresía, botón */
+.mm-boton {
+  background-image: linear-gradient(135deg, #9bdb4d, #79ab3c); /* Imagen o degradado de fondo */
+}
+
+/* ----- paneles con acento rojo arriba ----- */
+
+/* panel/tarjeta */
+.panel {
+  box-shadow: var(--vidrio-sombra), inset 0 1px 0 var(--vidrio-brillo), inset 0 2px 0 var(--panel-acento); /* Sombra */
+}
+
+/* panel/tarjeta (al pasar el mouse) */
+.panel:hover {
+  box-shadow: var(--vidrio-hover), inset 0 1px 0 var(--vidrio-brillo), inset 0 2px 0 var(--panel-acento); /* Sombra */
+}
+
+/* panel/tarjeta, tarjeta, con, fondo */
+.panel.tarjeta-con-fondo {
+  box-shadow: var(--vidrio-sombra), inset 0 2px 0 var(--panel-acento); /* Sombra */
+}
+
+/* ----- secciones con bandas de color ----- */
+
+/* TEMA CLARO · contenido principal, sección, nth, of, type */
+:root:not(.light) main section:nth-of-type(odd) {
+  background: linear-gradient(180deg, transparent 0%, rgba(115, 163, 57, .12) 50%, transparent 100%); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, contenido principal, sección, nth, of, type */
+:root.light main section:nth-of-type(odd) {
+  background: linear-gradient(180deg, transparent 0%, rgba(33, 150, 243, .08) 50%, transparent 100%); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · contenido principal, sección (decoración (::before/::after), el primero) */
+:root:not(.light) main > section:first-child::after {
+  content: ""; /* Contenido insertado (decoración) */
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  inset: 0; /* Distancia a los 4 bordes */
+  pointer-events: none; /* Si responde al mouse → No responde al mouse */
+  mix-blend-mode: screen; /* Mezcla con lo de atrás */
+  background: radial-gradient(70% 90% at 0% 100%, rgba(142, 201, 70, .42), transparent 62%),
+              radial-gradient(50% 60% at 100% 0%, rgba(155, 219, 77, .22), transparent 65%); /* Fondo (color, imagen o degradado) */
+}
+
+/* ----- formularios ----- */
+
+/* campos de texto, áreas de texto, listas desplegables (al enfocar (teclado/clic)) */
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: none; /* Contorno de enfoque */
+  border-color: #9bdb4d !important; /* Color del borde (!important: manda sobre otras reglas) */
+  box-shadow: 0 0 0 3px rgba(155, 219, 77, .28), 0 0 24px -4px rgba(155, 219, 77, .5); /* Sombra */
+}
+
+/* panel/tarjeta, campos de texto, áreas de texto */
+.panel input,
+.panel textarea {
+  background-color: rgba(0, 0, 0, .22); /* Color de fondo */
+}
+
+/* TEMA CLARO · tema claro, panel/tarjeta, campos de texto, áreas de texto */
+:root.light .panel input,
+:root.light .panel textarea {
+  background-color: rgba(255, 255, 255, .7); /* Color de fondo */
+}
+
+/* campo, invalido */
+.campo-invalido {
+  border-color: #9bdb4d !important; /* Color del borde (!important: manda sobre otras reglas) */
+  animation: sacudir .35s; /* Animación */
+}
+
+/* ANIMACIÓN «sacudir» (se usa con animation:) */
+@keyframes sacudir {
+  /* Fotograma 20%, 60% */
+  20%, 60% {
+    transform: translateX(-4px); /* Mover / girar / escalar */
+  }
+  /* Fotograma 40%, 80% */
+  40%, 80% {
+    transform: translateX(4px); /* Mover / girar / escalar */
+  }
+}
+
+/* ----- detalles ----- */
+
+/* estilo general (texto seleccionado) */
+::selection {
+  background: #9bdb4d; /* Fondo (color, imagen o degradado) */
+  color: #fff; /* Color de las letras */
+}
+
+/* documento */
+html {
+  scrollbar-color: #10c810 transparent; /* Color de la barra de desplazamiento */
+}
+
+/* estilo general (barra de desplazamiento) */
+::-webkit-scrollbar {
+  width: 10px; /* Ancho */
+}
+
+/* estilo general (barra de desplazamiento) */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(#9bdb4d, #5d842e); /* Fondo (color, imagen o degradado) */
+  border-radius: 10px; /* Esquinas redondeadas */
+}
+
+/* estilo general (barra de desplazamiento) */
+::-webkit-scrollbar-track {
+  background: transparent; /* Fondo (color, imagen o degradado) */
+}
+
+/* ACCESIBILIDAD: para quien pidió menos animaciones */
+@media (prefers-reduced-motion: reduce) {
+
+  /* fondo animado, pulso, i, brasas, logo, portada (decoración (::before/::after)) */
+  .fg-pulso i,
+  .fg-brasas::before,
+  .fg-brasas::after,
+  .logo-hero-texto,
+  .logo-hero-linea,
+  .logo-cursor {
+    animation: none !important; /* Animación (!important: manda sobre otras reglas) */
+  }
+
+  /* fondo animado, pulso */
+  .fg-pulso {
+    display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+  }
+}
+
+/* Logo del menú: espacio respecto a los enlaces y versión compacta en pantallas medias */
+
+/* logo, menú */
+.logo-nav {
+  margin-right: 2.4rem; /* Espacio exterior derecha */
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 1279px de ancho (celular/tablet) */
+@media (max-width: 1279px) {
+
+  /* logo, menú */
+  .logo-nav {
+    font-size: 1.2rem; /* Tamaño de la letra */
+    min-width: 8.2ch; /* Ancho mínimo */
+    margin-right: 1rem; /* Espacio exterior derecha */
+  }
+
+  /* logo, cursor */
+  .logo-cursor {
+    height: 1.15rem; /* Alto */
+  }
+
+  /* menú, principal */
+  #nav-principal {
+    gap: 1.1rem !important; /* Separación entre hijos (!important: manda sobre otras reglas) */
+  }
+
+  /* menú, principal, enlaces */
+  #nav-principal a:not(#nav-iniciar) {
+    font-size: .72rem; /* Tamaño de la letra */
+    letter-spacing: .12em; /* Espacio entre letras */
+  }
+}
+
+/* cuerpo de la página */
+body {
+  overflow-x: clip; /* Desborde horizontal */
+}
+
+/* Nombre del usuario en la portada: línea propia, más chico, para que nombres largos no rompan el diseño */
+
+/* portada, nombre */
+.hero-nombre {
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+  margin: .25em 0 0 0; /* Espacio exterior */
+  font-size: .58em; /* Tamaño de la letra */
+  line-height: 1.05; /* Altura de línea (espacio entre renglones) */
+  letter-spacing: .02em; /* Espacio entre letras */
+  max-width: 100%; /* Ancho máximo */
+  overflow-wrap: anywhere; /* Corte de palabras largas */
+}
+
+/* contenido principal, sección, contenedor (el primero) */
+main > section:first-child > .contenedor {
+  padding-top: 8rem; /* Espacio interior arriba */
+  padding-bottom: 3rem; /* Espacio interior abajo */
+}
+
+/* ============================================================
+   v3 — Logo: la M es la imagen original + "egatlón" en texto
+   ============================================================ */
+
+/* logo, menú */
+.logo-nav {
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: baseline; /* Alineación vertical de los hijos */
+  gap: .1rem; /* Separación entre hijos */
+  min-width: 0; /* Ancho mínimo */
+  margin-right: 2.4rem; /* Espacio exterior derecha */
+  font-size: 1.55rem; /* Tamaño de la letra */
+  line-height: 1; /* Altura de línea (espacio entre renglones) */
+  background: none; /* Fondo (color, imagen o degradado) */
+  -webkit-text-fill-color: initial; /* Propiedad «-webkit-text-fill-color» */
+  color: inherit; /* Color de las letras */
+  filter: none; /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* logo, m */
+.logo-m {
+  display: inline-block; /* Tipo de caja (cómo se muestra) → Bloque en línea */
+  height: .74em; /* Alto */
+  width: auto; /* Ancho */
+  flex-shrink: 0; /* Si se puede encoger */
+  margin-right: .04em; /* Espacio exterior derecha */
+  filter: drop-shadow(0 0 10px rgba(155, 219, 77, .55)); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* logo, texto que se escribe solo */
+.logo-tipeo {
+  font-family: var(--font-display, inherit); /* Tipo de letra */
+  font-weight: 900; /* Grosor de la letra (negrita) */
+  font-style: italic; /* Estilo de letra (cursiva) */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  letter-spacing: .08em; /* Espacio entre letras */
+  white-space: nowrap; /* Salto de línea del texto */
+  background: linear-gradient(95deg, #fff 0%, #9bdb4d 90%); /* Fondo (color, imagen o degradado) */
+  -webkit-background-clip: text; /* Hasta dónde se pinta el fondo */
+  background-clip: text; /* Hasta dónde se pinta el fondo */
+  -webkit-text-fill-color: transparent; /* Propiedad «-webkit-text-fill-color» */
+  color: transparent; /* Color de las letras */
+}
+
+/* logo, cursor */
+.logo-cursor {
+  align-self: center; /* Alineación propia */
+  height: 1.25em; /* Alto */
+  width: 3px; /* Ancho */
+  margin-left: 4px; /* Espacio exterior izquierda */
+}
+
+/* logo, portada */
+.logo-hero {
+  display: inline-block; /* Tipo de caja (cómo se muestra) → Bloque en línea */
+  max-width: 100%; /* Ancho máximo */
+}
+
+/* logo, portada, fila */
+.logo-hero-fila {
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: baseline; /* Alineación vertical de los hijos */
+  font-size: clamp(2.4rem, 14vw, 7.2rem); /* Tamaño de la letra */
+  line-height: .95; /* Altura de línea (espacio entre renglones) */
+}
+
+/* logo, portada, fila, m */
+.logo-hero-fila .logo-m {
+  filter: drop-shadow(0 0 26px rgba(155, 219, 77, .6)); /* Filtro visual (brillo, desenfoque…) */
+  margin-right: .05em; /* Espacio exterior derecha */
+}
+
+/* logo, portada, texto */
+.logo-hero-texto {
+  display: inline-block; /* Tipo de caja (cómo se muestra) → Bloque en línea */
+  font-size: 1em; /* Tamaño de la letra */
+  padding-right: .12em; /* Espacio interior derecha */
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 1279px de ancho (celular/tablet) */
+@media (max-width: 1279px) {
+
+  /* logo, menú */
+  .logo-nav {
+    font-size: 1.25rem; /* Tamaño de la letra */
+    margin-right: 1rem; /* Espacio exterior derecha */
+  }
+}
+
+/* ============================================================
+   v3 — TEMA CLARO AZUL
+   Fondo en tonos azules (no blanco), sin rejilla ni rayos "técnicos":
+   solo luces suaves que se mueven. El tema oscuro sigue en rojo.
+   ============================================================ */
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  --background: oklch(92% .045 1305); /* Variable «fondo» */
+  --foreground: oklch(20% .075 1308); /* Variable «texto» */
+  --surface: oklch(97.5% .018 1305); /* Variable «superficie» */
+  --surface-2: oklch(90% .045 1305); /* Variable «superficie, 2» */
+  --card: oklch(97.5% .018 1305); /* Variable «tarjeta» */
+  --card-foreground: oklch(20% .075 1308); /* Variable «tarjeta, texto» */
+  --popover: oklch(97.5% .018 1305); /* Variable «popover» */
+  --popover-foreground: oklch(20% .075 1308); /* Variable «popover, texto» */
+  --secondary: oklch(89% .05 1305); /* Variable «secondary» */
+  --secondary-foreground: oklch(22% .08 1308); /* Variable «secondary, texto» */
+  --muted: oklch(89% .05 1305); /* Variable «atenuado» */
+  --muted-foreground: oklch(38% .07 1306); /* Variable «atenuado, texto» */
+  --accent: oklch(89% .05 1305); /* Variable «accent» */
+  --accent-foreground: oklch(22% .08 1308); /* Variable «accent, texto» */
+  --border: oklch(40% .13 1306 / .2); /* Variable «borde» */
+  --input: oklch(40% .13 1306 / .3); /* Variable «campos de texto» */
+  --primary: oklch(53% .2 1308); /* Variable «color principal» */
+  --primary-foreground: oklch(100% 0 0); /* Variable «color principal, texto» */
+  --ring: oklch(53% .2 1308); /* Variable «anillo de enfoque» */
+  --gradient-rojo: linear-gradient(135deg, oklch(60% .19 1300), oklch(42% .18 1302)); /* Variable «gradient, rojo» */
+  --gradient-oscuro: linear-gradient(180deg, oklch(92% .045 1305 / 0), oklch(92% .045 1305 / .95)); /* Variable «gradient, oscuro» */
+  --sombra-premium: 0 24px 60px -24px oklch(35% .15 1308 / .35); /* Variable «sombra, premium» */
+  --fg-base-1: #d8eaff; /* Variable «fondo animado, base, 1» */
+  --fg-base-2: #9ccbfa; /* Variable «fondo animado, base, 2» */
+  --fg-orbe-1: rgba(25, 118, 255, .5); /* Variable «fondo animado, orbe, 1» */
+  --fg-orbe-2: rgba(0, 200, 235, .42); /* Variable «fondo animado, orbe, 2» */
+  --fg-orbe-3: rgba(80, 100, 230, .42); /* Variable «fondo animado, orbe, 3» */
+  --fg-viñeta: rgba(10, 60, 150, .18); /* Variable «fondo animado, viñeta» (se usa con var(--fg-viñeta) en otras reglas) */
+  --vidrio-fondo: color-mix(in oklab, #f4f9ff 66%, transparent); /* Variable «vidrio, fondo» */
+  --vidrio-borde: rgba(30, 110, 220, .26); /* Variable «vidrio, borde» */
+  --vidrio-brillo: rgba(255, 255, 255, .95); /* Variable «vidrio, brillo» */
+  --vidrio-sombra: 0 22px 54px -28px rgba(15, 70, 170, .55); /* Variable «vidrio, sombra» */
+  --vidrio-hover: 0 0 54px -12px rgba(30, 130, 255, .65), 0 22px 54px -28px rgba(15, 70, 170, .55); /* Variable «vidrio» */
+  --panel-acento: rgba(30, 120, 240, .6); /* Variable «panel/tarjeta, acento» */
+}
+
+/* Fondo: degradado azul con luces suaves; sin líneas ni cuadrículas */
+
+/* TEMA CLARO · tema claro, fondo, gym */
+:root.light .fondo-gym {
+  background: radial-gradient(80% 55% at 50% 0%, rgba(255, 255, 255, .75), transparent 70%),
+    radial-gradient(90% 60% at 50% 115%, rgba(20, 110, 240, .32), transparent 65%),
+    linear-gradient(180deg, #d8eaff 0%, #a9d1fb 48%, #c3defd 100%); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, fondo animado, orbe */
+:root.light .fg-orbe {
+  filter: blur(80px); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* TEMA CLARO · tema claro, fondo animado, rejilla, pulso, brasas */
+:root.light .fg-rejilla,
+:root.light .fg-pulso,
+:root.light .fg-brasas {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+}
+
+/* TEMA CLARO · tema claro, fondo animado, rayos */
+:root.light .fg-rayos {
+  background: linear-gradient(105deg, transparent 38%, rgba(255, 255, 255, .55) 50%, transparent 62%); /* Fondo (color, imagen o degradado) */
+  background-size: 260% 100%; /* Tamaño de la imagen de fondo */
+}
+
+/* TEMA CLARO · tema claro, fondo animado, grano */
+:root.light .fg-grano {
+  opacity: .025; /* Transparencia */
+}
+
+/* Textos y detalles que antes eran rojos */
+
+/* TEMA CLARO · tema claro, logo, m */
+:root.light .logo-m {
+  filter: drop-shadow(0 0 1px #0b2a66) drop-shadow(0 3px 10px rgba(15, 70, 170, .55)); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* TEMA CLARO · tema claro, logo, portada, fila, m */
+:root.light .logo-hero-fila .logo-m {
+  filter: drop-shadow(0 0 1.5px #0b2a66) drop-shadow(0 6px 22px rgba(15, 70, 170, .55)); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* TEMA CLARO · tema claro, logo, texto que se escribe solo */
+:root.light .logo-tipeo {
+  background-image: linear-gradient(95deg, #0b2a66 0%, #1e78ff 90%); /* Imagen o degradado de fondo */
+}
+
+/* TEMA CLARO · tema claro, logo, cursor */
+:root.light .logo-cursor {
+  background: #1e78ff; /* Fondo (color, imagen o degradado) */
+  box-shadow: 0 0 10px #1e78ff; /* Sombra */
+}
+
+/* TEMA CLARO · tema claro, logo, portada, texto */
+:root.light .logo-hero-texto {
+  background-image: linear-gradient(100deg, #0b2a66 0%, #1e78ff 45%, #0a47b8 65%, #0b2a66 100%); /* Imagen o degradado de fondo */
+  filter: drop-shadow(0 0 22px rgba(30, 120, 255, .4)); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* TEMA CLARO · tema claro, logo, portada, linea */
+:root.light .logo-hero-linea {
+  background: linear-gradient(90deg, #1e78ff, #00c8eb 60%, transparent); /* Fondo (color, imagen o degradado) */
+  box-shadow: 0 0 22px rgba(30, 130, 255, .6); /* Sombra */
+}
+
+/* TEMA CLARO · tema claro, encabezado, fixed (decoración (::before/::after)) */
+:root.light header.fixed::after {
+  background: linear-gradient(90deg, transparent, rgba(30, 120, 240, .75), transparent); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, fondo, color principal, mi membresía, botón */
+:root.light .bg-primary,
+:root.light .mm-boton {
+  background-image: linear-gradient(135deg, #45a8ff 0%, #1565d8 60%, #0d3f9e 100%); /* Imagen o degradado de fondo */
+}
+
+/* TEMA CLARO · tema claro, brillo, rojo */
+:root.light .brillo-rojo {
+  box-shadow: 0 0 34px -4px rgba(30, 130, 255, .7); /* Sombra */
+}
+
+/* TEMA CLARO · tema claro, mi membresía, barra, span */
+:root.light .mm-barra span {
+  background: linear-gradient(90deg, #1e78ff, #00c8eb); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, contenido principal, sección, título 2 (decoración (::before/::after)) */
+:root.light main section h2::after {
+  background: linear-gradient(90deg, #1565d8, #00c8eb); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, campos de texto, áreas de texto, listas desplegables (al enfocar (teclado/clic)) */
+:root.light input:focus-visible,
+:root.light textarea:focus-visible,
+:root.light select:focus-visible {
+  border-color: #1e78ff !important; /* Color del borde (!important: manda sobre otras reglas) */
+  box-shadow: 0 0 0 3px rgba(30, 120, 255, .28), 0 0 24px -4px rgba(30, 120, 255, .45); /* Sombra */
+}
+
+/* TEMA CLARO · tema claro (texto seleccionado) */
+:root.light ::selection {
+  background: #1565d8; /* Fondo (color, imagen o degradado) */
+  color: #fff; /* Color de las letras */
+}
+
+/* TEMA CLARO · tema claro, documento */
+:root.light html,
+html.light {
+  scrollbar-color: #1e78ff transparent; /* Color de la barra de desplazamiento */
+}
+
+/* TEMA CLARO · tema claro (barra de desplazamiento) */
+:root.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(#45a8ff, #0d3f9e); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, avatar, inicial */
+:root.light .avatar-inicial {
+  background: linear-gradient(135deg, #45a8ff, #0d3f9e); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, mi membresía, tarjeta (decoración (::before/::after)) */
+:root.light .mm-card::before {
+  background: radial-gradient(60% 90% at 0% 0%, rgba(30, 120, 255, .2), transparent 70%); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, panel/tarjeta, campos de texto, áreas de texto */
+:root.light .panel input,
+:root.light .panel textarea {
+  background-color: rgba(255, 255, 255, .8); /* Color de fondo */
+}
+
+/* TEMA CLARO · tema claro, botón, tema (al pasar el mouse) */
+:root.light .btn-tema:hover {
+  background: rgba(30, 120, 255, .1); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, reproductor, flotante */
+:root.light .reproductor-flotante {
+  box-shadow: 0 18px 44px -12px rgba(15, 70, 170, .55), 0 0 40px -16px rgba(30, 120, 255, .6); /* Sombra */
+}
+
+/* Ajustes de tamaño del logo y del menú */
+
+/* encabezado, fixed, contenedor, enlaces (el primero) */
+header.fixed > .contenedor > a:first-child {
+  flex-shrink: 0; /* Si se puede encoger */
+}
+
+/* logo, menú */
+.logo-nav {
+  flex-shrink: 0; /* Si se puede encoger */
+  font-size: 1.4rem; /* Tamaño de la letra */
+  margin-right: 1rem; /* Espacio exterior derecha */
+  gap: .22rem; /* Separación entre hijos */
+}
+
+/* logo, menú, m */
+.logo-nav .logo-m {
+  height: .8em; /* Alto */
+  margin-right: 0; /* Espacio exterior derecha */
+}
+
+/* menú, iniciar sesión */
+#nav-iniciar {
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* menú, principal */
+#nav-principal {
+  gap: 1.35rem; /* Separación entre hijos */
+}
+
+/* menú, principal, enlaces */
+#nav-principal a:not(#nav-iniciar) {
+  font-size: .78rem; /* Tamaño de la letra */
+  letter-spacing: .14em; /* Espacio entre letras */
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* logo, portada, fila */
+.logo-hero-fila {
+  gap: .02em; /* Separación entre hijos */
+}
+
+/* logo, portada, fila, m */
+.logo-hero-fila .logo-m {
+  height: .8em; /* Alto */
+  margin-right: -.02em; /* Espacio exterior derecha */
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 1279px de ancho (celular/tablet) */
+@media (max-width: 1279px) {
+
+  /* logo, menú */
+  .logo-nav {
+    font-size: 1.2rem; /* Tamaño de la letra */
+  }
+
+  /* menú, principal */
+  #nav-principal {
+    gap: 1rem !important; /* Separación entre hijos (!important: manda sobre otras reglas) */
+  }
+
+  /* menú, principal, enlaces */
+  #nav-principal a:not(#nav-iniciar) {
+    font-size: .7rem; /* Tamaño de la letra */
+    letter-spacing: .1em; /* Espacio entre letras */
+  }
+}
+
+/* Tema claro: los rojos que venían fijos en styles.css pasan a azul */
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  --sombra-roja: 0 18px 50px -18px rgba(30, 120, 255, .6); /* Variable «sombra, roja» */
+}
+
+/* ANIMACIÓN «pulso-azul» (se usa con animation:) */
+@keyframes pulso-azul {
+  /* Fotograma 0%, 100% */
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(30, 120, 255, .45); /* Sombra */
+  }
+  /* Fotograma 50% */
+  50% {
+    box-shadow: 0 0 0 18px rgba(30, 120, 255, 0); /* Sombra */
+  }
+}
+
+/* TEMA CLARO · tema claro, pulso, rojo */
+:root.light .pulso-rojo {
+  animation: 2.4s ease-out infinite pulso-azul; /* Animación */
+}
+
+/* La M plateada del logo: contorno azul marino para que se lea sobre el fondo azul claro */
+
+/* TEMA CLARO · tema claro, logo, m */
+:root.light .logo-m {
+  filter: drop-shadow(1px 0 0 #0b2a66) drop-shadow(-1px 0 0 #0b2a66) drop-shadow(0 1px 0 #0b2a66) drop-shadow(0 -1px 0 #0b2a66) drop-shadow(0 4px 10px rgba(15, 70, 170, .5)); /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* TEMA CLARO · tema claro, logo, portada, fila, m */
+:root.light .logo-hero-fila .logo-m {
+  filter: drop-shadow(2px 0 0 #0b2a66) drop-shadow(-2px 0 0 #0b2a66) drop-shadow(0 2px 0 #0b2a66) drop-shadow(0 -2px 0 #0b2a66) drop-shadow(0 8px 22px rgba(15, 70, 170, .5)); /* Filtro visual (brillo, desenfoque…) */
+}

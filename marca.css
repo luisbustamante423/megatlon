@@ -1,0 +1,1083 @@
+/* ============================================================
+   MARCA MEGATLÓN — verde lechuga, negro puro / blanco puro
+   Qué es: ajustes finales que mandan sobre los demás CSS (se carga al último).
+   Si un color o fondo no cambia donde esperas, revisa AQUÍ primero.
+   Qué cambiar aquí: color de marca (--lechuga), fondos negro/blanco, botones,
+   redes sociales, asistencias del panel.
+   Cada regla lleva arriba un comentario y cada línea explica su propiedad.
+   ============================================================ */
+
+/* ===== Marca Megatlón: verde lechuga, negro puro / blanco puro ===== */
+
+/* estilo general */
+:root {
+  --lechuga: #9bdb4d; /* Variable «verde lechuga» */
+  --background: #000; /* Variable «fondo» */
+  --surface: #050505; /* Variable «superficie» */
+  --surface-2: #111; /* Variable «superficie, 2» */
+  --card: #050505; /* Variable «tarjeta» */
+  --popover: #050505; /* Variable «popover» */
+  --secondary: #111; /* Variable «secondary» */
+  --muted: #111; /* Variable «atenuado» */
+  --accent: #111; /* Variable «accent» */
+  --sidebar: #000; /* Variable «barra lateral» */
+  --foreground: var(--lechuga); /* Variable «texto» */
+  --card-foreground: var(--lechuga); /* Variable «tarjeta, texto» */
+  --popover-foreground: var(--lechuga); /* Variable «popover, texto» */
+  --secondary-foreground: var(--lechuga); /* Variable «secondary, texto» */
+  --accent-foreground: var(--lechuga); /* Variable «accent, texto» */
+  --sidebar-foreground: var(--lechuga); /* Variable «barra lateral, texto» */
+  --sidebar-accent-foreground: var(--lechuga); /* Variable «barra lateral, accent, texto» */
+  --muted-foreground: #86c13f; /* Variable «atenuado, texto» */
+  --primary: var(--lechuga); /* Variable «color principal» */
+  --primary-foreground: #000; /* Variable «color principal, texto» */
+  --ring: var(--lechuga); /* Variable «anillo de enfoque» */
+  --sidebar-primary: var(--lechuga); /* Variable «barra lateral, color principal» */
+  --sidebar-primary-foreground: #000; /* Variable «barra lateral, color principal, texto» */
+  --sidebar-ring: var(--lechuga); /* Variable «barra lateral, anillo de enfoque» */
+  --destructive: #e5484d; /* Variable «color de alerta» */
+  --destructive-foreground: #fff; /* Variable «color de alerta, texto» */
+  --gradient-rojo: linear-gradient(135deg,#9bdb4d,#5f9e1f); /* Variable «gradient, rojo» */
+  --sombra-roja: 0 18px 50px -18px rgba(155,219,77,.5); /* Variable «sombra, roja» */
+  --border: rgba(155,219,77,.22); /* Variable «borde» */
+  --input: rgba(155,219,77,.3); /* Variable «campos de texto» */
+  --sidebar-border: rgba(155,219,77,.22); /* Variable «barra lateral, borde» */
+  --fg-base-1: #000; /* Variable «fondo animado, base, 1» */
+  --fg-base-2: #000; /* Variable «fondo animado, base, 2» */
+  --fg-orbe-1: rgba(155,219,77,.16); /* Variable «fondo animado, orbe, 1» */
+  --fg-orbe-2: rgba(120,190,50,.10); /* Variable «fondo animado, orbe, 2» */
+  --fg-orbe-3: rgba(90,150,30,.14); /* Variable «fondo animado, orbe, 3» */
+  --fg-viñeta: rgba(0,0,0,.0); /* Variable «fondo animado, viñeta» (se usa con var(--fg-viñeta) en otras reglas) */
+}
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  --background: #fff; /* Variable «fondo» */
+  --surface: #fff; /* Variable «superficie» */
+  --surface-2: #f4f4f4; /* Variable «superficie, 2» */
+  --card: #fff; /* Variable «tarjeta» */
+  --popover: #fff; /* Variable «popover» */
+  --secondary: #f4f4f4; /* Variable «secondary» */
+  --muted: #f4f4f4; /* Variable «atenuado» */
+  --accent: #f4f4f4; /* Variable «accent» */
+  --sidebar: #fff; /* Variable «barra lateral» */
+  --foreground: #5b9a1a; /* Variable «texto» */
+  --card-foreground: #5b9a1a; /* Variable «tarjeta, texto» */
+  --popover-foreground: #5b9a1a; /* Variable «popover, texto» */
+  --secondary-foreground: #5b9a1a; /* Variable «secondary, texto» */
+  --accent-foreground: #5b9a1a; /* Variable «accent, texto» */
+  --sidebar-foreground: #5b9a1a; /* Variable «barra lateral, texto» */
+  --sidebar-accent-foreground: #5b9a1a; /* Variable «barra lateral, accent, texto» */
+  --muted-foreground: #6aa82a; /* Variable «atenuado, texto» */
+  --primary: var(--lechuga); /* Variable «color principal» */
+  --primary-foreground: #000; /* Variable «color principal, texto» */
+  --border: rgba(91,154,26,.28); /* Variable «borde» */
+  --input: rgba(91,154,26,.35); /* Variable «campos de texto» */
+  --sidebar-border: rgba(91,154,26,.28); /* Variable «barra lateral, borde» */
+  --fg-base-1: #fff; /* Variable «fondo animado, base, 1» */
+  --fg-base-2: #fff; /* Variable «fondo animado, base, 2» */
+  --fg-orbe-1: rgba(155,219,77,.10); /* Variable «fondo animado, orbe, 1» */
+  --fg-orbe-2: rgba(155,219,77,.06); /* Variable «fondo animado, orbe, 2» */
+  --fg-orbe-3: rgba(155,219,77,.08); /* Variable «fondo animado, orbe, 3» */
+  --fg-viñeta: rgba(255,255,255,0); /* Variable «fondo animado, viñeta» (se usa con var(--fg-viñeta) en otras reglas) */
+}
+
+/* documento, cuerpo de la página */
+html,
+body {
+  background: var(--background)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  color: var(--foreground); /* Color de las letras */
+}
+
+/* TEMA CLARO · tema claro, texto, degradado */
+:root.light .texto-degradado,
+.texto-degradado {
+  background: linear-gradient(100deg,var(--lechuga) 30%,#5f9e1f); /* Fondo (color, imagen o degradado) */
+  -webkit-background-clip: text; /* Hasta dónde se pinta el fondo */
+  background-clip: text; /* Hasta dónde se pinta el fondo */
+  color: transparent; /* Color de las letras */
+}
+
+/* título 1, título 2, título 3, h4, párrafos, span */
+h1,
+h2,
+h3,
+h4,
+p,
+span,
+li,
+label,
+a,
+td,
+th,
+small,
+strong,
+input,
+textarea,
+select {
+  color: inherit; /* Color de las letras */
+}
+
+/* campos de texto, áreas de texto, listas desplegables */
+input,
+textarea,
+select {
+  color: var(--foreground); /* Color de las letras */
+}
+
+/* estilo general (texto de ayuda del campo) */
+::placeholder {
+  color: var(--muted-foreground)!important; /* Color de las letras (!important: manda sobre otras reglas) */
+  opacity: .8; /* Transparencia */
+}
+
+/* botones */
+
+/* botones, fondo, color principal, enlaces, botón, principal */
+button.bg-primary,
+a.bg-primary,
+.btn-primario,
+.btn-guardar,
+.login-card button,
+[class*="bg-primary"]:not([class*="after:bg-primary"]) {
+  background: var(--lechuga)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* botones, fondo, color principal, enlaces */
+button.bg-primary *,
+a.bg-primary * {
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* panel admin, menú, botones, activo */
+.admin-nav button.activo {
+  background: var(--lechuga)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* botones */
+button {
+  border-color: var(--lechuga); /* Color del borde */
+}
+
+/* sin difuminado en imágenes de instalaciones y entrenadores */
+
+/* instalaciones, entrenadores */
+#instalaciones [style*="gradient-oscuro"],
+#entrenadores [style*="gradient-oscuro"] {
+  background: none!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* instalaciones, article, título 3, párrafos, entrenadores */
+#instalaciones article h3,
+#instalaciones article p,
+#entrenadores article h3,
+#entrenadores article p {
+  text-shadow: 0 1px 3px #000,0 0 10px #000; /* Sombra del texto */
+}
+
+/* iconos de redes más grandes */
+
+/* red social, social */
+.red-social {
+  width: 3.5rem!important; /* Ancho (!important: manda sobre otras reglas) */
+  height: 3.5rem!important; /* Alto (!important: manda sobre otras reglas) */
+}
+
+/* red social, social, iconos */
+.red-social svg {
+  width: 30px!important; /* Ancho (!important: manda sobre otras reglas) */
+  height: 30px!important; /* Alto (!important: manda sobre otras reglas) */
+}
+
+/* redes sociales, sociales */
+.redes-sociales {
+  gap: .9rem!important; /* Separación entre hijos (!important: manda sobre otras reglas) */
+}
+
+/* inicio de sesión centrado */
+
+/* contacto, contenedor, párrafos, título 2 */
+#contacto .contenedor>p,
+#contacto .contenedor>h2 {
+  text-align: center; /* Alineación del texto → Texto centrado */
+  margin-inline: auto; /* Propiedad «margin-inline» */
+}
+
+/* ubicacion, contenedor, párrafos, título 2 */
+#ubicacion .contenedor>p,
+#ubicacion .contenedor>h2 {
+  text-align: center; /* Alineación del texto → Texto centrado */
+  margin-inline: auto; /* Propiedad «margin-inline» */
+}
+
+/* ===== Panel admin: login con fondo e vidrio mojado ===== */
+
+/* inicio de sesión, contenedor */
+.login-wrap {
+  background: linear-gradient(rgba(0,0,0,.45),rgba(0,0,0,.6)),url('../assets/hero-DE2jYN5k.jpg') center/cover no-repeat fixed; /* Fondo (color, imagen o degradado) */
+}
+
+/* inicio de sesión, tarjeta */
+.login-card {
+  background: rgba(255,255,255,.08)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  border: 1px solid rgba(255,255,255,.35)!important; /* Borde (grosor, estilo y color) (!important: manda sobre otras reglas) */
+  -webkit-backdrop-filter: blur(22px) saturate(160%); /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: blur(22px) saturate(160%); /* Desenfoque del fondo detrás (vidrio) */
+  box-shadow: 0 30px 80px -30px rgba(0,0,0,.9),inset 0 1px 0 rgba(255,255,255,.45),inset 0 -20px 40px rgba(155,219,77,.06)!important; /* Sombra (!important: manda sobre otras reglas) */
+  color: var(--lechuga); /* Color de las letras */
+}
+
+/* inicio de sesión, tarjeta, título 1, sub, etiquetas */
+.login-card h1,
+.login-sub,
+.login-card label {
+  color: var(--lechuga)!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* inicio de sesión, tarjeta, campos de texto */
+.login-card input {
+  background: rgba(0,0,0,.25)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  border: 1px solid rgba(155,219,77,.5)!important; /* Borde (grosor, estilo y color) (!important: manda sobre otras reglas) */
+  color: var(--lechuga)!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* inicio de sesión, tarjeta, botones */
+.login-card button {
+  background: var(--lechuga)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* panel admin, shell, contenido, barra lateral, barra superior, ventana emergente */
+.admin-shell,
+.admin-content,
+.admin-sidebar,
+.admin-topbar,
+.modal-card,
+.panel-contenido {
+  color: var(--lechuga); /* Color de las letras */
+}
+
+/* panel admin, barra lateral, contenido, barra superior, ventana emergente, tarjeta */
+.admin-sidebar,
+.admin-content,
+.admin-topbar,
+.modal-card,
+.panel-contenido {
+  background-color: rgba(0,0,0,.55)!important; /* Color de fondo (!important: manda sobre otras reglas) */
+  border-color: rgba(155,219,77,.28)!important; /* Color del borde (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, panel admin, barra lateral, contenido, barra superior, ventana emergente */
+:root.light .admin-sidebar,
+:root.light .admin-content,
+:root.light .admin-topbar,
+:root.light .modal-card,
+:root.light .panel-contenido {
+  background-color: rgba(255,255,255,.7)!important; /* Color de fondo (!important: manda sobre otras reglas) */
+}
+
+/* panel admin, tabla, encabezado de tabla, celdas de tabla */
+.admin-tabla th,
+.admin-tabla td {
+  color: var(--lechuga); /* Color de las letras */
+}
+
+/* asistencias: lupa + calendario */
+
+/* panel/tarjeta, especial */
+.panel-especial {
+  padding: 1rem; /* Espacio interior */
+  overflow-x: auto; /* Desborde horizontal */
+}
+
+/* asistencias, barra */
+.asis-barra {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-wrap: wrap; /* Permite pasar a otra línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: .7rem 1.2rem; /* Separación entre hijos */
+  margin-bottom: 1rem; /* Espacio exterior abajo */
+}
+
+/* asistencias, buscar */
+.asis-buscar {
+  position: relative; /* Tipo de posición → Relativa: sirve de referencia a sus hijos */
+  flex: 1 1 18rem; /* Reparto flexible del espacio */
+  max-width: 32rem; /* Ancho máximo */
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+}
+
+/* asistencias, buscar, iconos */
+.asis-buscar svg {
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  left: .9rem; /* Distancia desde la izquierda */
+  top: 50%; /* Distancia desde arriba */
+  transform: translateY(-50%); /* Mover / girar / escalar */
+  width: 1.2rem; /* Ancho */
+  height: 1.2rem; /* Alto */
+  color: var(--lechuga); /* Color de las letras */
+  pointer-events: none; /* Si responde al mouse → No responde al mouse */
+}
+
+/* asistencias, buscar, campos de texto */
+.asis-buscar input {
+  width: 100%; /* Ancho */
+  height: 2.7rem; /* Alto */
+  padding: 0 1rem 0 2.6rem; /* Espacio interior */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  border: 1px solid var(--input); /* Borde (grosor, estilo y color) */
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  color: var(--foreground); /* Color de las letras */
+  font-size: .95rem; /* Tamaño de la letra */
+}
+
+/* asistencias, buscar, campos de texto (al enfocar (teclado/clic)) */
+.asis-buscar input:focus-visible {
+  outline: 2px solid var(--lechuga); /* Contorno de enfoque */
+  outline-offset: 2px; /* Separación del contorno */
+}
+
+/* asistencias, contador */
+.asis-contador {
+  font-size: .8rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* asistencias, aviso */
+.asis-aviso {
+  margin: 0 0 1rem; /* Espacio exterior */
+  padding: .6rem .9rem; /* Espacio interior */
+  border-radius: 8px; /* Esquinas redondeadas */
+  border: 1px solid var(--destructive); /* Borde (grosor, estilo y color) */
+  color: var(--destructive); /* Color de las letras */
+  font-size: .85rem; /* Tamaño de la letra */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+}
+
+/* asistencias, lista */
+.asis-lista {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  gap: .6rem; /* Separación entre hijos */
+}
+
+/* asistencias, vacio */
+.asis-vacio {
+  padding: 1.6rem; /* Espacio interior */
+  text-align: center; /* Alineación del texto → Texto centrado */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* asistencias, usuario */
+.asis-usuario {
+  border: 1px solid var(--border); /* Borde (grosor, estilo y color) */
+  border-radius: 12px; /* Esquinas redondeadas */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+}
+
+/* asistencias, usuario, abierto */
+.asis-usuario.abierto {
+  border-color: var(--lechuga); /* Color del borde */
+}
+
+/* asistencias, cabecera */
+.asis-cabecera {
+  all: unset; /* Propiedad «all» */
+  box-sizing: border-box; /* Propiedad «box-sizing» */
+  width: 100%; /* Ancho */
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  grid-template-columns: auto minmax(0,1fr) auto auto auto; /* Columnas de la cuadrícula */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: .9rem; /* Separación entre hijos */
+  padding: .75rem 1rem; /* Espacio interior */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  color: var(--foreground); /* Color de las letras */
+}
+
+/* asistencias, cabecera (al pasar el mouse) */
+.asis-cabecera:hover {
+  background: rgba(155,219,77,.07); /* Fondo (color, imagen o degradado) */
+}
+
+/* asistencias, cabecera (al enfocar (teclado/clic)) */
+.asis-cabecera:focus-visible {
+  outline: 2px solid var(--lechuga); /* Contorno de enfoque */
+  outline-offset: -2px; /* Separación del contorno */
+}
+
+/* asistencias, avatar */
+.asis-avatar {
+  width: 2.2rem; /* Ancho */
+  height: 2.2rem; /* Alto */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  background: var(--lechuga); /* Fondo (color, imagen o degradado) */
+  color: #000; /* Color de las letras */
+  font-weight: 800; /* Grosor de la letra (negrita) */
+}
+
+/* asistencias, quien */
+.asis-quien {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  min-width: 0; /* Ancho mínimo */
+}
+
+/* asistencias, quien, strong */
+.asis-quien strong {
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+  text-overflow: ellipsis; /* Qué pasa si el texto no cabe */
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* asistencias, quien, texto pequeño, resumen */
+.asis-quien small,
+.asis-resumen small {
+  color: var(--muted-foreground); /* Color de las letras */
+  font-size: .75rem; /* Tamaño de la letra */
+}
+
+/* asistencias, estado */
+.asis-estado {
+  padding: .2rem .65rem; /* Espacio interior */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  font-size: .68rem; /* Tamaño de la letra */
+  font-weight: 800; /* Grosor de la letra (negrita) */
+  letter-spacing: .12em; /* Espacio entre letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  border: 1px solid; /* Borde (grosor, estilo y color) */
+}
+
+/* asistencias, estado, vigente */
+.asis-estado.vigente {
+  color: var(--foreground); /* Color de las letras */
+  border-color: var(--lechuga); /* Color del borde */
+  background: rgba(155,219,77,.14); /* Fondo (color, imagen o degradado) */
+}
+
+/* asistencias, estado, vencida */
+.asis-estado.vencida {
+  color: var(--destructive); /* Color de las letras */
+  border-color: var(--destructive); /* Color del borde */
+}
+
+/* asistencias, resumen */
+.asis-resumen {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  align-items: flex-end; /* Alineación vertical de los hijos */
+  font-size: .85rem; /* Tamaño de la letra */
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* asistencias, resumen, b */
+.asis-resumen b {
+  font-size: 1.1rem; /* Tamaño de la letra */
+}
+
+/* asistencias, flecha */
+.asis-flecha {
+  transition: transform .2s ease; /* Animación suave al cambiar */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* asistencias, usuario, abierto, flecha */
+.asis-usuario.abierto .asis-flecha {
+  transform: rotate(180deg); /* Mover / girar / escalar */
+}
+
+/* asistencias, calendario */
+.asis-calendario {
+  padding: 1rem 1.1rem 1.2rem; /* Espacio interior */
+  border-top: 1px solid var(--border); /* Borde de arriba */
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  gap: .9rem; /* Separación entre hijos */
+}
+
+/* asistencias, cal, top */
+.asis-cal-top {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-wrap: wrap; /* Permite pasar a otra línea */
+  align-items: flex-start; /* Alineación vertical de los hijos */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  gap: 1rem 2rem; /* Separación entre hijos */
+}
+
+/* asistencias, cal, mes */
+.asis-cal-mes {
+  flex: 1 1 20rem; /* Reparto flexible del espacio */
+  max-width: 26rem; /* Ancho máximo */
+}
+
+/* asistencias, mes */
+.asis-mes {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  gap: .6rem; /* Separación entre hijos */
+  margin-bottom: .6rem; /* Espacio exterior abajo */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  text-transform: capitalize; /* Mayúsculas / minúsculas */
+}
+
+/* asistencias, menú */
+.asis-nav {
+  all: unset; /* Propiedad «all» */
+  box-sizing: border-box; /* Propiedad «box-sizing» */
+  width: 2rem; /* Ancho */
+  height: 2rem; /* Alto */
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  border: 1px solid var(--border); /* Borde (grosor, estilo y color) */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: 1.1rem; /* Tamaño de la letra */
+  line-height: 1; /* Altura de línea (espacio entre renglones) */
+  color: var(--foreground); /* Color de las letras */
+}
+
+/* asistencias, menú (al pasar el mouse) */
+.asis-nav:hover {
+  border-color: var(--lechuga); /* Color del borde */
+  background: rgba(155,219,77,.12); /* Fondo (color, imagen o degradado) */
+}
+
+/* asistencias, menú (al enfocar (teclado/clic)) */
+.asis-nav:focus-visible {
+  outline: 2px solid var(--lechuga); /* Contorno de enfoque */
+  outline-offset: 2px; /* Separación del contorno */
+}
+
+/* asistencias, grid */
+.asis-grid {
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  grid-template-columns: repeat(7,minmax(0,1fr)); /* Columnas de la cuadrícula */
+  gap: .35rem; /* Separación entre hijos */
+}
+
+/* asistencias, sem */
+.asis-sem {
+  text-align: center; /* Alineación del texto → Texto centrado */
+  font-size: .7rem; /* Tamaño de la letra */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* asistencias, día */
+.asis-dia {
+  all: unset; /* Propiedad «all» */
+  box-sizing: border-box; /* Propiedad «box-sizing» */
+  position: relative; /* Tipo de posición → Relativa: sirve de referencia a sus hijos */
+  aspect-ratio: 1; /* Proporción ancho/alto */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  border-radius: 8px; /* Esquinas redondeadas */
+  border: 1px solid transparent; /* Borde (grosor, estilo y color) */
+  font-size: .85rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+  opacity: .4; /* Transparencia */
+  cursor: default; /* Forma del cursor del mouse */
+}
+
+/* asistencias, día, en, periodo */
+.asis-dia.en-periodo {
+  border-color: var(--border); /* Color del borde */
+  color: var(--foreground); /* Color de las letras */
+  opacity: 1; /* Transparencia */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+}
+
+/* asistencias, día, en, periodo (al pasar el mouse, deshabilitado) */
+.asis-dia.en-periodo:hover:not(:disabled) {
+  border-color: var(--lechuga); /* Color del borde */
+  background: rgba(155,219,77,.14); /* Fondo (color, imagen o degradado) */
+}
+
+/* asistencias, día, futuro */
+.asis-dia.futuro {
+  opacity: .55; /* Transparencia */
+  cursor: not-allowed; /* Forma del cursor del mouse */
+}
+
+/* asistencias, día, asistio */
+.asis-dia.asistio {
+  background: var(--lechuga); /* Fondo (color, imagen o degradado) */
+  color: #000; /* Color de las letras */
+  border-color: transparent; /* Color del borde */
+  font-weight: 900; /* Grosor de la letra (negrita) */
+  opacity: 1; /* Transparencia */
+}
+
+/* asistencias, día, asistio (decoración (::before/::after)) */
+.asis-dia.asistio::after {
+  content: "\2713"; /* Contenido insertado (decoración) */
+  position: absolute; /* Tipo de posición → Posición absoluta: respecto al contenedor */
+  top: 1px; /* Distancia desde arriba */
+  right: 4px; /* Distancia desde la derecha */
+  font-size: .6rem; /* Tamaño de la letra */
+  font-weight: 900; /* Grosor de la letra (negrita) */
+}
+
+/* asistencias, día, hoy */
+.asis-dia.hoy {
+  box-shadow: inset 0 0 0 2px var(--foreground); /* Sombra */
+}
+
+/* asistencias, día (al enfocar (teclado/clic)) */
+.asis-dia:focus-visible {
+  outline: 2px solid var(--lechuga); /* Contorno de enfoque */
+  outline-offset: 2px; /* Separación del contorno */
+}
+
+/* asistencias, días */
+.asis-dias {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  flex-wrap: wrap; /* Permite pasar a otra línea */
+  gap: .5rem; /* Separación entre hijos */
+  font-size: .85rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+}
+
+/* asistencias, días, campos de texto */
+.asis-dias-input {
+  width: 4.5rem; /* Ancho */
+  height: 2rem; /* Alto */
+  text-align: center; /* Alineación del texto → Texto centrado */
+  border-radius: 8px; /* Esquinas redondeadas */
+  border: 1px solid var(--input); /* Borde (grosor, estilo y color) */
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  color: var(--foreground); /* Color de las letras */
+  font-size: .95rem; /* Tamaño de la letra */
+}
+
+/* asistencias, días, campos de texto (al enfocar (teclado/clic)) */
+.asis-dias-input:focus-visible {
+  outline: 2px solid var(--lechuga); /* Contorno de enfoque */
+  outline-offset: 2px; /* Separación del contorno */
+}
+
+/* asistencias, nota */
+.asis-nota {
+  margin: 0; /* Espacio exterior */
+  font-size: .78rem; /* Tamaño de la letra */
+  color: var(--muted-foreground); /* Color de las letras */
+  max-width: 46rem; /* Ancho máximo */
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 640px de ancho (celular/tablet) */
+@media (max-width:640px) {
+
+  /* asistencias, cabecera */
+  .asis-cabecera {
+    grid-template-columns: auto minmax(0,1fr) auto; /* Columnas de la cuadrícula */
+    gap: .6rem; /* Separación entre hijos */
+  }
+
+  /* asistencias, resumen */
+  .asis-resumen {
+    display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+  }
+}
+
+/* ===== Sin efectos de iluminación rojos/brillos ===== */
+
+/* brillo, rojo, pulso */
+.brillo-rojo,
+.pulso-rojo,
+[class*="drop-shadow"] {
+  box-shadow: none!important; /* Sombra (!important: manda sobre otras reglas) */
+  animation: none!important; /* Animación (!important: manda sobre otras reglas) */
+  filter: none!important; /* Filtro visual (brillo, desenfoque…) (!important: manda sobre otras reglas) */
+}
+
+/* logo, m */
+.logo-m {
+  filter: none!important; /* Filtro visual (brillo, desenfoque…) (!important: manda sobre otras reglas) */
+}
+
+/* estilo general */
+:root {
+  --sombra-roja: none; /* Variable «sombra, roja» */
+}
+
+/* ===== Encabezado: sin verde (blanco en oscuro / negro en claro) ===== */
+
+/* menú, principal, enlaces, botón, menu, movil (al pasar el mouse) */
+#nav-principal a:not(#nav-iniciar),
+#nav-principal a:not(#nav-iniciar):hover,
+#btn-menu-movil,
+#btn-tema,
+.nav-usuario-nombre {
+  color: #fff!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, menú, principal, enlaces, botón, menu (al pasar el mouse) */
+:root.light #nav-principal a:not(#nav-iniciar),
+:root.light #nav-principal a:not(#nav-iniciar):hover,
+:root.light #btn-menu-movil,
+:root.light #btn-tema,
+:root.light .nav-usuario-nombre {
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* menú, principal, enlaces (decoración (::before/::after)) */
+#nav-principal a:not(#nav-iniciar)::after {
+  background: #fff!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, menú, principal, enlaces (decoración (::before/::after)) */
+:root.light #nav-principal a:not(#nav-iniciar)::after {
+  background: #000!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* logo, texto que se escribe solo */
+.logo-tipeo {
+  color: #fff!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, logo, texto que se escribe solo */
+:root.light .logo-tipeo {
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* ===== Pie de página: letra blanca pura (fondo negro para que siempre se lea) ===== */
+
+/* pie de página */
+footer {
+  background: #000!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* pie de página */
+footer,
+footer * {
+  color: #fff!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* pie de página, red social, social */
+footer .red-social {
+  border-color: #fff!important; /* Color del borde (!important: manda sobre otras reglas) */
+}
+
+/* ===== Navbar limpio y premium ===== */
+
+/* menú, principal, enlaces */
+#nav-principal a:not(#nav-iniciar) {
+  background: transparent!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  box-shadow: none!important; /* Sombra (!important: manda sobre otras reglas) */
+  text-decoration: none!important; /* Subrayado del texto (!important: manda sobre otras reglas) */
+  color: #f2fff0!important; /* Color de las letras (!important: manda sobre otras reglas) */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+  transition: color .25s ease; /* Animación suave al cambiar */
+}
+
+/* menú, principal, enlaces (al pasar el mouse) */
+#nav-principal a:not(#nav-iniciar):hover,
+#nav-principal a:not(#nav-iniciar).active,
+#nav-principal a:not(#nav-iniciar)[aria-current] {
+  color: var(--lechuga)!important; /* Color de las letras (!important: manda sobre otras reglas) */
+  background: transparent!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* menú, principal, enlaces (decoración (::before/::after)) */
+#nav-principal a:not(#nav-iniciar)::after {
+  background: var(--lechuga)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  height: 1px!important; /* Alto (!important: manda sobre otras reglas) */
+  width: 0!important; /* Ancho (!important: manda sobre otras reglas) */
+  opacity: .9; /* Transparencia */
+  bottom: -6px!important; /* Distancia desde abajo (!important: manda sobre otras reglas) */
+  transition: width .3s ease!important; /* Animación suave al cambiar (!important: manda sobre otras reglas) */
+}
+
+/* menú, principal, enlaces (al pasar el mouse, decoración (::before/::after)) */
+#nav-principal a:not(#nav-iniciar):hover::after {
+  width: 100%!important; /* Ancho (!important: manda sobre otras reglas) */
+}
+
+/* menú, principal, enlaces (decoración (::before/::after)) */
+#nav-principal a:not(#nav-iniciar).active::after,
+#nav-principal a:not(#nav-iniciar)[aria-current]::after {
+  width: 14px!important; /* Ancho (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, menú, principal, enlaces */
+:root.light #nav-principal a:not(#nav-iniciar) {
+  color: #111!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, menú, principal, enlaces (al pasar el mouse) */
+:root.light #nav-principal a:not(#nav-iniciar):hover {
+  color: #0c0c0c!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, menú, principal, enlaces (decoración (::before/::after)) */
+:root.light #nav-principal a:not(#nav-iniciar)::after {
+  background: #4f8a14!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* menú, iniciar sesión */
+#nav-iniciar {
+  background: var(--lechuga)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* ===== Transición cinematográfica hero → Instalaciones ===== */
+
+/* contenido principal, sección (el primero) */
+main>section:first-child {
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+}
+
+/* contenido principal, sección, div (el primero) */
+main>section:first-child>div[style*="gradient-oscuro"] {
+  background: linear-gradient(180deg,
+    rgba(2,10,2,0) 0%,rgba(2,10,2,0) 38%,
+    rgba(2,10,2,.28) 55%,rgba(3,12,3,.6) 72%,
+    rgba(2,8,2,.88) 88%,var(--background) 100%)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* contenido principal, sección, imágenes (el primero) */
+main>section:first-child>img {
+  filter: none; /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* TEMA CLARO · tema claro, contenido principal, sección, div (el primero) */
+:root.light main>section:first-child>div[style*="gradient-oscuro"] {
+  background: linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0) 38%,rgba(255,255,255,.35) 58%,rgba(255,255,255,.75) 80%,#fff 100%)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* instalaciones */
+#instalaciones {
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  border: 0; /* Borde (grosor, estilo y color) */
+  margin-top: -1px; /* Espacio exterior arriba */
+}
+
+/* ============================================================
+   Ajustes v4
+   1) Música, Mi membresía, Iniciar sesión y Ubicación: negro puro (tema oscuro)
+   2) Tema claro: sin azul (todo en blanco / verde lechuga)
+   3) Portada (inicio): foto nítida, sin velo ni difuminado
+   ============================================================ */
+
+/* ---------- 1) Paneles negros en tema oscuro ---------- */
+
+/* TEMA CLARO · música, panel/tarjeta, contacto, ubicacion, membresias, mi membresía */
+:root:not(.light) #musica .panel,
+:root:not(.light) #contacto .panel,
+:root:not(.light) #ubicacion .panel,
+:root:not(.light) #membresias .mm-card,
+:root:not(.light) #membresias .mm-pendiente,
+:root:not(.light) #membresias .mm-reservas {
+  background: #000!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  background-image: none!important; /* Imagen o degradado de fondo (!important: manda sobre otras reglas) */
+  -webkit-backdrop-filter: none!important; /* Desenfoque del fondo detrás (vidrio, Safari) (!important: manda sobre otras reglas) */
+  backdrop-filter: none!important; /* Desenfoque del fondo detrás (vidrio) (!important: manda sobre otras reglas) */
+  border: 1px solid rgba(155,219,77,.28)!important; /* Borde (grosor, estilo y color) (!important: manda sobre otras reglas) */
+  box-shadow: none!important; /* Sombra (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · membresias, mi membresía, tarjeta (decoración (::before/::after)) */
+:root:not(.light) #membresias .mm-card::before {
+  display: none!important; /* Tipo de caja (cómo se muestra) → Oculta el elemento (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · música, reproduciendo, elemento, canción, playlist */
+:root:not(.light) #musica .musica-reproduciendo,
+:root:not(.light) #musica .item-cancion:not(.sonando),
+:root:not(.light) #musica .item-playlist {
+  background: #000!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · contacto, panel/tarjeta, campos de texto, áreas de texto, música */
+:root:not(.light) #contacto .panel input,
+:root:not(.light) #contacto .panel textarea,
+:root:not(.light) #musica .panel input {
+  background-color: #000!important; /* Color de fondo (!important: manda sobre otras reglas) */
+}
+
+/* ---------- 2) Tema claro sin azul ---------- */
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  --ring: var(--lechuga); /* Variable «anillo de enfoque» */
+  --gradient-rojo: linear-gradient(135deg,#9bdb4d,#5f9e1f); /* Variable «gradient, rojo» */
+  --gradient-oscuro: linear-gradient(180deg,rgba(255,255,255,0),rgba(255,255,255,.95)); /* Variable «gradient, oscuro» */
+  --sombra-premium: 0 24px 60px -24px rgba(0,0,0,.18); /* Variable «sombra, premium» */
+  --sombra-roja: none; /* Variable «sombra, roja» */
+  --vidrio-fondo: color-mix(in oklab,#fff 80%,transparent); /* Variable «vidrio, fondo» */
+  --vidrio-borde: rgba(91,154,26,.28); /* Variable «vidrio, borde» */
+  --vidrio-brillo: rgba(255,255,255,.9); /* Variable «vidrio, brillo» */
+  --vidrio-sombra: 0 22px 54px -28px rgba(0,0,0,.25); /* Variable «vidrio, sombra» */
+  --vidrio-hover: 0 0 40px -14px rgba(155,219,77,.6),0 22px 54px -28px rgba(0,0,0,.25); /* Variable «vidrio» */
+  --panel-acento: rgba(155,219,77,.7); /* Variable «panel/tarjeta, acento» */
+  --fg-pulso: rgba(155,219,77,.3); /* Variable «fondo animado, pulso» */
+}
+
+/* TEMA CLARO · tema claro, fondo, gym */
+:root.light .fondo-gym {
+  background: #fff; /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, panel/tarjeta (al pasar el mouse) */
+:root.light .panel:hover {
+  border-color: rgba(91,154,26,.6); /* Color del borde */
+}
+
+/* TEMA CLARO · tema claro, logo, texto que se escribe solo */
+:root.light .logo-tipeo {
+  background-image: linear-gradient(95deg,#111 0%,#4f8a14 90%); /* Imagen o degradado de fondo */
+}
+
+/* TEMA CLARO · tema claro, logo, cursor */
+:root.light .logo-cursor {
+  background: #5b9a1a; /* Fondo (color, imagen o degradado) */
+  box-shadow: none; /* Sombra */
+}
+
+/* TEMA CLARO · tema claro, logo, portada, texto */
+:root.light .logo-hero-texto {
+  background-image: linear-gradient(100deg,#111 0%,#5b9a1a 45%,#3f7a0e 65%,#111 100%); /* Imagen o degradado de fondo */
+  filter: none; /* Filtro visual (brillo, desenfoque…) */
+}
+
+/* TEMA CLARO · tema claro, logo, portada, linea */
+:root.light .logo-hero-linea {
+  background: linear-gradient(90deg,#9bdb4d,#9bdb4d 60%,transparent); /* Fondo (color, imagen o degradado) */
+  box-shadow: none; /* Sombra */
+}
+
+/* TEMA CLARO · tema claro, encabezado, fixed (decoración (::before/::after)) */
+:root.light header.fixed::after {
+  background: linear-gradient(90deg,transparent,rgba(91,154,26,.7),transparent); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, mi membresía, botón */
+:root.light .mm-boton {
+  background: var(--lechuga)!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  background-image: none!important; /* Imagen o degradado de fondo (!important: manda sobre otras reglas) */
+  color: #000!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}
+
+/* TEMA CLARO · tema claro, mi membresía, barra, span */
+:root.light .mm-barra span {
+  background: linear-gradient(90deg,#9bdb4d,#5f9e1f); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, contenido principal, sección, título 2 (decoración (::before/::after)) */
+:root.light main section h2::after {
+  background: linear-gradient(90deg,#9bdb4d,#5f9e1f); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, contenido principal, sección, nth, of, type */
+:root.light main section:nth-of-type(odd) {
+  background: none; /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, mi membresía, tarjeta (decoración (::before/::after)) */
+:root.light .mm-card::before {
+  background: none; /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, avatar, inicial */
+:root.light .avatar-inicial {
+  background: linear-gradient(135deg,#9bdb4d,#5f9e1f); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, botón, tema (al pasar el mouse) */
+:root.light .btn-tema:hover {
+  background: rgba(91,154,26,.12); /* Fondo (color, imagen o degradado) */
+}
+
+/* TEMA CLARO · tema claro, reproductor, flotante */
+:root.light .reproductor-flotante {
+  box-shadow: 0 18px 44px -12px rgba(0,0,0,.35); /* Sombra */
+}
+
+/* TEMA CLARO · tema claro, campos de texto, áreas de texto, listas desplegables (al enfocar (teclado/clic)) */
+:root.light input:focus-visible,
+:root.light textarea:focus-visible,
+:root.light select:focus-visible {
+  border-color: #5b9a1a!important; /* Color del borde (!important: manda sobre otras reglas) */
+  box-shadow: 0 0 0 3px rgba(155,219,77,.35); /* Sombra */
+}
+
+/* TEMA CLARO · tema claro (texto seleccionado) */
+:root.light ::selection {
+  background: #9bdb4d; /* Fondo (color, imagen o degradado) */
+  color: #000; /* Color de las letras */
+}
+
+/* TEMA CLARO · documento, tema claro */
+html.light {
+  scrollbar-color: #9bdb4d transparent; /* Color de la barra de desplazamiento */
+}
+
+/* TEMA CLARO · tema claro (barra de desplazamiento) */
+:root.light ::-webkit-scrollbar-thumb {
+  background: linear-gradient(#9bdb4d,#5f9e1f); /* Fondo (color, imagen o degradado) */
+}
+
+/* ---------- 3) Portada: foto nítida (sin velo, sin degradado, sin brillo encima) ---------- */
+
+/* TEMA CLARO · contenido principal, sección, div (decoración (::before/::after), el primero) */
+main>section:first-child>div[class*="bg-background"],
+main>section:first-child>div[style*="gradient-oscuro"],
+:root:not(.light) main>section:first-child::after {
+  display: none!important; /* Tipo de caja (cómo se muestra) → Oculta el elemento (!important: manda sobre otras reglas) */
+}
+
+/* portada, ubicacion, subtitulo, contenido principal, sección, dl (el primero) */
+#hero-ubicacion,
+#hero-subtitulo,
+main>section:first-child dl {
+  text-shadow: 0 1px 4px #000,0 0 14px rgba(0,0,0,.7); /* Sombra del texto */
+}
+
+/* ============================================================
+   TODO el texto en blanco (tema oscuro)
+   Excepción: el logo "Megatlón" grande (hero) y el chiquito del NAV,
+   que conservan su estilo original.
+   (:not(#_) sube la especificidad para ganarle a las reglas con #id)
+   ============================================================ */
+
+/* TEMA CLARO · cuerpo de la página */
+:root:not(.light):not(#_) body,
+:root:not(.light):not(#_) body *:not(.logo-nav):not(.logo-tipeo):not(.logo-cursor):not(.logo-hero):not(.logo-hero-fila):not(.logo-hero-texto):not(.logo-hero-linea):not(.logo-m) {
+  color: #fff!important; /* Color de las letras (!important: manda sobre otras reglas) */
+  -webkit-text-fill-color: #fff!important; /* Propiedad «-webkit-text-fill-color» (!important: manda sobre otras reglas) */
+}
+
+/* títulos con degradado verde -> blanco liso */
+
+/* TEMA CLARO · texto, degradado, portada, nombre */
+:root:not(.light):not(#_) .texto-degradado,
+:root:not(.light):not(#_) .hero-nombre {
+  background: none!important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  -webkit-background-clip: border-box!important; /* Hasta dónde se pinta el fondo (!important: manda sobre otras reglas) */
+  background-clip: border-box!important; /* Hasta dónde se pinta el fondo (!important: manda sobre otras reglas) */
+}
+
+/* placeholders de los campos */
+
+/* TEMA CLARO · estilo general (texto de ayuda del campo) */
+:root:not(.light):not(#_) ::placeholder {
+  color: #fff!important; /* Color de las letras (!important: manda sobre otras reglas) */
+  -webkit-text-fill-color: #fff!important; /* Propiedad «-webkit-text-fill-color» (!important: manda sobre otras reglas) */
+  opacity: .7; /* Transparencia */
+}
+
+/* menú del NAV (hover / activo) también en blanco */
+
+/* TEMA CLARO · menú, principal, enlaces (al pasar el mouse) */
+:root:not(.light):not(#_) #nav-principal a:hover,
+:root:not(.light):not(#_) #nav-principal a.active,
+:root:not(.light):not(#_) #nav-principal a[aria-current] {
+  color: #fff!important; /* Color de las letras (!important: manda sobre otras reglas) */
+}

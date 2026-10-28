@@ -1,0 +1,119 @@
+/* ============================================================
+   TEMA CLARO / OSCURO
+   Qué es: colores del tema claro (:root.light) y botón de cambio de tema.
+   Qué cambiar aquí: colores del modo claro, botón sol/luna.
+   Cada regla lleva arriba un comentario con lo que hace y
+   cada línea explica su propiedad. Ver GUIA-CSS.md para buscar rápido.
+   ============================================================ */
+
+/* ============ Tema claro / oscuro — Megatlón ============ */
+
+/* Por defecto todo el sitio usa el tema oscuro definido en styles.css
+   (:root {...}). Estas reglas solo se activan cuando se agrega la clase
+   "light" al <html> (la pone js/tema.js, según lo que eligió la persona
+   o lo que tenía guardado de la última vez). */
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  color-scheme: light; /* Esquema de color del navegador (claro/oscuro) */
+  --background: oklch(98% 0 0); /* Variable «fondo» */
+  --foreground: oklch(15% 0 0); /* Variable «texto» */
+  --surface: oklch(100% 0 0); /* Variable «superficie» */
+  --surface-2: oklch(93% 0 0); /* Variable «superficie, 2» */
+  --card: oklch(100% 0 0); /* Variable «tarjeta» */
+  --card-foreground: oklch(15% 0 0); /* Variable «tarjeta, texto» */
+  --popover: oklch(100% 0 0); /* Variable «popover» */
+  --popover-foreground: oklch(15% 0 0); /* Variable «popover, texto» */
+  --secondary: oklch(93% 0 0); /* Variable «secondary» */
+  --secondary-foreground: oklch(15% 0 0); /* Variable «secondary, texto» */
+  --muted: oklch(93% 0 0); /* Variable «atenuado» */
+  --muted-foreground: oklch(38% 0 0); /* Variable «atenuado, texto» */
+  --accent: oklch(93% 0 0); /* Variable «accent» */
+  --accent-foreground: oklch(15% 0 0); /* Variable «accent, texto» */
+  --border: oklch(0% 0 0 / .12); /* Variable «borde» */
+  --input: oklch(0% 0 0 / .18); /* Variable «campos de texto» */
+  --gradient-oscuro: linear-gradient(180deg, oklch(98% 0 0 / 0), oklch(98% 0 0 / .95)); /* Variable «gradient, oscuro» */
+  --sombra-premium: 0 24px 60px -24px oklch(0% 0 0 / .18); /* Variable «sombra, premium» */
+  --sidebar: oklch(96% 0 0); /* Variable «barra lateral» */
+  --sidebar-foreground: oklch(15% 0 0); /* Variable «barra lateral, texto» */
+  --sidebar-accent: oklch(93% 0 0); /* Variable «barra lateral, accent» */
+  --sidebar-accent-foreground: oklch(15% 0 0); /* Variable «barra lateral, accent, texto» */
+  --sidebar-border: oklch(0% 0 0 / .12); /* Variable «barra lateral, borde» */
+}
+
+/* El título del hero usa un degradado de texto que arranca en blanco;
+   en tema claro arranca en el color de texto normal para que se lea. */
+
+/* TEMA CLARO · tema claro, texto, degradado */
+:root.light .texto-degradado {
+  background: linear-gradient(100deg, var(--foreground) 30%, var(--color-primary, var(--primary))); /* Fondo (color, imagen o degradado) */
+  background-clip: text; /* Hasta dónde se pinta el fondo */
+  -webkit-background-clip: text; /* Hasta dónde se pinta el fondo */
+}
+
+/* ---------- Botón sol / luna ---------- */
+
+/* botón, tema */
+.btn-tema {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  display: inline-flex; /* Tipo de caja (cómo se muestra) → Caja flexible en línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  width: 2.25rem; /* Ancho */
+  height: 2.25rem; /* Alto */
+  border-radius: 9999px; /* Esquinas redondeadas */
+  border: 1px solid var(--border); /* Borde (grosor, estilo y color) */
+  color: var(--foreground); /* Color de las letras */
+  flex-shrink: 0; /* Si se puede encoger */
+  transition: transform .2s ease, background-color .2s ease, border-color .2s ease; /* Animación suave al cambiar */
+}
+
+/* botón, tema (al pasar el mouse) */
+.btn-tema:hover {
+  transform: scale(1.08); /* Mover / girar / escalar */
+  background: rgba(255,255,255,0.06); /* Fondo (color, imagen o degradado) */
+  border-color: var(--primary); /* Color del borde */
+}
+
+/* TEMA CLARO · tema claro, botón, tema (al pasar el mouse) */
+:root.light .btn-tema:hover {
+  background: rgba(0,0,0,0.06); /* Fondo (color, imagen o degradado) */
+}
+
+/* botón, tema, iconos */
+.btn-tema svg {
+  width: 1.15rem; /* Ancho */
+  height: 1.15rem; /* Alto */
+}
+
+/* botón, tema, inicio de sesión */
+.btn-tema-login {
+  position: fixed; /* Tipo de posición → Fija en la pantalla */
+  top: 1.25rem; /* Distancia desde arriba */
+  right: 1.25rem; /* Distancia desde la derecha */
+  background: var(--surface); /* Fondo (color, imagen o degradado) */
+}
+
+/* Oscuro activo → se ve el sol (clic para pasar a claro).
+   Claro activo → se ve la luna (clic para volver a oscuro). */
+
+/* botón, tema, icono, sol */
+.btn-tema .icono-sol {
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+}
+
+/* botón, tema, icono, luna */
+.btn-tema .icono-luna {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+}
+
+/* TEMA CLARO · tema claro, botón, tema, icono, sol */
+:root.light .btn-tema .icono-sol {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+}
+
+/* TEMA CLARO · tema claro, botón, tema, icono, luna */
+:root.light .btn-tema .icono-luna {
+  display: block; /* Tipo de caja (cómo se muestra) → Bloque (ocupa todo el ancho) */
+}

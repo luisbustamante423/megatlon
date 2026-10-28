@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Cabecera técnica (no se ve) -->
+<head>
+<!-- ============================================================
+     PANEL ADMINISTRATIVO — MEGATLÓN
+     Cómo leer este archivo: cada bloque importante lleva arriba un
+     comentario que dice qué es y para qué sirve. Los textos que ve el
+     cliente están dentro de las etiquetas; los estilos están en ../css/
+     (ver GUIA-CSS.md) y la lógica en ../js/ (landing.js o admin.js).
+     BLOQUES PRINCIPALES (id): pantalla-login, form-login, pantalla-admin, admin-nav, panel-especial, panel-permisos, panel-contenido, modal-form, form-registro
+     ============================================================ -->
+<!-- Metadato del documento — codificación -->
+<meta charset="utf-8"/>
+<!-- Metadato del documento — viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- Título de la pestaña del navegador — texto: «Panel administrativo | Megatlón Bolivia» -->
+<title>Panel administrativo | Megatlón Bolivia</title>
+<!-- Metadato del documento — robots -->
+<meta name="robots" content="noindex"/>
+<!-- Archivo vinculado (CSS o icono) — favicon.ico -->
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<!-- Script (JavaScript) -->
+<script>
+try {
+  if (localStorage.getItem('megatlon_tema') === 'claro') {
+    document.documentElement.classList.add('light');
+  }
+} catch (e) {}
+</script>
+<!-- Archivo vinculado (CSS o icono) — ../css/styles.css -->
+<link rel="stylesheet" href="../css/styles.css"/>
+<!-- Archivo vinculado (CSS o icono) — ../css/tema.css -->
+<link rel="stylesheet" href="../css/tema.css"/>
+<!-- Archivo vinculado (CSS o icono) — ../css/admin.css -->
+<link rel="stylesheet" href="../css/admin.css"/>
+<!-- Archivo vinculado (CSS o icono) — ../css/marca.css -->
+<link rel="stylesheet" href="../css/marca.css"/>
+<link rel="stylesheet" href="../css/ajustes.css"/>
+</head>
+<!-- Cuerpo de la página (todo lo visible) -->
+<body>
+
+<!-- ============ PANTALLA DE LOGIN ============ -->
+<!-- Contenedor — id «pantalla-login» (pantalla inicio de sesión) -->
+<div id="pantalla-login" class="login-wrap">
+  <!-- Botón — id «btn-tema-login» (botón tema inicio de sesión); etiqueta: Cambiar entre tema claro y oscuro; tipo button -->
+  <button id="btn-tema-login" type="button" class="btn-tema btn-tema-login" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema">
+   <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4"></circle>
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+   </svg>
+   <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+   </svg>
+  </button>
+  <!-- Formulario — id «form-login» (formulario inicio de sesión) -->
+  <form id="form-login" class="login-card">
+    <!-- Imagen — archivo logo.png; clase login-logo -->
+    <img src="../assets/logo.png" alt="Megatlón" class="login-logo"/>
+    <!-- Título principal (h1) — texto: «Acceso» -->
+    <h1>Acceso</h1>
+    <p class="login-sub">Megatlón Bolivia · Cochabamba</p>
+
+    <!-- Etiqueta de campo — texto: «Correo» -->
+    <label>
+      Correo
+      <!-- Campo de entrada — id «login-correo» (inicio de sesión correo); tipo email -->
+      <input type="email" id="login-correo" required autocomplete="username"/>
+    </label>
+    <!-- Etiqueta de campo — texto: «Contraseña» -->
+    <label>
+      Contraseña
+      <!-- Campo de entrada — id «login-clave» (inicio de sesión clave); tipo password -->
+      <input type="password" id="login-clave" required autocomplete="current-password"/>
+    </label>
+
+    <!-- Botón — tipo submit; texto: «Entrar» -->
+    <button type="submit">Entrar</button>
+    <!-- Párrafo — id «login-error» (inicio de sesión error) -->
+    <p id="login-error" class="login-error" hidden></p>
+  </form>
+</div>
+
+<!-- ============ PANEL ADMIN (oculto hasta iniciar sesión) ============ -->
+<!-- Contenedor — id «pantalla-admin» (pantalla panel admin) -->
+<div id="pantalla-admin" class="admin-shell" hidden>
+  <!-- Barra lateral — clase admin-sidebar -->
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <!-- Imagen — archivo logo.png -->
+      <img src="../assets/logo.png" alt="Megatlón"/>
+      <span>Administración</span>
+    </div>
+    <!-- Menú de navegación — id «admin-nav» (panel admin menú) -->
+    <nav id="admin-nav" class="admin-nav">
+      <!-- Botón — id «btn-nav-contenido» (botón menú contenido); tipo button; texto: «🖊️ Contenido del sitio» -->
+      <button id="btn-nav-contenido" type="button">🖊️ Contenido del sitio</button>
+      <!-- Botón — id «btn-nav-permisos» (botón menú permisos); tipo button; texto: «🔐 Permisos por rol» -->
+      <button id="btn-nav-permisos" type="button" hidden>🔐 Permisos por rol</button>
+      <!-- se llena por JS con las 14 tablas -->
+    </nav>
+    <div class="admin-user">
+      <!-- Texto en línea — id «admin-user-nombre» (panel admin usuario nombre) -->
+      <span class="admin-user-datos">
+       <span id="admin-user-nombre">—</span>
+       <small id="admin-user-codigo" class="codigo-usuario" hidden></small>
+      </span>
+      <!-- Botón — id «btn-tema» (botón tema); etiqueta: Cambiar entre tema claro y oscuro; tipo button -->
+      <button id="btn-tema" type="button" class="btn-tema" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema">
+       <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+       </svg>
+       <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+       </svg>
+      </button>
+      <!-- Botón — id «btn-logout» (botón logout); texto: «Salir» -->
+      <button id="btn-logout">Salir</button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal — clase admin-main -->
+  <main class="admin-main">
+    <!-- Encabezado — clase admin-topbar -->
+    <header class="admin-topbar">
+      <!-- Título principal (h1) — id «admin-titulo-seccion» (panel admin titulo seccion) -->
+      <h1 id="admin-titulo-seccion">—</h1>
+      <!-- Botón — id «btn-nuevo» (botón nuevo); texto: «+ Nuevo» -->
+      <button id="btn-nuevo" class="btn-primario">+ Nuevo</button>
+    </header>
+
+    <div class="admin-content">
+      <!-- Pestañas por tipo — id «filtro-tipos»: solo se ven en Notificaciones (Pagos, Solicitudes, Inicios de sesión…) -->
+      <div id="filtro-tipos" class="filtro-tipos" role="tablist" aria-label="Tipo de notificación" hidden></div>
+      <!-- Tabla — id «admin-tabla» (panel admin tabla) -->
+      <table id="admin-tabla" class="admin-tabla">
+        <!-- Encabezado de la tabla — id «admin-tabla-head» (panel admin tabla head) -->
+        <thead><tr id="admin-tabla-head"></tr></thead>
+        <!-- Cuerpo de la tabla — id «admin-tabla-body» (panel admin tabla cuerpo de la página) -->
+        <tbody id="admin-tabla-body"></tbody>
+      </table>
+      <!-- Contenedor — id «panel-especial» (panel/tarjeta especial) -->
+      <div id="panel-especial" class="panel-especial" hidden></div>
+      <!-- Contenedor — id «panel-permisos» (panel/tarjeta permisos) -->
+      <div id="panel-permisos" class="panel-contenido" hidden></div>
+      <!-- Párrafo — id «admin-tabla-vacio» (panel admin tabla vacio); texto: «No hay registros todavía.» -->
+      <p id="admin-tabla-vacio" class="admin-vacio" hidden>No hay registros todavía.</p>
+
+      <!-- ============ Panel "Contenido del sitio" (hero, contacto, redes) ============ -->
+      <!-- Formulario — id «panel-contenido» (panel/tarjeta contenido) -->
+      <form id="panel-contenido" class="modal-form panel-contenido" hidden>
+        <!-- Subtítulo (h3) — texto: «Portada (hero)» -->
+        <h3>Portada (hero)</h3>
+        <!-- Etiqueta de campo — texto: «Ubicación» -->
+        <label>Ubicación <input type="text" name="hero_ubicacion"/></label>
+        <!-- Etiqueta de campo — texto: «Título principal» -->
+        <label>Título principal <input type="text" name="hero_titulo"/></label>
+        <!-- Etiqueta de campo — texto: «Subtítulo» -->
+        <label>Subtítulo <input type="text" name="hero_subtitulo"/></label>
+        <!-- Contenedor — clase panel-contenido-grid3 -->
+        <div class="panel-contenido-grid3">
+          <!-- Etiqueta de campo — texto: «Estadística 1 — número» -->
+          <label>Estadística 1 — número <input type="text" name="hero_stat1_numero"/></label>
+          <!-- Etiqueta de campo — texto: «Estadística 1 — etiqueta» -->
+          <label>Estadística 1 — etiqueta <input type="text" name="hero_stat1_etiqueta"/></label>
+          <!-- Etiqueta de campo — texto: «Estadística 2 — número» -->
+          <label>Estadística 2 — número <input type="text" name="hero_stat2_numero"/></label>
+          <!-- Etiqueta de campo — texto: «Estadística 2 — etiqueta» -->
+          <label>Estadística 2 — etiqueta <input type="text" name="hero_stat2_etiqueta"/></label>
+          <!-- Etiqueta de campo — texto: «Estadística 3 — número» -->
+          <label>Estadística 3 — número <input type="text" name="hero_stat3_numero"/></label>
+          <!-- Etiqueta de campo — texto: «Estadística 3 — etiqueta» -->
+          <label>Estadística 3 — etiqueta <input type="text" name="hero_stat3_etiqueta"/></label>
+        </div>
+
+        <!-- Subtítulo (h3) — texto: «Contacto» -->
+        <h3>Contacto</h3>
+        <!-- Etiqueta de campo — texto: «Dirección» -->
+        <label>Dirección <input type="text" name="contacto_direccion"/></label>
+        <!-- Etiqueta de campo — texto: «Teléfono (7 u 8 dígitos)» -->
+        <label>Teléfono (7 u 8 dígitos) <input type="text" name="contacto_telefono" inputmode="numeric" maxlength="8" pattern="\d{7,8}" title="Solo números, 7 u 8 dígitos"/></label>
+        <!-- Etiqueta de campo — pide: Una línea por renglón; texto: «Horarios» -->
+        <label>Horarios <textarea name="contacto_horarios" rows="3" placeholder="Una línea por renglón"></textarea></label>
+        <!-- Etiqueta de campo — pide: https://www.google.com/maps/embed?pb=...; texto: «Mapa (URL del iframe de Google Maps)» -->
+        <label>Mapa (URL del iframe de Google Maps) <input type="text" name="contacto_mapa_src" placeholder="https://www.google.com/maps/embed?pb=..."/></label>
+        <!-- Etiqueta de campo — texto: «Texto del pie de página» -->
+        <label>Texto del pie de página <input type="text" name="footer_mensaje"/></label>
+
+        <!-- Subtítulo (h3) — texto: «Redes sociales» -->
+        <h3>Redes sociales</h3>
+        <!-- Etiqueta de campo — pide: https://instagram.com/tu_gimnasio; texto: «Instagram (URL)» -->
+        <label>Instagram (URL) <input type="url" name="red_instagram" placeholder="https://instagram.com/tu_gimnasio"/></label>
+        <!-- Etiqueta de campo — pide: https://facebook.com/tu_gimnasio; texto: «Facebook (URL)» -->
+        <label>Facebook (URL) <input type="url" name="red_facebook" placeholder="https://facebook.com/tu_gimnasio"/></label>
+        <!-- Etiqueta de campo — pide: https://tiktok.com/@tu_gimnasio; texto: «TikTok (URL)» -->
+        <label>TikTok (URL) <input type="url" name="red_tiktok" placeholder="https://tiktok.com/@tu_gimnasio"/></label>
+        <!-- Etiqueta de campo — pide: https://wa.me/59170000000; texto: «WhatsApp (URL)» -->
+        <label>WhatsApp (URL) <input type="url" name="red_whatsapp" placeholder="https://wa.me/59170000000"/></label>
+
+        <!-- Párrafo — id «panel-contenido-guardado» (panel/tarjeta contenido guardado); texto: «Cambios guardados ✓» -->
+        <p id="panel-contenido-guardado" class="panel-contenido-ok" hidden>Cambios guardados ✓</p>
+        <!-- Contenedor — clase modal-form-acciones -->
+        <div class="modal-form-acciones">
+          <!-- Botón — tipo submit; clase btn-guardar; texto: «Guardar cambios» -->
+          <button type="submit" class="btn-guardar">Guardar cambios</button>
+        </div>
+      </form>
+    </div>
+  </main>
+</div>
+
+<!-- ============ MODAL CREAR / EDITAR (genérico, se arma según la tabla) ============ -->
+<!-- Contenedor — id «modal-form» (ventana emergente formulario) -->
+<div id="modal-form" class="modal-overlay" hidden>
+  <!-- Contenedor — clase modal-card -->
+  <div class="modal-card">
+    <!-- Contenedor — clase modal-header -->
+    <div class="modal-header">
+      <!-- Título de sección (h2) — id «modal-titulo» (ventana emergente titulo) -->
+      <h2 id="modal-titulo">—</h2>
+      <!-- Botón — id «modal-cerrar» (ventana emergente cerrar); etiqueta: Cerrar -->
+      <button id="modal-cerrar" class="modal-cerrar-btn" aria-label="Cerrar">×</button>
+    </div>
+    <!-- Formulario — id «form-registro» (formulario registro) -->
+    <form id="form-registro" class="modal-form"><!-- campos generados por JS --></form>
+  </div>
+</div>
+
+<!-- ============ MODAL VER RECIBO (Pagos → "Ver recibo") ============ -->
+<!-- Contenedor — id «modal-recibo» (ventana emergente recibo) -->
+<div id="modal-recibo" class="modal-overlay" hidden>
+  <div class="modal-card modal-card--recibo">
+    <div class="modal-header">
+      <h2>Recibo de pago</h2>
+      <!-- Botón — id «modal-recibo-cerrar»; etiqueta: Cerrar -->
+      <button id="modal-recibo-cerrar" class="modal-cerrar-btn" aria-label="Cerrar">×</button>
+    </div>
+    <!-- Contenido del recibo — lo arma js/admin.js (abrirRecibo) -->
+    <div id="recibo-contenido" class="recibo"></div>
+  </div>
+</div>
+
+<!-- Script (JavaScript) — archivo ../js/tema.js -->
+<script src="../js/tema.js"></script>
+<!-- Script (JavaScript) — archivo ../js/data.js -->
+<script src="../js/data.js"></script>
+<!-- Script (JavaScript) — archivo ../js/asistencias.js -->
+<script src="../js/asistencias.js"></script>
+<!-- Script (JavaScript) — archivo ../js/admin.js -->
+<script src="../js/admin.js"></script>
+</body>
+</html>

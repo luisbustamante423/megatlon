@@ -1,0 +1,538 @@
+/* ============================================================
+   PREMIUM — capa visual final de MEGATLÓN (se carga DESPUÉS de marca.css)
+   Qué hace:
+     1) Paleta oficial  (negro, paneles, verde lima, blanco cálido, gris)
+     2) Encabezado compacto + logo (símbolo M + texto) + menú móvil
+     3) Portada de dos columnas (texto HTML real | atleta) y versión apilada en móvil
+     4) Ajustes de espaciado/tamaños/contraste y movimiento reducido
+   Por qué tiene :not(#_):not(#__): marca.css fuerza colores con !important y
+   selectores muy específicos; dos "id" falsos nos dan prioridad sin tocar marca.css.
+   Las ÚNICAS rutas/funciones del sitio (formularios, login, backend) no se tocan aquí.
+   ============================================================ */
+
+/* ---------- 1) PALETA ---------- */
+:root {
+  --negro: #090B09;          /* fondo */
+  --panel: #171A15;          /* paneles / tarjetas */
+  --lima: #C8F000;           /* verde lima de la marca */
+  --blanco: #F5F5F0;         /* blanco cálido (texto) */
+  --gris: #A5A99D;           /* texto secundario */
+  --rojo-luz: #ff3b30;       /* SOLO pequeños detalles de iluminación */
+  --linea: rgba(245, 245, 240, .10);
+  --alto-header: 4rem;       /* altura del encabezado compacto */
+
+  /* Variables que ya usa el resto del sitio, redirigidas a la paleta */
+  --lechuga: var(--lima);
+  --background: var(--negro);
+  --surface: var(--negro);
+  --surface-2: var(--panel);
+  --card: var(--panel);
+  --popover: var(--panel);
+  --secondary: var(--panel);
+  --muted: var(--panel);
+  --accent: var(--panel);
+  --sidebar: var(--negro);
+  --foreground: var(--blanco);
+  --card-foreground: var(--blanco);
+  --popover-foreground: var(--blanco);
+  --secondary-foreground: var(--blanco);
+  --accent-foreground: var(--blanco);
+  --muted-foreground: var(--gris);
+  --primary: var(--lima);
+  --primary-foreground: var(--negro);
+  --ring: var(--lima);
+  --border: var(--linea);
+  --input: rgba(245, 245, 240, .18);
+  --gradient-rojo: linear-gradient(135deg, #C8F000, #9cc000);
+  --sombra-roja: none;
+  --fg-base-1: var(--negro);
+  --fg-base-2: var(--negro);
+  --fg-orbe-1: rgba(200, 240, 0, .05);
+  --fg-orbe-2: rgba(200, 240, 0, .03);
+  --fg-orbe-3: rgba(200, 240, 0, .04);
+  --vidrio-fondo: rgba(23, 26, 21, .92);
+  --vidrio-borde: var(--linea);
+}
+
+/* Tipografía y fondo base (tema oscuro) */
+:root:not(.light) body { background: var(--negro); }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font-sans, "Barlow", system-ui, sans-serif); -webkit-font-smoothing: antialiased; }
+
+/* Texto del sitio en blanco cálido (reemplaza el #fff forzado de marca.css) */
+:root:not(.light):not(#_):not(#__) :where(body, body *:not(.logo-m):not(.btn-hero--primario):not(.btn-nav)) {
+  color: var(--blanco) !important;
+  -webkit-text-fill-color: var(--blanco) !important;
+}
+/* …y se recuperan los acentos que ese blanco forzado aplastaba */
+:root:not(.light):not(#_):not(#__) .text-muted-foreground,
+:root:not(.light):not(#_):not(#__) .text-muted-foreground *,
+:root:not(.light):not(#_):not(#__) ::placeholder {
+  color: var(--gris) !important;
+  -webkit-text-fill-color: var(--gris) !important;
+}
+:root:not(.light):not(#_):not(#__) .text-primary,
+:root:not(.light):not(#_):not(#__) .text-primary * {
+  color: var(--lima) !important;
+  -webkit-text-fill-color: var(--lima) !important;
+}
+/* Texto oscuro sobre fondos lima (botones, etiquetas) para buen contraste */
+:root:not(#_):not(#__) .bg-primary,
+:root:not(#_):not(#__) .bg-primary *,
+:root:not(#_):not(#__) .mm-boton,
+:root:not(#_):not(#__) .btn-hero--primario,
+:root:not(#_):not(#__) .btn-nav {
+  color: var(--negro) !important;
+  -webkit-text-fill-color: var(--negro) !important;
+}
+.bg-primary, .mm-boton, .btn-hero--primario, .btn-nav {
+  background: var(--lima) !important;
+  background-image: none !important;
+}
+
+/* Secciones alternas: sin el degradado verdoso anterior (fondo limpio y plano) */
+:root:not(.light) main section:nth-of-type(odd) { background-image: none !important; }
+
+/* Sin brillos/animaciones innecesarias en el fondo: se quedan solo los orbes muy suaves */
+.fg-rayos, .fg-pulso, .fg-brasas, .fg-grano, .fg-rejilla { display: none !important; }
+.fg-orbe { animation: none !important; }
+.brillo-rojo, .pulso-rojo { box-shadow: none !important; animation: none !important; }
+
+/* Foco visible accesible */
+:where(a, button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--lima);
+  outline-offset: 3px;
+}
+
+/* ---------- 2) ENCABEZADO ---------- */
+header.sitio-header,
+header.sitio-header.fixed {
+  background: rgba(9, 11, 9, .86) !important;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--linea);
+}
+header.sitio-header::after { display: none !important; }   /* quita la línea verde degradada anterior */
+
+.header-barra {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  height: var(--alto-header);
+}
+
+/* Marca: símbolo M + texto, centrados verticalmente */
+header .marca {
+  display: inline-flex;
+  align-items: center;
+  gap: .6rem;
+  flex: 0 0 auto;
+  text-decoration: none;
+  line-height: 1;
+}
+header .marca .logo-m {
+  display: block;
+  height: 1.7rem;            /* ≈27px: proporcionado al texto */
+  width: auto;               /* nunca se estira: mantiene 612:380 */
+  max-width: none;
+  margin: 0;
+  flex: none;
+  object-fit: contain;
+  filter: none !important;   /* sin sombras ni efectos */
+}
+header .marca .logo-nombre {
+  font-family: var(--font-display, "Anton", sans-serif);
+  font-size: 1.3rem;
+  letter-spacing: .1em;
+  line-height: 1;
+  padding-top: .08em;        /* compensa el hueco superior de la tipografía */
+}
+
+/* Enlaces (escritorio) */
+#nav-principal { gap: .15rem; }
+#nav-principal a.nav-enlace:not(#_) {
+  position: relative;
+  display: inline-block;
+  padding: .55rem .8rem;
+  font-size: .8rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition: color .2s ease;
+}
+#nav-principal a.nav-enlace:not(#_)::after {
+  content: "";
+  position: absolute;
+  left: .8rem; right: .8rem; bottom: .2rem;
+  height: 2px;
+  background: var(--lima) !important;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .25s ease;
+}
+:root:not(#_):not(#__) #nav-principal a.nav-enlace:hover,
+:root:not(#_):not(#__) #nav-principal a.nav-enlace:focus-visible {
+  color: var(--lima) !important;
+  -webkit-text-fill-color: var(--lima) !important;
+}
+#nav-principal a.nav-enlace:hover::after,
+#nav-principal a.nav-enlace:focus-visible::after { transform: scaleX(1); }
+
+/* Menú siempre oscuro (también con el tema claro): el encabezado es de vidrio negro */
+:root:not(#_):not(#__) header.sitio-header #nav-principal a:not(.btn-nav),
+:root:not(#_):not(#__) header.sitio-header #btn-menu-movil,
+:root:not(#_):not(#__) header.sitio-header #btn-tema,
+:root:not(#_):not(#__) header.sitio-header .logo-nombre,
+:root:not(#_):not(#__) header.sitio-header .nav-usuario-nombre {
+  color: var(--blanco) !important;
+  -webkit-text-fill-color: var(--blanco) !important;
+}
+
+/* Submenú "Nosotros" */
+.nav-grupo { position: relative; }
+.nav-sub {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 12rem;
+  padding: .4rem;
+  margin-top: .35rem;
+  background: var(--panel);
+  border: 1px solid var(--linea);
+  border-radius: .75rem;
+  box-shadow: 0 18px 40px -18px rgba(0, 0, 0, .8);
+}
+.nav-sub::before { content: ""; position: absolute; left: 0; right: 0; top: -.5rem; height: .5rem; } /* puente para el mouse */
+.nav-grupo:hover > .nav-sub,
+.nav-grupo:focus-within > .nav-sub { display: block; }
+#nav-principal .nav-sub a:not(#_) {
+  display: block;
+  padding: .6rem .8rem;
+  border-radius: .5rem;
+  font-size: .85rem;
+  font-weight: 500;
+  text-decoration: none;
+  letter-spacing: .02em;
+}
+:root:not(#_):not(#__) #nav-principal .nav-sub a:hover {
+  background: rgba(200, 240, 0, .1);
+  color: var(--lima) !important;
+  -webkit-text-fill-color: var(--lima) !important;
+}
+
+/* Botón "Iniciar sesión" y tema */
+#nav-principal a.btn-nav {
+  margin-left: .6rem;
+  padding: .6rem 1.1rem;
+  border-radius: .6rem;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: none !important;
+  transition: filter .2s ease, transform .2s ease;
+}
+#nav-principal a.btn-nav:hover { filter: brightness(1.08); transform: translateY(-1px); }
+#btn-tema { margin-left: .4rem; }
+#nav-usuario { margin-left: .6rem; }
+
+/* Hamburguesa (móvil / tablet) */
+#btn-menu-movil .icono-cerrar { display: none; }
+#btn-menu-movil[aria-expanded="true"] .icono-abrir { display: none; }
+#btn-menu-movil[aria-expanded="true"] .icono-cerrar { display: block; }
+
+@media (max-width: 1023.98px) {
+  #btn-menu-movil {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    border: 1px solid var(--linea);
+    border-radius: .65rem;
+    background: transparent;
+    cursor: pointer;
+  }
+  #nav-principal.nav-movil-abierto {
+    display: flex;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: .5rem 1.25rem 1.25rem;
+    max-height: calc(100svh - var(--alto-header));
+    overflow-y: auto;
+    background: var(--negro);
+    border-bottom: 1px solid var(--linea);
+    box-shadow: 0 24px 40px -20px rgba(0, 0, 0, .9);
+  }
+  #nav-principal a.nav-enlace:not(#_) {
+    padding: .95rem .25rem;
+    font-size: .9rem;
+    border-bottom: 1px solid var(--linea);
+  }
+  #nav-principal a.nav-enlace:not(#_)::after { display: none; }
+  .nav-grupo { display: block; }
+  #nav-principal .nav-grupo > a.nav-enlace:not(#_) { display: block; }
+  .nav-sub {
+    display: block;
+    position: static;
+    min-width: 0;
+    margin: 0;
+    padding: 0 0 .4rem 1rem;
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    border-radius: 0;
+    border-width: 0 0 1px;
+    border-bottom: 1px solid var(--linea);
+  }
+  .nav-sub::before { display: none; }
+  #nav-principal .nav-sub a:not(#_) { padding: .6rem .25rem; font-size: .85rem; }
+  :root:not(#_):not(#__) #nav-principal .nav-sub a { color: var(--gris) !important; -webkit-text-fill-color: var(--gris) !important; }
+  #nav-principal a.btn-nav { margin: 1rem 0 0; text-align: center; padding: .9rem 1rem; }
+  #btn-tema { margin: .75rem 0 0; align-self: flex-start; }
+  #nav-usuario { margin: 1rem 0 0; }
+}
+
+/* ---------- 3) PORTADA ---------- */
+main > section.hero {
+  position: relative;
+  overflow: hidden;
+  background: var(--negro) !important;       /* gana al degradado verdoso de las secciones impares */
+  background-image: none !important;
+  padding-top: var(--alto-header);
+  min-height: clamp(32rem, 84svh, 44rem);
+  display: flex;
+  align-items: center;
+}
+/* La foto ocupa la columna derecha y se funde con el negro hacia la izquierda */
+.hero-media {
+  position: absolute;
+  top: var(--alto-header); bottom: 0; right: 0;   /* la foto empieza justo bajo el encabezado */
+  width: 62%;
+}
+.hero-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(1.15) contrast(1.04);
+  object-position: 0% 20%;    /* atleta a la derecha. La foto ya viene recortada sin el rótulo de otra marca */
+}
+.hero-media::after {          /* degradado oscuro: garantiza legibilidad del texto */
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, #090B09 0%, rgba(9,11,9,.95) 9%, rgba(9,11,9,.55) 26%, rgba(9,11,9,0) 52%),
+    linear-gradient(0deg, #090B09 0%, rgba(9,11,9,0) 20%),
+    linear-gradient(180deg, rgba(9,11,9,.7) 0%, rgba(9,11,9,0) 22%);
+}
+.hero-velo { display: none; }
+
+main > section.hero > .contenedor.hero-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr);
+  align-items: center;
+  column-gap: 2rem;
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+.hero-texto { max-width: 38rem; }
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin: 0 0 1.1rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .24em;
+  text-transform: uppercase;
+}
+.hero-eyebrow::before { content: ""; width: 1.75rem; height: 2px; background: var(--lima); flex: none; }
+
+.hero-h1 {
+  margin: 0;
+  font-family: var(--font-display, "Anton", sans-serif);
+  font-size: clamp(2.35rem, 1.2rem + 3.6vw, 4.1rem);
+  font-weight: 400;
+  line-height: 1.04;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+.hero-h1 .resaltado { display: block; }
+:root:not(#_):not(#__) .hero-h1 .resaltado {
+  color: var(--lima) !important;
+  -webkit-text-fill-color: var(--lima) !important;
+}
+.hero-h1 .hero-nombre {
+  display: block;
+  margin-top: .3em;
+  font-size: .5em;
+  letter-spacing: .04em;
+  background: none !important;
+}
+
+.hero-sub {
+  margin: 1.25rem 0 0;
+  max-width: 30rem;
+  font-size: clamp(1.05rem, .95rem + .45vw, 1.3rem);
+  line-height: 1.45;
+}
+/* Texto de la portada siempre claro (la foto es oscura aunque el tema sea claro) */
+:root:not(#_):not(#__) .hero .hero-eyebrow { color: var(--lima) !important; -webkit-text-fill-color: var(--lima) !important; }
+:root:not(#_):not(#__) .hero .hero-h1,
+:root:not(#_):not(#__) .hero .hero-h1 #hero-titulo,
+:root:not(#_):not(#__) .hero .hero-nombre { color: var(--blanco) !important; -webkit-text-fill-color: var(--blanco) !important; text-shadow: none; }
+:root:not(#_):not(#__) .hero .hero-sub { color: var(--gris) !important; -webkit-text-fill-color: var(--gris) !important; text-shadow: none; }
+
+.hero-acciones { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+.btn-hero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 3rem;
+  padding: 0 1.6rem;
+  border-radius: .65rem;
+  font-size: .85rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: transform .2s ease, filter .2s ease, border-color .2s ease, color .2s ease, background-color .2s ease;
+}
+.btn-hero--primario { border: 1px solid var(--lima); }
+.btn-hero--primario:hover { filter: brightness(1.08); transform: translateY(-1px); }
+.btn-hero--secundario {
+  border: 1px solid rgba(245, 245, 240, .4);
+  background: rgba(9, 11, 9, .35);
+}
+.btn-hero--secundario:hover { border-color: var(--lima); background: rgba(200, 240, 0, .08); transform: translateY(-1px); }
+:root:not(#_):not(#__) .btn-hero--secundario:hover { color: var(--lima) !important; -webkit-text-fill-color: var(--lima) !important; }
+
+.hero-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem 1.5rem;
+  margin: 2.5rem 0 0;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--linea);
+  max-width: 32rem;
+}
+.hero-stats dt {
+  font-family: var(--font-display, "Anton", sans-serif);
+  font-size: clamp(1.5rem, 1.1rem + 1vw, 1.9rem);
+  line-height: 1;
+  margin: 0;
+}
+:root:not(#_):not(#__) .hero-stats dt { color: var(--lima) !important; -webkit-text-fill-color: var(--lima) !important; }
+.hero-stats dd {
+  margin: .4rem 0 0;
+  font-size: .7rem;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+:root:not(#_):not(#__) .hero-stats dd { color: var(--gris) !important; -webkit-text-fill-color: var(--gris) !important; text-shadow: none; }
+.hero-stats, .hero-eyebrow, .hero-sub { text-shadow: none; }
+
+/* Entrada sutil (reemplaza el desplazamiento de 26px por uno de 10px) */
+.hero .animar-aparecer { animation: hero-entra .6s ease-out both; }
+@keyframes hero-entra { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* Tablet y móvil: columnas apiladas, foto arriba, texto debajo */
+@media (max-width: 1023.98px) {
+  main > section.hero {
+    display: block;
+    min-height: 0;
+  }
+  .hero-media {
+    position: relative;
+    width: 100%;
+    top: auto;
+    height: clamp(19rem, 58vw, 32rem);
+    margin-top: 0;
+  }
+  .hero-img { object-position: 0% 18%; }
+  .hero-media::after {
+    background:
+      linear-gradient(0deg, #090B09 0%, rgba(9,11,9,.55) 35%, rgba(9,11,9,0) 75%),
+      linear-gradient(180deg, rgba(9,11,9,.75) 0%, rgba(9,11,9,0) 28%);
+  }
+  main > section.hero > .contenedor.hero-grid {
+    display: block;
+    margin-top: -4.5rem;
+    padding-top: 0;
+    padding-bottom: 2.5rem;
+  }
+  .hero-espacio { display: none; }
+  .hero-texto { max-width: 34rem; }
+}
+@media (max-width: 479.98px) {
+  .hero-media { height: 20rem; }
+  .hero-acciones { flex-direction: column; }
+  .btn-hero { width: 100%; }
+  .hero-stats { gap: .75rem; }
+  .hero-stats dd { font-size: .64rem; letter-spacing: .1em; }
+}
+
+/* Paneles de Música / Contacto / Ubicación / Mi membresía: del negro puro al color de panel de la marca */
+:root:not(.light):not(#_):not(#__) #musica .panel,
+:root:not(.light):not(#_):not(#__) #contacto .panel,
+:root:not(.light):not(#_):not(#__) #ubicacion .panel,
+:root:not(.light):not(#_):not(#__) #membresias .mm-card,
+:root:not(.light):not(#_):not(#__) #membresias .mm-pendiente,
+:root:not(.light):not(#_):not(#__) #membresias .mm-reservas {
+  background: var(--panel) !important;
+  border-color: var(--linea) !important;
+}
+:root:not(.light):not(#_):not(#__) #contacto .panel input,
+:root:not(.light):not(#_):not(#__) #contacto .panel textarea,
+:root:not(.light):not(#_):not(#__) #musica .panel input {
+  background-color: var(--negro) !important;
+}
+:root:not(.light) footer, :root:not(.light):not(#_):not(#__) footer { background: var(--negro) !important; border-top: 1px solid var(--linea); }
+
+/* Títulos centrados (Contacto / Ubicación): la barrita de debajo también va centrada */
+#contacto .contenedor > h2::after,
+#ubicacion .contenedor > h2::after { left: 0; right: 0; margin-inline: auto; }
+
+/* Logo del pie de página (símbolo M proporcionado, nunca estirado) */
+.logo-pie { display: block; height: 1.6rem; width: auto; max-width: none; flex: none; }
+.enlace-admin { opacity: .8; }
+
+/* ---------- 4) RESTO DE LA PÁGINA: ritmo y tamaños ---------- */
+main section h2 { font-size: clamp(1.9rem, 1.3rem + 2.2vw, 2.9rem); line-height: 1.05; }
+@media (max-width: 767.98px) {
+  main section.py-24 { padding-block: 4rem; }
+}
+.panel { border-radius: .9rem; }
+img, video { max-width: 100%; }
+html, body { overflow-x: clip; }
+
+/* ---------- 5) MOVIMIENTO REDUCIDO ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .hero .animar-aparecer { animation: none; opacity: 1; transform: none; }
+}

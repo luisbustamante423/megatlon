@@ -1,0 +1,23 @@
+{
+  "name": "gym4",
+  "version": "1.0.0",
+  "description": "Landing pública + panel administrativo. Funciona **directamente al abrir los archivos HTML**, sin instalar nada ni levantar ningún servidor: todos los datos se guardan en el propio navegador (localStorage).",
+  "main": "index.js",
+ "scripts": {
+  "test": "echo \"Error: no test specified\" && exit 1",
+  "seed": "node server/seed.js",
+  "limpiar-tablas": "node server/limpiar_tablas.js",
+  "start": "node server/server.js"
+},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "nodemailer": "^6.9.16"
+  }
+}

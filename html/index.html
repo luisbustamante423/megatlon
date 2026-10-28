@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="es">
+<!-- Cabecera técnica (no se ve) -->
+<head>
+<!-- ============================================================
+     PÁGINA PÚBLICA (landing) — MEGATLÓN
+     Cómo leer este archivo: cada bloque importante lleva arriba un
+     comentario que dice qué es y para qué sirve. Los textos que ve el
+     cliente están dentro de las etiquetas; los estilos están en ../css/
+     (ver GUIA-CSS.md) y la lógica en ../js/ (landing.js o admin.js).
+     SECCIONES EN ORDEN (id para buscar con Ctrl+F): instalaciones, membresias, clases, entrenadores, testimonios, musica, contacto, ubicacion
+     ============================================================ -->
+<!-- Metadato del documento — codificación -->
+<meta charset="utf-8"/>
+<!-- Metadato del documento — viewport -->
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="theme-color" content="#090B09"/>
+<!-- Título de la pestaña del navegador — texto: «Megatlón Bolivia | Gimnasio premium en Cochabamba» -->
+<title>Megatlón Bolivia | Gimnasio premium en Cochabamba</title>
+<!-- Metadato del documento — description -->
+<meta name="description" content="Entrena más fuerte y vive mejor en Megatlón Cochabamba: pesas, cardio, funcional, clases grupales y entrenadores certificados."/>
+<!-- Archivo vinculado (CSS o icono) — favicon.ico -->
+<link rel="icon" href="favicon.ico" type="image/x-icon"/>
+<!-- Script (JavaScript) -->
+<script>
+// Se aplica antes de pintar la página para que no haya parpadeo del tema
+// oscuro al claro (o viceversa) al cargar.
+try {
+  if (localStorage.getItem('megatlon_tema') === 'claro') {
+    document.documentElement.classList.add('light');
+  }
+} catch (e) {}
+</script>
+<!-- Archivo vinculado (CSS o icono) — ../css/styles.css -->
+<link rel="stylesheet" href="../css/styles.css"/>
+<!-- Archivo vinculado (CSS o icono) — ../css/tema.css -->
+<link rel="stylesheet" href="../css/tema.css"/>
+<!-- Archivo vinculado (CSS o icono) — ../css/vibra.css -->
+<link rel="stylesheet" href="../css/vibra.css"/>
+<!-- Archivo vinculado (CSS o icono) — ../css/marca.css -->
+<link rel="stylesheet" href="../css/marca.css"/>
+<!-- Tipografías de la marca (Anton, Barlow, Barlow Condensed) — ya estaban declaradas en styles.css pero nunca se cargaban -->
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@600;700&display=swap"/>
+<!-- Capa visual final (paleta premium, encabezado, portada, responsive). Carga al último para ganar a las demás. -->
+<link rel="stylesheet" href="../css/premium.css"/>
+<!-- Ventana de inscripción (WhatsApp / pago por QR / recibo) y "Mi progreso" -->
+<link rel="stylesheet" href="../css/inscripcion.css"/>
+<link rel="stylesheet" href="../css/ajustes.css"/>
+</head>
+<!-- Cuerpo de la página (todo lo visible) -->
+<body>
+<!-- Contenedor — clase fondo-gym -->
+<div class="fondo-gym" aria-hidden="true">
+ <span class="fg-orbe fg-orbe--1"></span>
+ <span class="fg-orbe fg-orbe--2"></span>
+ <span class="fg-orbe fg-orbe--3"></span>
+ <span class="fg-rejilla"></span>
+ <span class="fg-rayos"></span>
+ <span class="fg-pulso"><i></i><i></i><i></i></span>
+ <span class="fg-brasas fg-brasas--1"></span>
+ <span class="fg-brasas fg-brasas--2"></span>
+ <span class="fg-grano"></span>
+</div>
+<div class="min-h-screen">
+   <!-- Encabezado: barra compacta fija. Logo = símbolo M (assets/logo-m-lima.png) + texto MEGATLÓN -->
+   <header class="fixed inset-x-0 top-0 z-50 sitio-header">
+    <div class="contenedor header-barra">
+     <!-- Marca: símbolo + texto, alineados verticalmente -->
+     <a aria-current="page" aria-label="Megatl&oacute;n, inicio" class="marca active" data-status="active" href="/">
+      <img class="logo-m" src="../assets/logo-m-lima.png" alt="" aria-hidden="true" width="612" height="380"/>
+      <span class="logo-nombre" aria-hidden="true">MEGATL&Oacute;N</span>
+     </a>
+     <!-- Botón hamburguesa (solo móvil/tablet). Lo activa js/landing.js -->
+     <button aria-label="Abrir men&uacute;" aria-controls="nav-principal" aria-expanded="false" class="lg:hidden" id="btn-menu-movil" type="button">
+      <svg aria-hidden="true" class="icono-abrir" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M4 7h16"></path><path d="M4 12h16"></path><path d="M4 17h16"></path>
+      </svg>
+      <svg aria-hidden="true" class="icono-cerrar" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+       <path d="M6 6l12 12"></path><path d="M18 6L6 18"></path>
+      </svg>
+     </button>
+     <!-- Menú principal -->
+     <nav aria-label="Principal" class="hidden items-center lg:flex" id="nav-principal">
+      <a class="nav-enlace" href="#inicio">Inicio</a>
+      <a class="nav-enlace" href="#membresias">Membres&iacute;as</a>
+      <a class="nav-enlace" href="#clases">Clases</a>
+      <!-- Nosotros agrupa las secciones que ya existían: Instalaciones, Entrenadores y Música -->
+      <div class="nav-grupo">
+       <a class="nav-enlace" href="#instalaciones">Nosotros</a>
+       <div class="nav-sub">
+        <a href="#instalaciones">Instalaciones</a>
+        <a href="#entrenadores">Entrenadores</a>
+        <a href="#musica">M&uacute;sica</a>
+       </div>
+      </div>
+      <a class="nav-enlace" href="#contacto">Contacto</a>
+      <!-- Iniciar sesión (lleva al formulario de acceso de #contacto) -->
+      <a id="nav-iniciar" class="btn-nav" href="#contacto">Iniciar sesi&oacute;n</a>
+      <span id="nav-usuario" class="nav-usuario" hidden>
+       <span class="nav-usuario-datos">
+        <span id="nav-usuario-nombre" class="nav-usuario-nombre"></span>
+        <small id="nav-usuario-codigo" class="codigo-usuario" hidden></small>
+       </span>
+       <button id="btn-salir" type="button" class="nav-usuario-salir">Salir</button>
+      </span>
+      <button id="btn-tema" type="button" class="btn-tema" aria-label="Cambiar entre tema claro y oscuro" title="Cambiar tema">
+       <svg class="icono-sol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="4"></circle>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path>
+       </svg>
+       <svg class="icono-luna" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+       </svg>
+      </button>
+     </nav>
+    </div>
+   </header>
+
+   <!-- Contenido principal -->
+   <main>
+    <!-- Portada: dos columnas en escritorio (texto | atleta), apilada en móvil. Todo el texto es HTML real. -->
+    <section class="hero" id="inicio" aria-labelledby="hero-h1">
+     <div class="hero-media">
+      <img alt="Atleta levantando una barra en un gimnasio oscuro" class="hero-img" fetchpriority="high" height="1088" src="../assets/hero-atleta.jpg" width="1380"/>
+     </div>
+     <div aria-hidden="true" class="hero-velo"></div>
+     <div class="contenedor hero-grid">
+      <div class="hero-texto">
+       <p id="hero-ubicacion" class="hero-eyebrow animar-aparecer">Cochabamba &middot; Bolivia</p>
+       <h1 id="hero-h1" class="hero-h1 animar-aparecer" style="animation-delay:90ms">
+        <span id="hero-titulo">Entrena m&aacute;s fuerte. <span class="resaltado">Vive mejor.</span></span>
+        <span id="hero-nombre" class="hero-nombre" hidden></span>
+        <small id="hero-codigo" class="codigo-usuario codigo-usuario--hero" hidden></small>
+       </h1>
+       <p id="hero-subtitulo" class="hero-sub animar-aparecer" style="animation-delay:180ms">El gimnasio m&aacute;s moderno de Cochabamba</p>
+       <div class="hero-acciones animar-aparecer" style="animation-delay:270ms">
+        <a class="btn-hero btn-hero--primario" href="#membresias">Ver membres&iacute;as</a>
+        <a class="btn-hero btn-hero--secundario" href="#instalaciones">Conocer el gimnasio</a>
+       </div>
+       <dl class="hero-stats animar-aparecer" style="animation-delay:360ms">
+        <div>
+         <dt id="hero-stat1-numero">+2.500</dt>
+         <dd id="hero-stat1-etiqueta">Socios activos</dd>
+        </div>
+        <div>
+         <dt id="hero-stat2-numero">24/7</dt>
+         <dd id="hero-stat2-etiqueta">Acceso &Eacute;lite</dd>
+        </div>
+        <div>
+         <dt id="hero-stat3-numero">+30</dt>
+         <dd id="hero-stat3-etiqueta">Clases semanales</dd>
+        </div>
+       </dl>
+      </div>
+      <!-- Segunda columna: espacio para el atleta de la foto (solo escritorio) -->
+      <div aria-hidden="true" class="hero-espacio"></div>
+     </div>
+    </section>
+    <!-- Sección — id «instalaciones» (instalaciones) -->
+    <section class="scroll-mt-24 py-24" id="instalaciones">
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">
+       Instalaciones
+      </p>
+      <!-- Título de sección (h2) — texto: «Un espacio hecho para rendir» -->
+      <h2 class="mt-3 text-4xl md:text-5xl">
+       Un espacio hecho para rendir
+      </h2>
+      <p class="mt-4 max-w-2xl text-muted-foreground">
+       Cada zona del gimnasio fue dise&ntilde;ada para que entrenes sin l&iacute;mites, con equipamiento de alta gama y ambientes cuidados al detalle.
+      </p>
+      <div class="mt-12">
+       <div aria-roledescription="carousel" class="relative" role="region">
+        <div class="overflow-hidden">
+         <div class="flex -ml-4" data-fallback="instalaciones">
+          <div class="min-w-0 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
+           <article class="zoom-hover panel group relative h-80">
+            <!-- Imagen — archivo inst-pesas-Be_y5pCa.jpg -->
+            <img alt="Área de pesas" class="h-full w-full object-cover" height="768" loading="lazy" src="../assets/inst-pesas-Be_y5pCa.jpg" width="1024"/>
+            <div class="absolute inset-0" style="background:var(--gradient-oscuro)">
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-6">
+             <!-- Subtítulo (h3) — texto: «Área de pesas» -->
+             <h3 class="text-2xl">Área de pesas</h3>
+             <p class="mt-1 text-sm text-muted-foreground">Mancuernas, racks, barras y bancos para tu entrenamiento de fuerza.</p>
+             <span class="mt-3 block h-1 w-0 bg-primary transition-all duration-500 group-hover:w-16"></span>
+            </div>
+           </article>
+          </div>
+          <div class="min-w-0 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
+           <article class="zoom-hover panel group relative h-80">
+            <!-- Imagen — archivo inst-cardio-KFzJrqbS.jpg -->
+            <img alt="Cardio" class="h-full w-full object-cover" height="768" loading="lazy" src="../assets/inst-cardio-KFzJrqbS.jpg" width="1024"/>
+            <div class="absolute inset-0" style="background:var(--gradient-oscuro)">
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-6">
+             <!-- Subtítulo (h3) — texto: «Cardio» -->
+             <h3 class="text-2xl">Cardio</h3>
+             <p class="mt-1 text-sm text-muted-foreground">Cintas, el&iacute;pticas y bicicletas con pantalla para tus sesiones.</p>
+             <span class="mt-3 block h-1 w-0 bg-primary transition-all duration-500 group-hover:w-16"></span>
+            </div>
+           </article>
+          </div>
+          <div class="min-w-0 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
+           <article class="zoom-hover panel group relative h-80">
+            <!-- Imagen — archivo inst-funcional-CSszA911.jpg -->
+            <img alt="Funcional" class="h-full w-full object-cover" height="768" loading="lazy" src="../assets/inst-funcional-CSszA911.jpg" width="1024"/>
+            <div class="absolute inset-0" style="background:var(--gradient-oscuro)">
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-6">
+             <!-- Subtítulo (h3) — texto: «Funcional» -->
+             <h3 class="text-2xl">Funcional</h3>
+             <p class="mt-1 text-sm text-muted-foreground">Cajas, kettlebells y combas para alta intensidad.</p>
+             <span class="mt-3 block h-1 w-0 bg-primary transition-all duration-500 group-hover:w-16"></span>
+            </div>
+           </article>
+          </div>
+          <div class="min-w-0 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
+           <article class="zoom-hover panel group relative h-80">
+            <!-- Imagen — archivo inst-clases-BKOaOwFI.jpg -->
+            <img alt="Clases grupales" class="h-full w-full object-cover" height="768" loading="lazy" src="../assets/inst-clases-BKOaOwFI.jpg" width="1024"/>
+            <div class="absolute inset-0" style="background:var(--gradient-oscuro)">
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-6">
+             <!-- Subtítulo (h3) — texto: «Clases grupales» -->
+             <h3 class="text-2xl">Clases grupales</h3>
+             <p class="mt-1 text-sm text-muted-foreground">Sal&oacute;n amplio para spinning y funcional.</p>
+             <span class="mt-3 block h-1 w-0 bg-primary transition-all duration-500 group-hover:w-16"></span>
+            </div>
+           </article>
+          </div>
+<div class="min-w-0 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
+           <article class="zoom-hover panel group relative h-80">
+            <!-- Imagen — archivo inst-estiramiento-B6AH0QWf.jpg -->
+            <img alt="Estiramiento" class="h-full w-full object-cover" height="768" loading="lazy" src="../assets/inst-estiramiento-B6AH0QWf.jpg" width="1024"/>
+            <div class="absolute inset-0" style="background:var(--gradient-oscuro)">
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-6">
+             <!-- Subtítulo (h3) — texto: «Estiramiento» -->
+             <h3 class="text-2xl">Estiramiento</h3>
+             <p class="mt-1 text-sm text-muted-foreground">Zona tranquila con esterillas y foam rollers.</p>
+             <span class="mt-3 block h-1 w-0 bg-primary transition-all duration-500 group-hover:w-16"></span>
+            </div>
+           </article>
+          </div>
+          <div class="min-w-0 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
+           <article class="zoom-hover panel group relative h-80">
+            <!-- Imagen — archivo inst-vestidores-B3iwi6pB.jpg -->
+            <img alt="Vestidores" class="h-full w-full object-cover" height="768" loading="lazy" src="../assets/inst-vestidores-B3iwi6pB.jpg" width="1024"/>
+            <div class="absolute inset-0" style="background:var(--gradient-oscuro)">
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-6">
+             <!-- Subtítulo (h3) — texto: «Vestidores» -->
+             <h3 class="text-2xl">Vestidores</h3>
+             <p class="mt-1 text-sm text-muted-foreground">Duchas y casilleros antes y despu&eacute;s de entrenar.</p>
+             <span class="mt-3 block h-1 w-0 bg-primary transition-all duration-500 group-hover:w-16"></span>
+            </div>
+           </article>
+          </div>
+          <div class="min-w-0 shrink-0 basis-full sm:basis-1/2 lg:basis-1/3">
+           <article class="zoom-hover panel group relative h-80">
+            <!-- Imagen — archivo inst-descanso-QVV_WgYx.jpg -->
+            <img alt="Zona de descanso" class="h-full w-full object-cover" height="768" loading="lazy" src="../assets/inst-descanso-QVV_WgYx.jpg" width="1024"/>
+            <div class="absolute inset-0" style="background:var(--gradient-oscuro)">
+            </div>
+            <div class="absolute inset-x-0 bottom-0 p-6">
+             <!-- Subtítulo (h3) — texto: «Zona de descanso» -->
+             <h3 class="text-2xl">Zona de descanso</h3>
+             <p class="mt-1 text-sm text-muted-foreground">Recup&eacute;rate con zona lounge y buena m&uacute;sica.</p>
+             <span class="mt-3 block h-1 w-0 bg-primary transition-all duration-500 group-hover:w-16"></span>
+            </div>
+           </article>
+          </div>
+         </div>
+        </div>
+        <!-- Botón -->
+        <button class="items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground absolute h-8 w-8 rounded-full -left-12 top-1/2 -translate-y-1/2 hidden sm:flex" disabled="">
+         <svg aria-hidden="true" class="lucide lucide-arrow-left h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="m12 19-7-7 7-7">
+          </path>
+          <path d="M19 12H5">
+          </path>
+         </svg>
+         <span class="sr-only">
+          Previous slide
+         </span>
+        </button>
+        <!-- Botón -->
+        <button class="items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground absolute h-8 w-8 rounded-full -right-12 top-1/2 -translate-y-1/2 hidden sm:flex" disabled="">
+         <svg aria-hidden="true" class="lucide lucide-arrow-right h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12h14">
+          </path>
+          <path d="m12 5 7 7-7 7">
+          </path>
+         </svg>
+         <span class="sr-only">
+          Next slide
+         </span>
+        </button>
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sección — id «membresias» (membresias) -->
+    <section class="scroll-mt-24 py-24" id="membresias">
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">
+       Membres&iacute;as
+      </p>
+      <!-- Título de sección (h2) — id «membresias-titulo» (membresias titulo); texto: «Elige tu plan» -->
+      <h2 id="membresias-titulo" class="mt-3 text-4xl md:text-5xl">
+       Elige tu plan
+      </h2>
+      <!-- Párrafo — id «membresias-desc» (membresias desc); texto: «Planes flexibles, sin letra chica. Todos incluyen » -->
+      <p id="membresias-desc" class="mt-4 max-w-2xl text-muted-foreground">
+       Planes flexibles, sin letra chica. Todos incluyen evaluaci&oacute;n inicial y acceso a la comunidad Megatl&oacute;n.
+      </p>
+      <!-- Contenedor — id «mi-membresia» (mi membresía) -->
+      <div id="mi-membresia" class="mi-membresia" hidden></div>
+      <!-- Contenedor — id «mi-progreso» (mi progreso): peso y altura antes / después; solo con sesión -->
+      <div id="mi-progreso" class="mi-membresia mi-progreso" hidden></div>
+      <!-- Contenedor — id «membresias-grid-wrap» (membresias grid contenedor) -->
+      <div id="membresias-grid-wrap" class="mt-12">
+       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4" data-fallback="membresias">
+        <article class="panel relative flex flex-col p-7 transition-transform duration-500 hover:-translate-y-2">
+         <!-- Subtítulo (h3) — texto: «Pase Diario» -->
+         <h3 class="text-3xl">Pase Diario</h3>
+         <p class="mt-4 flex items-end gap-2"><span class="titular text-5xl text-primary">Bs 25</span><span class="pb-1 text-xs uppercase tracking-widest text-muted-foreground">/ 1 d&iacute;a</span></p>
+         <!-- Lista -->
+         <ul class="mt-6 flex-1 space-y-3 text-sm">
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Acceso a todas las zonas</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Sin permanencia ni contrato</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Vestidores y casilleros</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Ideal para probar el gimnasio</li>
+         </ul>
+         <!-- Enlace — salta a la sección #contacto; texto: «Inscribirme» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-10 rounded-md px-8 mt-7 font-bold uppercase tracking-widest" href="#contacto">Inscribirme</a>
+        </article>
+        <article class="panel relative flex flex-col p-7 transition-transform duration-500 hover:-translate-y-2">
+         <!-- Subtítulo (h3) — texto: «Básico» -->
+         <h3 class="text-3xl">B&aacute;sico</h3>
+         <p class="mt-4 flex items-end gap-2"><span class="titular text-5xl text-primary">Bs 130</span><span class="pb-1 text-xs uppercase tracking-widest text-muted-foreground">/ 30 d&iacute;as</span></p>
+         <!-- Lista -->
+         <ul class="mt-6 flex-1 space-y-3 text-sm">
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Acceso total en horario regular</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Evaluaci&oacute;n inicial gratuita</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Rutina de fuerza y cardio</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Comunidad Megatl&oacute;n</li>
+         </ul>
+         <!-- Enlace — salta a la sección #contacto; texto: «Inscribirme» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-10 rounded-md px-8 mt-7 font-bold uppercase tracking-widest" href="#contacto">Inscribirme</a>
+        </article>
+        <article class="panel relative flex flex-col p-7 transition-transform duration-500 hover:-translate-y-2 brillo-rojo border-primary/60">
+         <span class="absolute -top-3 left-7 rounded-full bg-primary px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary-foreground">M&aacute;s elegido</span>
+         <!-- Subtítulo (h3) — texto: «Plus» -->
+         <h3 class="text-3xl">Plus</h3>
+         <p class="mt-4 flex items-end gap-2"><span class="titular text-5xl text-primary">Bs 180</span><span class="pb-1 text-xs uppercase tracking-widest text-muted-foreground">/ 30 d&iacute;as</span></p>
+         <!-- Lista -->
+         <ul class="mt-6 flex-1 space-y-3 text-sm">
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Acceso 24/7</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>3 clases grupales por semana</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Evaluaci&oacute;n y rutina personalizada</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>1 asesor&iacute;a nutricional al mes</li>
+         </ul>
+         <!-- Enlace — salta a la sección #contacto; texto: «Inscribirme» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 mt-7 font-bold uppercase tracking-widest" href="#contacto">Inscribirme</a>
+        </article>
+        <article class="panel relative flex flex-col p-7 transition-transform duration-500 hover:-translate-y-2">
+         <!-- Subtítulo (h3) — texto: «Premium» -->
+         <h3 class="text-3xl">Premium</h3>
+         <p class="mt-4 flex items-end gap-2"><span class="titular text-5xl text-primary">Bs 250</span><span class="pb-1 text-xs uppercase tracking-widest text-muted-foreground">/ 30 d&iacute;as</span></p>
+         <!-- Lista -->
+         <ul class="mt-6 flex-1 space-y-3 text-sm">
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Acceso 24/7 con 1 invitado al mes</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Clases grupales ilimitadas</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Plan 1:1 mensual con tu coach</li>
+          <li class="flex gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-check mt-0.5 size-4 shrink-0 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M20 6 9 17l-5-5"></path></svg>Sauna y zona de recuperaci&oacute;n</li>
+         </ul>
+         <!-- Enlace — salta a la sección #contacto; texto: «Inscribirme» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80 h-10 rounded-md px-8 mt-7 font-bold uppercase tracking-widest" href="#contacto">Inscribirme</a>
+        </article>
+        </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sección — id «clases» (clases) -->
+    <section class="scroll-mt-24 py-24" id="clases">
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">
+       Clases
+      </p>
+      <!-- Título de sección (h2) — texto: «Entrena acompañado» -->
+      <h2 class="mt-3 text-4xl md:text-5xl">
+       Entrena acompa&ntilde;ado
+      </h2>
+      <p class="mt-4 max-w-2xl text-muted-foreground">
+       Reserva tu cupo en las clases grupales dirigidas por nuestros coaches.
+      </p>
+      <div class="mt-12">
+       <div class="grid gap-5 md:grid-cols-2 xl:grid-cols-3" data-fallback="clases">
+        <article class="panel group p-6 transition-colors hover:border-primary/60">
+         <div class="flex items-start justify-between gap-3">
+          <!-- Subtítulo (h3) — texto: «CrossFit» -->
+          <h3 class="text-2xl">CrossFit</h3>
+          <span class="rounded-full bg-primary/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">LUN</span>
+         </div>
+         <p class="mt-2 text-sm text-muted-foreground">Alta intensidad para ganar potencia, fuerza y resistencia.</p>
+         <dl class="mt-5 space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-clock size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>07:00</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-users size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>20 cupos disponibles</div>
+          <div class="text-xs uppercase tracking-widest text-muted-foreground">Coach: Carlos Rojas</div>
+         </dl>
+         <!-- Enlace — salta a la sección #contacto; texto: «Reservar» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 mt-6 w-full font-bold uppercase tracking-widest" href="#contacto">Reservar</a>
+        </article>
+        <article class="panel group p-6 transition-colors hover:border-primary/60">
+         <div class="flex items-start justify-between gap-3">
+          <!-- Subtítulo (h3) — texto: «Spinning» -->
+          <h3 class="text-2xl">Spinning</h3>
+          <span class="rounded-full bg-primary/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">MAR</span>
+         </div>
+         <p class="mt-2 text-sm text-muted-foreground">Ciclo indoor con m&uacute;sica motivante y ritmo guiado.</p>
+         <dl class="mt-5 space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-clock size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>18:30</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-users size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>15 cupos disponibles</div>
+          <div class="text-xs uppercase tracking-widest text-muted-foreground">Coach: Valeria D&iacute;az</div>
+         </dl>
+         <!-- Enlace — salta a la sección #contacto; texto: «Reservar» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 mt-6 w-full font-bold uppercase tracking-widest" href="#contacto">Reservar</a>
+        </article>
+        <article class="panel group p-6 transition-colors hover:border-primary/60">
+         <div class="flex items-start justify-between gap-3">
+          <!-- Subtítulo (h3) — texto: «Yoga & Movilidad» -->
+          <h3 class="text-2xl">Yoga &amp; Movilidad</h3>
+          <span class="rounded-full bg-primary/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">MI&Eacute;</span>
+         </div>
+         <p class="mt-2 text-sm text-muted-foreground">Flexibilidad, respiraci&oacute;n y recuperaci&oacute;n activa.</p>
+         <dl class="mt-5 space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-clock size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>19:00</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-users size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>12 cupos disponibles</div>
+          <div class="text-xs uppercase tracking-widest text-muted-foreground">Coach: Camila Ferrufino</div>
+         </dl>
+         <!-- Enlace — salta a la sección #contacto; texto: «Reservar» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 mt-6 w-full font-bold uppercase tracking-widest" href="#contacto">Reservar</a>
+        </article>
+        <article class="panel group p-6 transition-colors hover:border-primary/60">
+         <div class="flex items-start justify-between gap-3">
+          <!-- Subtítulo (h3) — texto: «HIIT Quema Grasa» -->
+          <h3 class="text-2xl">HIIT Quema Grasa</h3>
+          <span class="rounded-full bg-primary/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">JUE</span>
+         </div>
+         <p class="mt-2 text-sm text-muted-foreground">Intervalos cortos y explosivos para acelerar tu metabolismo.</p>
+         <dl class="mt-5 space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-clock size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>06:30</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-users size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>20 cupos disponibles</div>
+          <div class="text-xs uppercase tracking-widest text-muted-foreground">Coach: Andr&eacute;s Quiroga</div>
+         </dl>
+         <!-- Enlace — salta a la sección #contacto; texto: «Reservar» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 mt-6 w-full font-bold uppercase tracking-widest" href="#contacto">Reservar</a>
+        </article>
+        <article class="panel group p-6 transition-colors hover:border-primary/60">
+         <div class="flex items-start justify-between gap-3">
+          <!-- Subtítulo (h3) — texto: «Box Funcional» -->
+          <h3 class="text-2xl">Box Funcional</h3>
+          <span class="rounded-full bg-primary/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">VI&Eacute;</span>
+         </div>
+         <p class="mt-2 text-sm text-muted-foreground">Tecnica de golpeo y acondicionamiento para todos los niveles.</p>
+         <dl class="mt-5 space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-clock size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>18:00</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-users size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>16 cupos disponibles</div>
+          <div class="text-xs uppercase tracking-widest text-muted-foreground">Coach: Carlos Rojas</div>
+         </dl>
+         <!-- Enlace — salta a la sección #contacto; texto: «Reservar» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 mt-6 w-full font-bold uppercase tracking-widest" href="#contacto">Reservar</a>
+        </article>
+        <article class="panel group p-6 transition-colors hover:border-primary/60">
+         <div class="flex items-start justify-between gap-3">
+          <!-- Subtítulo (h3) — texto: «Funcional Total» -->
+          <h3 class="text-2xl">Funcional Total</h3>
+          <span class="rounded-full bg-primary/15 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-primary">S&Aacute;B</span>
+         </div>
+         <p class="mt-2 text-sm text-muted-foreground">Circuito completo de movimientos reales para todo el cuerpo.</p>
+         <dl class="mt-5 space-y-2 text-sm">
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-clock size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path></svg>10:00</div>
+          <div class="flex items-center gap-2 text-muted-foreground"><svg aria-hidden="true" class="lucide lucide-users size-4 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><path d="M16 3.128a4 4 0 0 1 0 7.744"></path><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><circle cx="9" cy="7" r="4"></circle></svg>25 cupos disponibles</div>
+          <div class="text-xs uppercase tracking-widest text-muted-foreground">Coach: Valeria D&iacute;az</div>
+         </dl>
+         <!-- Enlace — salta a la sección #contacto; texto: «Reservar» -->
+         <a class="inline-flex items-center justify-center gap-2 whitespace-nowrap text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-10 rounded-md px-8 mt-6 w-full font-bold uppercase tracking-widest" href="#contacto">Reservar</a>
+        </article>
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sección — id «entrenadores» (entrenadores) -->
+    <section class="scroll-mt-24 py-24" id="entrenadores">
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">
+       Entrenadores
+      </p>
+      <!-- Título de sección (h2) — texto: «Coaches certificados» -->
+      <h2 class="mt-3 text-4xl md:text-5xl">
+       Coaches certificados
+      </h2>
+      <p class="mt-4 max-w-2xl text-muted-foreground">
+       Un equipo que te acompa&ntilde;a desde el primer d&iacute;a hasta tu mejor versi&oacute;n.
+      </p>
+      <div class="mt-12">
+       <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-4" data-fallback="entrenadores">
+        <article class="zoom-hover panel group relative h-[26rem]">
+         <!-- Imagen — archivo coach-1-bM0K_CCt.jpg -->
+         <img alt="Entrenador Carlos Rojas" class="h-full w-full object-cover object-top" height="960" loading="lazy" src="../assets/coach-1-bM0K_CCt.jpg" width="768"/>
+         <div aria-hidden="true" class="absolute inset-0" style="background:var(--gradient-oscuro)">
+         </div>
+         <div class="absolute inset-x-0 bottom-0 p-6">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-primary">Entrenamiento funcional</p>
+          <!-- Subtítulo (h3) — texto: «Carlos Rojas» -->
+          <h3 class="mt-2 text-2xl">Carlos Rojas</h3>
+          <p class="mt-1 text-xs uppercase tracking-widest text-muted-foreground">8 a&ntilde;os de experiencia</p>
+          <div class="grid grid-rows-[0fr] transition-all duration-500 group-hover:grid-rows-[1fr]">
+           <div class="overflow-hidden">
+            <p class="pt-3 text-sm text-muted-foreground">CrossFit L2 y preparaci&oacute;n atl&eacute;tica para deportistas que buscan potencia y resistencia.</p>
+            <p class="pt-2 text-xs uppercase tracking-widest text-primary">Lun a Vie &middot; 06:00&ndash;12:00</p>
+           </div>
+          </div>
+         </div>
+        </article>
+        <article class="zoom-hover panel group relative h-[26rem]">
+         <!-- Imagen — archivo coach-2-DqnxVgHH.jpg -->
+         <img alt="Entrenadora Valeria D&iacute;az" class="h-full w-full object-cover object-top" height="960" loading="lazy" src="../assets/coach-2-DqnxVgHH.jpg" width="768"/>
+         <div aria-hidden="true" class="absolute inset-0" style="background:var(--gradient-oscuro)">
+         </div>
+         <div class="absolute inset-x-0 bottom-0 p-6">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-primary">Spinning y HIIT</p>
+          <!-- Subtítulo (h3) — texto: «Valeria Díaz» -->
+          <h3 class="mt-2 text-2xl">Valeria D&iacute;az</h3>
+          <p class="mt-1 text-xs uppercase tracking-widest text-muted-foreground">6 a&ntilde;os de experiencia</p>
+          <div class="grid grid-rows-[0fr] transition-all duration-500 group-hover:grid-rows-[1fr]">
+           <div class="overflow-hidden">
+            <p class="pt-3 text-sm text-muted-foreground">Rutinas de alta intensidad que mejoran tu resistencia y queman calor&iacute;as sin aburrirte.</p>
+            <p class="pt-2 text-xs uppercase tracking-widest text-primary">Lun a Vie &middot; 14:00&ndash;20:00</p>
+           </div>
+          </div>
+         </div>
+        </article>
+        <article class="zoom-hover panel group relative h-[26rem]">
+         <!-- Imagen — archivo coach-3-BHvKqmCc.jpg -->
+         <img alt="Entrenador Andres Quiroga" class="h-full w-full object-cover object-top" height="960" loading="lazy" src="../assets/coach-3-BHvKqmCc.jpg" width="768"/>
+         <div aria-hidden="true" class="absolute inset-0" style="background:var(--gradient-oscuro)">
+         </div>
+         <div class="absolute inset-x-0 bottom-0 p-6">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-primary">Musculaci&oacute;n y fuerza</p>
+          <!-- Subtítulo (h3) — texto: «Andrés Quiroga» -->
+          <h3 class="mt-2 text-2xl">Andr&eacute;s Quiroga</h3>
+          <p class="mt-1 text-xs uppercase tracking-widest text-muted-foreground">10 a&ntilde;os de experiencia</p>
+          <div class="grid grid-rows-[0fr] transition-all duration-500 group-hover:grid-rows-[1fr]">
+           <div class="overflow-hidden">
+            <p class="pt-3 text-sm text-muted-foreground">T&eacute;cnica en pesas, fuerza y planificaci&oacute;n de hipertrofia para transformar tu cuerpo.</p>
+            <p class="pt-2 text-xs uppercase tracking-widest text-primary">Lun a Vie &middot; 09:00&ndash;15:00</p>
+           </div>
+          </div>
+         </div>
+        </article>
+        <article class="zoom-hover panel group relative h-[26rem]">
+         <!-- Imagen — archivo coach-4-C6Uj-21L.jpg -->
+         <img alt="Coach Camila Ferrufino" class="h-full w-full object-cover object-top" height="960" loading="lazy" src="../assets/coach-4-C6Uj-21L.jpg" width="768"/>
+         <div aria-hidden="true" class="absolute inset-0" style="background:var(--gradient-oscuro)">
+         </div>
+         <div class="absolute inset-x-0 bottom-0 p-6">
+          <p class="text-[10px] font-bold uppercase tracking-[0.35em] text-primary">Movilidad y yoga</p>
+          <!-- Subtítulo (h3) — texto: «Camila Ferrufino» -->
+          <h3 class="mt-2 text-2xl">Camila Ferrufino</h3>
+          <p class="mt-1 text-xs uppercase tracking-widest text-muted-foreground">5 a&ntilde;os de experiencia</p>
+          <div class="grid grid-rows-[0fr] transition-all duration-500 group-hover:grid-rows-[1fr]">
+           <div class="overflow-hidden">
+            <p class="pt-3 text-sm text-muted-foreground">Yoga, estiramiento y movilidad para recuperar tu cuerpo despu&eacute;s del entreno.</p>
+            <p class="pt-2 text-xs uppercase tracking-widest text-primary">Mar a S&aacute;b &middot; 16:00&ndash;21:00</p>
+           </div>
+          </div>
+         </div>
+        </article>
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sección — id «testimonios» (testimonios) -->
+    <section class="scroll-mt-24 py-24" id="testimonios" hidden>
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">
+       Comunidad
+      </p>
+      <!-- Título de sección (h2) — texto: «Lo que dicen nuestros socios» -->
+      <h2 class="mt-3 text-4xl md:text-5xl">
+       Lo que dicen nuestros socios
+      </h2>
+      <div class="mt-12">
+       <div class="grid gap-6 md:grid-cols-2 xl:grid-cols-4" data-fallback="testimonios">
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sección — id «musica» (música) -->
+    <section class="scroll-mt-24 py-24" id="musica">
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">
+       M&uacute;sica
+      </p>
+      <!-- Título de sección (h2) — texto: «Tu playlist de entrenamiento» -->
+      <h2 class="mt-3 text-4xl md:text-5xl">
+       Tu playlist de entrenamiento
+      </h2>
+      <p class="mt-4 max-w-2xl text-muted-foreground">
+       Busca cualquier canci&oacute;n de YouTube, esc&uacute;chala mientras navegas y gu&aacute;rdala con el coraz&oacute;n en la playlist de Megatl&oacute;n.
+      </p>
+      <div class="mt-12">
+       <div class="grid gap-8 lg:grid-cols-[1.1fr_1fr]">
+        <!-- Contenedor — clase panel -->
+        <div class="panel p-6">
+         <!-- Formulario — id «form-musica» (formulario música) -->
+         <form id="form-musica" class="flex gap-3">
+          <!-- Campo de entrada — id «input-musica» (campos de texto música); pide: Busca música o pega un enlace de YouTube... -->
+          <input id="input-musica" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="100" placeholder="Busca m&uacute;sica o pega un enlace de YouTube..." value="" autocomplete="off"/>
+          <!-- Botón — etiqueta: Buscar; tipo submit -->
+          <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2" type="submit" aria-label="Buscar">
+           <svg aria-hidden="true" class="lucide lucide-search" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+            <path d="m21 21-4.34-4.34"></path>
+            <circle cx="11" cy="11" r="8"></circle>
+           </svg>
+          </button>
+         </form>
+         <!-- Párrafo — id «musica-estado» (música estado) -->
+         <p id="musica-estado" class="musica-estado" hidden></p>
+         <!-- Contenedor — id «musica-reproduciendo» (música reproduciendo) -->
+         <div id="musica-reproduciendo" class="musica-reproduciendo mt-4">
+          <!-- Texto en línea — id «musica-reproduciendo-texto» (música reproduciendo texto) -->
+          <span id="musica-reproduciendo-texto" class="musica-reproduciendo-texto"></span>
+          <!-- Botón — id «btn-guardar-cancion» (botón guardar canción); etiqueta: Guardar en mi playlist; tipo button; texto: «♡» -->
+          <button id="btn-guardar-cancion" type="button" class="btn-corazon" aria-label="Guardar en mi playlist" title="Guardar en mi playlist">&#9825;</button>
+         </div>
+         <!-- Lista — id «lista-musica» (lista música) -->
+         <ul id="lista-musica" class="mt-6 space-y-2">
+         </ul>
+        </div>
+        <!-- Contenedor — clase panel -->
+        <div class="panel p-6">
+         <div class="flex items-start justify-between gap-3">
+          <div>
+           <!-- Subtítulo (h3) — clase titular; texto: «Playlist Megatlón» -->
+           <h3 class="titular text-2xl">
+            Playlist Megatl&oacute;n
+           </h3>
+           <p class="mt-1 text-sm text-muted-foreground">
+            Tus favoritos guardados para entrenar.
+           </p>
+          </div>
+          <!-- Botón — id «btn-reproducir-todo» (botón reproducir todo); tipo button; texto: «▶ Reproducir todo» -->
+          <button id="btn-reproducir-todo" type="button" class="btn-reproducir-todo" hidden>&#9654; Reproducir todo</button>
+         </div>
+         <!-- Lista — id «lista-playlist» (lista playlist) -->
+         <ul id="lista-playlist" class="mt-6 space-y-2">
+          <!-- Elemento de lista — id «playlist-vacio» (playlist vacio); texto: «Todavía no hay canciones. Busca y presiona el cora» -->
+          <li id="playlist-vacio" class="text-sm text-muted-foreground">
+           Todav&iacute;a no hay canciones. Busca y presiona el coraz&oacute;n.
+          </li>
+         </ul>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sección — id «contacto» (contacto) -->
+    <section class="scroll-mt-24 py-24" id="contacto">
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">
+       Contacto
+      </p>
+      <!-- Título de sección (h2) — texto: «Da el primer paso» -->
+      <h2 class="mt-3 text-4xl md:text-5xl">
+       Da el primer paso
+      </h2>
+      <!-- Párrafo — id «contacto-subtitulo» (contacto subtitulo); texto: «Iniciar sesión» -->
+      <p id="contacto-subtitulo" class="mt-4 max-w-2xl text-muted-foreground">
+       Iniciar sesi&oacute;n
+      </p>
+      <div class="mt-12">
+       <div class="mx-auto max-w-md">
+        <!-- Contenedor — id «caja-sesion» (caja sesión) -->
+        <div id="caja-sesion" class="panel caja-sesion p-7">
+         <!-- Párrafo — id «sesion-aviso» (sesión aviso) -->
+         <p id="sesion-aviso" class="sesion-aviso" hidden></p>
+
+         <!-- Formulario — id «form-login-1» (formulario inicio de sesión) -->
+         <form id="form-login-1" class="space-y-4" novalidate>
+          <!-- Campo de entrada — id «login-nombre» (inicio de sesión nombre); pide: Nombre (solo letras) -->
+          <input id="login-nombre" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="80" placeholder="Nombre (solo letras) *" inputmode="text" pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ' .\-]+" title="Solo letras, sin números" required autocomplete="name" value=""/>
+          <!-- Campo de entrada — id «login-correo» (inicio de sesión correo); pide: Correo; tipo email -->
+          <input id="login-correo" type="email" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="200" placeholder="Correo *" required autocomplete="email" value=""/>
+          <!-- Campo de entrada — id «login-carnet» (inicio de sesión carnet); pide: Carnet de identidad (ej. 1234567); tipo text -->
+          <input id="login-carnet" type="text" inputmode="numeric" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="10" pattern="\d{5,10}" placeholder="Carnet de identidad (solo números) *" required autocomplete="off" title="Solo números, de 5 a 10 dígitos (ej. 1234567)" value=""/>
+          <!-- Campo de entrada — id «login-telefono» (inicio de sesión telefono); pide: Teléfono (7 u 8 dígitos); tipo tel -->
+          <input id="login-telefono" type="tel" inputmode="tel" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="8" pattern="\d{7,8}" placeholder="Teléfono (7 u 8 dígitos) *" required autocomplete="tel" value=""/>
+          <!-- Campo de entrada — id «login-peso» (inicio de sesión peso); pide: Peso en kilos (ej. 70) -->
+          <input id="login-peso" type="text" inputmode="decimal" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="5" placeholder="Peso en kilos (ej. 70) *" required autocomplete="off" title="Tu peso en kilos, entre 20 y 400 (ej. 70 o 70.5)" value=""/>
+          <!-- Campo de entrada — id «login-altura» (inicio de sesión altura); pide: Altura en metros (ej. 1.75) -->
+          <input id="login-altura" type="text" inputmode="decimal" class="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="4" placeholder="Altura en metros (ej. 1.75) *" required autocomplete="off" title="Tu altura en metros (ej. 1.75) o en centímetros (ej. 175)" value=""/>
+          <!-- Botón — tipo submit; texto: «Iniciar sesión» -->
+          <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full font-bold uppercase tracking-widest" type="submit">Iniciar sesi&oacute;n</button>
+         </form>
+
+
+         <!-- Formulario — id «form-mensaje» (formulario mensaje) -->
+         <form id="form-mensaje" class="space-y-4" hidden novalidate>
+          <!-- Párrafo — id «mensaje-nombre» (mensaje nombre); texto: «Hola» -->
+          <p class="text-sm text-muted-foreground">Hola <strong id="mensaje-nombre" class="text-primary"></strong>, sesi&oacute;n iniciada. Si quieres, deja un mensaje para el gimnasio: solo se publica en la p&aacute;gina si lo elegimos.</p>
+          <!-- Área de texto — id «mensaje-texto» (mensaje texto); pide: Tu mensaje -->
+          <textarea id="mensaje-texto" class="flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-base shadow-sm placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 md:text-sm" maxlength="600" placeholder="Tu mensaje" rows="4"></textarea>
+          <!-- Contenedor — id «mensaje-estrellas» (mensaje estrellas); etiqueta: Calificación -->
+          <div class="estrellas-input" id="mensaje-estrellas" role="radiogroup" aria-label="Calificaci&oacute;n"></div>
+          <!-- Botón — tipo submit; texto: «Enviar mensaje» -->
+          <button class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm cursor-pointer transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 disabled:cursor-not-allowed [&amp;_svg]:pointer-events-none [&amp;_svg]:size-4 [&amp;_svg]:shrink-0 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full font-bold uppercase tracking-widest" type="submit">Enviar mensaje</button>
+         </form>
+
+         <!-- Párrafo — id «sesion-status» (sesión mensaje de estado) -->
+         <p id="sesion-status" class="sesion-status" hidden></p>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <!-- Sección — id «ubicacion» (ubicacion) -->
+    <section class="scroll-mt-24 py-24" id="ubicacion">
+     <!-- Contenedor — clase contenedor -->
+     <div class="contenedor">
+      <p class="text-xs font-bold uppercase tracking-[0.4em] text-primary">Ubicaci&oacute;n</p>
+      <!-- Título de sección (h2) — texto: «Visítanos» -->
+      <h2 class="mt-3 text-4xl md:text-5xl">Vis&iacute;tanos</h2>
+      <div class="mt-12">
+       <div class="mx-auto max-w-4xl">
+        <!-- Contenedor — clase panel -->
+        <div class="panel space-y-6 p-7">
+         <div class="flex items-start gap-3">
+          <svg aria-hidden="true" class="lucide lucide-map-pin mt-1 size-5 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+           <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+           </path>
+           <circle cx="12" cy="10" r="3">
+           </circle>
+          </svg>
+          <div>
+           <p class="font-semibold">
+            Direcci&oacute;n
+           </p>
+           <!-- Párrafo — id «contacto-direccion» (contacto direccion) -->
+           <p id="contacto-direccion" class="text-sm text-muted-foreground">
+           </p>
+          </div>
+         </div>
+         <div class="flex items-start gap-3">
+          <svg aria-hidden="true" class="lucide lucide-phone mt-1 size-5 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+           <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384">
+           </path>
+          </svg>
+          <div>
+           <p class="font-semibold">
+            Tel&eacute;fono
+           </p>
+           <!-- Párrafo — id «contacto-telefono» (contacto telefono) -->
+           <p id="contacto-telefono" class="text-sm text-muted-foreground">
+           </p>
+          </div>
+         </div>
+         <div class="flex items-start gap-3">
+          <svg aria-hidden="true" class="lucide lucide-mail mt-1 size-5 text-primary" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
+           <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7">
+           </path>
+           <rect height="16" rx="2" width="20" x="2" y="4">
+           </rect>
+          </svg>
+          <div>
+           <p class="font-semibold">
+            Horarios
+           </p>
+           <!-- Párrafo — id «contacto-horarios» (contacto horarios) -->
+           <p id="contacto-horarios" class="text-sm text-muted-foreground">
+           </p>
+          </div>
+         </div>
+         <div class="overflow-hidden rounded-xl border border-border">
+          <!-- Marco incrustado (mapa) — id «contacto-mapa» (contacto mapa) -->
+          <iframe id="contacto-mapa" class="h-64 w-full" loading="lazy" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3807.4194340960457!2d-66.15705012616652!3d-17.391647564307444!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x93e373f7ec6f5e77%3A0xb9deabd148ad350e!2sMegatlon%20Fitness%20Club!5e0!3m2!1ses-419!2sbo!4v1788465656991!5m2!1ses-419!2sbo" title="Ubicaci&oacute;n Megatl&oacute;n Cochabamba">
+          </iframe>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+   </main>
+
+   <!-- Pie de página -->
+   <footer class="border-t border-border bg-surface/40 py-14">
+    <!-- Contenedor — clase contenedor -->
+    <div class="contenedor grid gap-10 md:grid-cols-3">
+     <div>
+      <div class="flex items-center gap-3">
+       <!-- Logo del pie: mismo símbolo M (verde lima) + texto, como en el encabezado -->
+       <img alt="" aria-hidden="true" class="logo-pie" height="380" loading="lazy" src="../assets/logo-m-lima.png" width="612"/>
+       <span class="titular text-2xl">
+        Megatl&oacute;n
+       </span>
+      </div>
+      <!-- Párrafo — id «footer-mensaje» (pie de página mensaje) -->
+      <p id="footer-mensaje" class="mt-4 max-w-xs text-sm text-muted-foreground">
+      </p>
+     </div>
+     <div>
+      <p class="text-xs font-bold uppercase tracking-[0.3em] text-primary">
+       Contacto
+      </p>
+      <!-- Lista -->
+      <ul class="mt-4 space-y-2 text-sm text-muted-foreground">
+       <!-- Elemento de lista — id «footer-direccion» (pie de página direccion) -->
+       <li id="footer-direccion">
+       </li>
+       <!-- Elemento de lista — id «footer-telefono» (pie de página telefono) -->
+       <li id="footer-telefono">
+       </li>
+       <!-- Elemento de lista — id «footer-horarios» (pie de página horarios) -->
+       <li id="footer-horarios">
+       </li>
+      </ul>
+     </div>
+     <div>
+      <p class="text-xs font-bold uppercase tracking-[0.3em] text-primary">
+       Redes
+      </p>
+      <!-- Contenedor — clase redes-sociales -->
+      <div class="redes-sociales mt-4">
+       <!-- Enlace — etiqueta: Instagram; salta a la sección #; clase red-social -->
+       <a class="red-social red-social--instagram" href="#" rel="noreferrer" target="_blank" aria-label="Instagram" title="Instagram">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="2" width="20" height="20" rx="5"></rect><path d="M16 11.37a4 4 0 1 1-7.914 1.174A4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+       </a>
+       <!-- Enlace — etiqueta: Facebook; salta a la sección #; clase red-social -->
+       <a class="red-social red-social--facebook" href="#" rel="noreferrer" target="_blank" aria-label="Facebook" title="Facebook">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+       </a>
+       <!-- Enlace — etiqueta: TikTok; salta a la sección #; clase red-social -->
+       <a class="red-social red-social--tiktok" href="#" rel="noreferrer" target="_blank" aria-label="TikTok" title="TikTok">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"></path></svg>
+       </a>
+       <!-- Enlace — etiqueta: WhatsApp; salta a la sección #; clase red-social -->
+       <a class="red-social red-social--whatsapp" href="#" rel="noreferrer" target="_blank" aria-label="WhatsApp" title="WhatsApp">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+       </a>
+      </div>
+     </div>
+    </div>
+    <!-- Contenedor — clase contenedor -->
+    <div class="contenedor mt-10 border-t border-border pt-6 text-xs text-muted-foreground">
+     &copy; <span id="anio-actual">2026</span> Megatl&oacute;n Bolivia &middot; Cochabamba
+     <!-- Enlace — lleva a admin.html; clase enlace-admin; texto: «Administración» -->
+     <a href="admin.html" class="enlace-admin" rel="nofollow">Administraci&oacute;n</a>
+    </div>
+   </footer>
+  </div>
+  <!-- Contenedor — id «reproductor-flotante» (reproductor flotante); etiqueta: Reproductor de música -->
+  <div id="reproductor-flotante" class="reproductor-flotante" role="region" aria-label="Reproductor de m&uacute;sica">
+   <!-- Contenedor — id «yt-player» (yt player) -->
+   <div class="rp-video"><div id="yt-player"></div></div>
+   <div class="rp-info">
+    <!-- Texto en línea — id «reproductor-titulo» (reproductor titulo) -->
+    <span id="reproductor-titulo" class="reproductor-titulo"></span>
+    <div class="rp-controles">
+     <!-- Botón — id «rp-prev» (rp prev); etiqueta: Anterior; tipo button -->
+     <button id="rp-prev" type="button" class="rp-btn" aria-label="Anterior" title="Anterior"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+     <!-- Botón — id «rp-play» (rp play); etiqueta: Pausar; tipo button -->
+     <button id="rp-play" type="button" class="rp-btn rp-btn--grande" aria-label="Pausar" title="Pausar / reanudar"><svg id="rp-icono-pausa" viewBox="0 0 24 24" fill="currentColor"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg><svg id="rp-icono-play" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M8 5v14l11-7z"/></svg></button>
+     <!-- Botón — id «rp-next» (rp next); etiqueta: Siguiente; tipo button -->
+     <button id="rp-next" type="button" class="rp-btn" aria-label="Siguiente" title="Siguiente"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+    </div>
+   </div>
+   <!-- Botón — id «btn-reproductor-cerrar» (botón reproductor cerrar); etiqueta: Cerrar reproductor; tipo button; texto: «×» -->
+   <button id="btn-reproductor-cerrar" type="button" class="btn-cerrar-reproductor" aria-label="Cerrar reproductor" title="Cerrar reproductor">&times;</button>
+  </div>
+  <!-- Script (JavaScript) — archivo ../js/tema.js -->
+  <script src="../js/tema.js"></script>
+  <!-- Script (JavaScript) — archivo ../js/data.js -->
+  <script src="../js/data.js"></script>
+  <!-- Script (JavaScript) — archivo ../js/landing.js -->
+  <script src="../js/landing.js"></script>
+  <!-- Script (JavaScript) — archivo ../js/inscripcion.js (ventana Inscribirme: WhatsApp / QR / recibo) -->
+  <script src="../js/inscripcion.js"></script>
+</body>
+</html>

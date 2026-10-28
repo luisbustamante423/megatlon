@@ -1,0 +1,1076 @@
+/* ============================================================
+   PANEL ADMINISTRATIVO (admin.html)
+   Qué es: login del panel, menú lateral, tablas, ventanas de formulario,
+   campos de imagen y la pantalla de permisos por rol.
+   Qué cambiar aquí: todo lo visual del panel admin.
+   Cada regla lleva arriba un comentario y cada línea explica su propiedad.
+   ============================================================ */
+
+/* ============ Panel administrativo — mismo tema oscuro de la landing ============ */
+
+/* estilo general */
+:root {
+  --admin-bg: var(--background, #0a0a0a); /* Variable «panel admin, fondo» */
+  --admin-panel: var(--surface, #151515); /* Variable «panel admin, panel/tarjeta» */
+  --admin-border: var(--border, #262626); /* Variable «panel admin, borde» */
+  --admin-text: var(--foreground, #f2f2f2); /* Variable «panel admin, text» */
+  --admin-muted: var(--muted-foreground, #9a9a9a); /* Variable «panel admin, atenuado» */
+  --admin-primary: var(--primary, #9bdb4d); /* Variable «panel admin, color principal» */
+  --admin-primary-fg: var(--primary-foreground, #fff); /* Variable «panel admin, color principal, fondo animado» */
+}
+
+/* estilo general */
+* {
+  box-sizing: border-box; /* Propiedad «box-sizing» */
+}
+
+/* cuerpo de la página */
+body {
+  background: var(--admin-bg); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-text); /* Color de las letras */
+  font-family: inherit; /* Tipo de letra */
+  margin: 0; /* Espacio exterior */
+}
+
+/* ---------- Login ---------- */
+
+/* inicio de sesión, contenedor */
+.login-wrap {
+  min-height: 100vh; /* Alto mínimo */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  padding: 1.5rem; /* Espacio interior */
+}
+
+/* inicio de sesión, tarjeta */
+.login-card {
+  width: 100%; /* Ancho */
+  max-width: 380px; /* Ancho máximo */
+  background: var(--admin-panel); /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  border-radius: 14px; /* Esquinas redondeadas */
+  padding: 2.5rem 2rem; /* Espacio interior */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  gap: 1rem; /* Separación entre hijos */
+  text-align: center; /* Alineación del texto → Texto centrado */
+}
+
+/* inicio de sesión, logo */
+.login-logo {
+  width: 56px; /* Ancho */
+  height: 56px; /* Alto */
+  object-fit: contain; /* Cómo se ajusta la imagen a su caja */
+  margin: 0 auto; /* Espacio exterior */
+}
+
+/* inicio de sesión, tarjeta, título 1 */
+.login-card h1 {
+  margin: 0; /* Espacio exterior */
+  font-size: 1.5rem; /* Tamaño de la letra */
+}
+
+/* inicio de sesión, sub */
+.login-sub {
+  margin: -0.5rem 0 0.5rem; /* Espacio exterior */
+  color: var(--admin-muted); /* Color de las letras */
+  font-size: 0.85rem; /* Tamaño de la letra */
+}
+
+/* inicio de sesión, tarjeta, etiquetas */
+.login-card label {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  gap: 0.35rem; /* Separación entre hijos */
+  text-align: left; /* Alineación del texto */
+  font-size: 0.85rem; /* Tamaño de la letra */
+  color: var(--admin-muted); /* Color de las letras */
+}
+
+/* inicio de sesión, tarjeta, campos de texto */
+.login-card input {
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: 0.6rem 0.75rem; /* Espacio interior */
+  color: var(--admin-text); /* Color de las letras */
+  font-size: 0.95rem; /* Tamaño de la letra */
+}
+
+/* inicio de sesión, tarjeta, botones */
+.login-card button {
+  margin-top: 0.5rem; /* Espacio exterior arriba */
+  background: var(--admin-primary); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-primary-fg); /* Color de las letras */
+  border: none; /* Borde (grosor, estilo y color) */
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: 0.7rem; /* Espacio interior */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  letter-spacing: 0.05em; /* Espacio entre letras */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: 0.85rem; /* Tamaño de la letra */
+}
+
+/* inicio de sesión, tarjeta, botones (al pasar el mouse) */
+.login-card button:hover {
+  opacity: 0.9; /* Transparencia */
+}
+
+/* inicio de sesión, error */
+.login-error {
+  color: var(--admin-primary); /* Color de las letras */
+  font-size: 0.85rem; /* Tamaño de la letra */
+  margin: 0; /* Espacio exterior */
+}
+
+/* ---------- Shell del panel ---------- */
+
+/* panel admin, shell */
+.admin-shell {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  min-height: 100vh; /* Alto mínimo */
+}
+
+/* panel admin, barra lateral */
+.admin-sidebar {
+  width: 240px; /* Ancho */
+  flex-shrink: 0; /* Si se puede encoger */
+  background: var(--admin-panel); /* Fondo (color, imagen o degradado) */
+  border-right: 1px solid var(--admin-border); /* Borde derecho */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  padding: 1.25rem 0.9rem; /* Espacio interior */
+}
+
+/* panel admin, marca */
+.admin-brand {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: 0.6rem; /* Separación entre hijos */
+  padding: 0 0.4rem 1.2rem; /* Espacio interior */
+}
+
+/* panel admin, marca, imágenes */
+.admin-brand img {
+  width: 28px; /* Ancho */
+  height: 28px; /* Alto */
+  object-fit: contain; /* Cómo se ajusta la imagen a su caja */
+}
+
+/* panel admin, marca, span */
+.admin-brand span {
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  font-size: 0.95rem; /* Tamaño de la letra */
+}
+
+/* panel admin, menú */
+.admin-nav {
+  flex: 1; /* Reparto flexible del espacio */
+  overflow-y: auto; /* Desborde vertical */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  gap: 0.15rem; /* Separación entre hijos */
+}
+
+/* panel admin, menú, botones */
+.admin-nav button {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  padding: 0.55rem 0.7rem; /* Espacio interior */
+  border-radius: 8px; /* Esquinas redondeadas */
+  font-size: 0.85rem; /* Tamaño de la letra */
+  color: var(--admin-muted); /* Color de las letras */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: 0.55rem; /* Separación entre hijos */
+}
+
+/* panel admin, menú, botones (al pasar el mouse) */
+.admin-nav button:hover {
+  background: rgba(255,255,255,0.04); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-text); /* Color de las letras */
+}
+
+/* panel admin, menú, botones, activo */
+.admin-nav button.activo {
+  background: var(--admin-primary); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-primary-fg); /* Color de las letras */
+}
+
+/* panel admin, usuario */
+.admin-user {
+  border-top: 1px solid var(--admin-border); /* Borde de arriba */
+  padding-top: 0.9rem; /* Espacio interior arriba */
+  margin-top: 0.5rem; /* Espacio exterior arriba */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  font-size: 0.8rem; /* Tamaño de la letra */
+}
+
+/* panel admin, usuario, botones */
+.admin-user button {
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  color: var(--admin-muted); /* Color de las letras */
+  border-radius: 6px; /* Esquinas redondeadas */
+  padding: 0.3rem 0.6rem; /* Espacio interior */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: 0.75rem; /* Tamaño de la letra */
+}
+
+/* panel admin, usuario, botones (al pasar el mouse) */
+.admin-user button:hover {
+  color: var(--admin-text); /* Color de las letras */
+  border-color: var(--admin-text); /* Color del borde */
+}
+
+/* panel admin, contenido principal */
+.admin-main {
+  flex: 1; /* Reparto flexible del espacio */
+  padding: 1.75rem 2rem; /* Espacio interior */
+  overflow-x: auto; /* Desborde horizontal */
+}
+
+/* panel admin, barra superior */
+.admin-topbar {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  margin-bottom: 1.25rem; /* Espacio exterior abajo */
+}
+
+/* panel admin, barra superior, título 1 */
+.admin-topbar h1 {
+  font-size: 1.4rem; /* Tamaño de la letra */
+  margin: 0; /* Espacio exterior */
+}
+
+/* botón, principal */
+.btn-primario {
+  background: var(--admin-primary); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-primary-fg); /* Color de las letras */
+  border: none; /* Borde (grosor, estilo y color) */
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: 0.55rem 1.1rem; /* Espacio interior */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  font-size: 0.8rem; /* Tamaño de la letra */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  letter-spacing: 0.04em; /* Espacio entre letras */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+}
+
+/* botón, principal (al pasar el mouse) */
+.btn-primario:hover {
+  opacity: 0.9; /* Transparencia */
+}
+
+/* ---------- Tabla ---------- */
+
+/* panel admin, contenido */
+.admin-content {
+  background: var(--admin-panel); /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  border-radius: 12px; /* Esquinas redondeadas */
+  overflow: hidden; /* Qué pasa con lo que sobra → Oculta lo que se sale */
+}
+
+/* panel admin, tabla */
+.admin-tabla {
+  width: 100%; /* Ancho */
+  border-collapse: collapse; /* Unión de bordes de tabla */
+  font-size: 0.85rem; /* Tamaño de la letra */
+}
+
+/* panel admin, tabla, encabezado de tabla, celdas de tabla */
+.admin-tabla th,
+.admin-tabla td {
+  padding: 0.65rem 0.9rem; /* Espacio interior */
+  border-bottom: 1px solid var(--admin-border); /* Borde de abajo */
+  text-align: left; /* Alineación del texto */
+  white-space: nowrap; /* Salto de línea del texto */
+}
+
+/* panel admin, tabla, encabezado de tabla */
+.admin-tabla th {
+  color: var(--admin-muted); /* Color de las letras */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  font-size: 0.7rem; /* Tamaño de la letra */
+  letter-spacing: 0.04em; /* Espacio entre letras */
+}
+
+/* panel admin, tabla, tbody, filas de tabla (al pasar el mouse) */
+.admin-tabla tbody tr:hover {
+  background: rgba(255,255,255,0.03); /* Fondo (color, imagen o degradado) */
+}
+
+/* panel admin, tabla, columna, acciones */
+.admin-tabla .col-acciones {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  gap: 0.4rem; /* Separación entre hijos */
+}
+
+/* panel admin, tabla, columna, acciones, botones */
+.admin-tabla .col-acciones button {
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  color: var(--admin-muted); /* Color de las letras */
+  border-radius: 6px; /* Esquinas redondeadas */
+  padding: 0.25rem 0.55rem; /* Espacio interior */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: 0.75rem; /* Tamaño de la letra */
+}
+
+/* panel admin, tabla, columna, acciones, botones (al pasar el mouse) */
+.admin-tabla .col-acciones button:hover {
+  color: var(--admin-text); /* Color de las letras */
+  border-color: var(--admin-text); /* Color del borde */
+}
+
+/* panel admin, tabla, columna, acciones, botón, eliminar (al pasar el mouse) */
+.admin-tabla .col-acciones .btn-eliminar:hover {
+  color: var(--admin-primary); /* Color de las letras */
+  border-color: var(--admin-primary); /* Color del borde */
+}
+
+/* panel admin, vacio */
+.admin-vacio {
+  padding: 2rem; /* Espacio interior */
+  text-align: center; /* Alineación del texto → Texto centrado */
+  color: var(--admin-muted); /* Color de las letras */
+}
+
+/* ---------- Modal formulario ---------- */
+
+/* ventana emergente, overlay */
+.modal-overlay {
+  position: fixed; /* Tipo de posición → Fija en la pantalla */
+  inset: 0; /* Distancia a los 4 bordes */
+  background: rgba(0,0,0,0.6); /* Fondo (color, imagen o degradado) */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: center; /* Alineación horizontal de los hijos */
+  z-index: 1000; /* Orden de capas (más alto = encima) */
+  padding: 1rem; /* Espacio interior */
+}
+
+/* ventana emergente, tarjeta */
+.modal-card {
+  width: 100%; /* Ancho */
+  max-width: 480px; /* Ancho máximo */
+  max-height: 90vh; /* Alto máximo */
+  overflow-y: auto; /* Desborde vertical */
+  background: var(--admin-panel); /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  border-radius: 12px; /* Esquinas redondeadas */
+}
+
+/* ventana emergente, encabezado */
+.modal-header {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  align-items: center; /* Alineación vertical de los hijos */
+  justify-content: space-between; /* Alineación horizontal de los hijos */
+  padding: 1.1rem 1.3rem; /* Espacio interior */
+  border-bottom: 1px solid var(--admin-border); /* Borde de abajo */
+}
+
+/* ventana emergente, encabezado, título 2 */
+.modal-header h2 {
+  margin: 0; /* Espacio exterior */
+  font-size: 1.1rem; /* Tamaño de la letra */
+}
+
+/* ventana emergente, cerrar, botón */
+.modal-cerrar-btn {
+  all: unset; /* Propiedad «all» */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  font-size: 1.4rem; /* Tamaño de la letra */
+  color: var(--admin-muted); /* Color de las letras */
+  line-height: 1; /* Altura de línea (espacio entre renglones) */
+}
+
+/* ventana emergente, cerrar, botón (al pasar el mouse) */
+.modal-cerrar-btn:hover {
+  color: var(--admin-text); /* Color de las letras */
+}
+
+/* ventana emergente, formulario */
+.modal-form {
+  padding: 1.3rem; /* Espacio interior */
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  gap: 0.9rem; /* Separación entre hijos */
+}
+
+/* ventana emergente, formulario, etiquetas */
+.modal-form label {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  gap: 0.35rem; /* Separación entre hijos */
+  font-size: 0.8rem; /* Tamaño de la letra */
+  color: var(--admin-muted); /* Color de las letras */
+}
+
+/* ventana emergente, formulario, campos de texto, listas desplegables, áreas de texto */
+.modal-form input,
+.modal-form select,
+.modal-form textarea {
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: 0.55rem 0.7rem; /* Espacio interior */
+  color: var(--admin-text); /* Color de las letras */
+  font-size: 0.9rem; /* Tamaño de la letra */
+  font-family: inherit; /* Tipo de letra */
+}
+
+/* ventana emergente, formulario, áreas de texto */
+.modal-form textarea {
+  resize: vertical; /* Si se puede cambiar de tamaño */
+  min-height: 70px; /* Alto mínimo */
+}
+
+/* ventana emergente, formulario, campo, readonly, campos de texto */
+.modal-form .campo-readonly input {
+  opacity: 0.6; /* Transparencia */
+}
+
+/* ventana emergente, formulario, acciones */
+.modal-form-acciones {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  justify-content: flex-end; /* Alineación horizontal de los hijos */
+  gap: 0.6rem; /* Separación entre hijos */
+  margin-top: 0.5rem; /* Espacio exterior arriba */
+}
+
+/* ventana emergente, formulario, acciones, botones */
+.modal-form-acciones button {
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: 0.55rem 1.1rem; /* Espacio interior */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  font-size: 0.8rem; /* Tamaño de la letra */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  letter-spacing: 0.03em; /* Espacio entre letras */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+  border: none; /* Borde (grosor, estilo y color) */
+}
+
+/* botón, cancelar */
+.btn-cancelar {
+  background: transparent !important; /* Fondo (color, imagen o degradado) (!important: manda sobre otras reglas) */
+  border: 1px solid var(--admin-border) !important; /* Borde (grosor, estilo y color) (!important: manda sobre otras reglas) */
+  color: var(--admin-muted); /* Color de las letras */
+}
+
+/* botón, guardar */
+.btn-guardar {
+  background: var(--admin-primary); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-primary-fg); /* Color de las letras */
+}
+
+/* formulario, error */
+.form-error {
+  color: var(--admin-primary); /* Color de las letras */
+  font-size: 0.8rem; /* Tamaño de la letra */
+  margin: 0; /* Espacio exterior */
+}
+
+/* ---------- Panel "Contenido del sitio" ---------- */
+
+/* panel/tarjeta, contenido */
+.panel-contenido {
+  max-width: 640px; /* Ancho máximo */
+}
+
+/* panel/tarjeta, contenido, título 3 */
+.panel-contenido h3 {
+  margin: 0.4rem 0 0; /* Espacio exterior */
+  font-size: 0.75rem; /* Tamaño de la letra */
+  text-transform: uppercase; /* Mayúsculas / minúsculas → Todo en MAYÚSCULAS */
+  letter-spacing: 0.08em; /* Espacio entre letras */
+  color: var(--admin-primary); /* Color de las letras */
+}
+
+/* panel/tarjeta, contenido, título 3 (el primero) */
+.panel-contenido h3:first-child {
+  margin-top: 0; /* Espacio exterior arriba */
+}
+
+/* panel/tarjeta, contenido, grid3 */
+.panel-contenido-grid3 {
+  display: grid; /* Tipo de caja (cómo se muestra) → Cuadrícula */
+  grid-template-columns: 1fr 1fr; /* Columnas de la cuadrícula */
+  gap: 0.9rem; /* Separación entre hijos */
+}
+
+/* panel/tarjeta, contenido, confirmación */
+.panel-contenido-ok {
+  color: #4ade80; /* Color de las letras */
+  font-size: 0.8rem; /* Tamaño de la letra */
+  margin: 0; /* Espacio exterior */
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 560px de ancho (celular/tablet) */
+@media (max-width: 560px) {
+
+  /* panel/tarjeta, contenido, grid3 */
+  .panel-contenido-grid3 {
+    grid-template-columns: 1fr; /* Columnas de la cuadrícula */
+  }
+}
+
+/* RESPONSIVE: se aplica en pantallas de hasta 800px de ancho (celular/tablet) */
+@media (max-width: 800px) {
+
+  /* panel admin, shell */
+  .admin-shell {
+    flex-direction: column; /* Dirección (fila o columna) */
+  }
+
+  /* panel admin, barra lateral */
+  .admin-sidebar {
+    width: 100%; /* Ancho */
+    flex-direction: row; /* Dirección (fila o columna) */
+    overflow-x: auto; /* Desborde horizontal */
+  }
+
+  /* panel admin, menú */
+  .admin-nav {
+    flex-direction: row; /* Dirección (fila o columna) */
+  }
+
+  /* panel admin, usuario */
+  .admin-user {
+    display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+  }
+
+  /* panel admin, contenido principal */
+  .admin-main {
+    padding: 1.25rem; /* Espacio interior */
+  }
+}
+
+/* ============================================================
+   Campo de imagen (adjuntar foto de entrenador)
+   ============================================================ */
+
+/* campo, imagen */
+.campo-imagen {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-direction: column; /* Dirección (fila o columna) */
+  gap: .6rem; /* Separación entre hijos */
+  padding: .85rem; /* Espacio interior */
+  border: 1px dashed var(--admin-border); /* Borde (grosor, estilo y color) */
+  border-radius: 12px; /* Esquinas redondeadas */
+  background: rgba(255, 255, 255, .03); /* Fondo (color, imagen o degradado) */
+}
+
+/* campo, imagen, preview */
+.campo-imagen-preview {
+  width: 120px; /* Ancho */
+  height: 120px; /* Alto */
+  object-fit: cover; /* Cómo se ajusta la imagen a su caja */
+  object-position: top; /* Posición de la imagen en su caja */
+  border-radius: 10px; /* Esquinas redondeadas */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+}
+
+/* campo, imagen, acciones */
+.campo-imagen-acciones {
+  display: flex; /* Tipo de caja (cómo se muestra) → Caja flexible: acomoda a sus hijos en fila o columna */
+  flex-wrap: wrap; /* Permite pasar a otra línea */
+  align-items: center; /* Alineación vertical de los hijos */
+  gap: .6rem; /* Separación entre hijos */
+}
+
+/* campo, imagen, file */
+.campo-imagen-file {
+  flex: 1; /* Reparto flexible del espacio */
+  min-width: 160px; /* Ancho mínimo */
+  font-size: .8rem; /* Tamaño de la letra */
+  color: var(--admin-muted); /* Color de las letras */
+}
+
+/* campo, imagen, file, selector, botones */
+.campo-imagen-file::file-selector-button {
+  background: var(--admin-primary); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-primary-fg); /* Color de las letras */
+  border: none; /* Borde (grosor, estilo y color) */
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: .45rem .9rem; /* Espacio interior */
+  margin-right: .7rem; /* Espacio exterior derecha */
+  font-weight: 700; /* Grosor de la letra (negrita) → Negrita */
+  font-size: .78rem; /* Tamaño de la letra */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+}
+
+/* campo, imagen, quitar */
+.campo-imagen-quitar {
+  background: transparent; /* Fondo (color, imagen o degradado) */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+  color: var(--admin-muted); /* Color de las letras */
+  border-radius: 8px; /* Esquinas redondeadas */
+  padding: .45rem .8rem; /* Espacio interior */
+  font-size: .78rem; /* Tamaño de la letra */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+}
+
+/* campo, imagen, quitar (al pasar el mouse) */
+.campo-imagen-quitar:hover {
+  border-color: var(--admin-primary); /* Color del borde */
+  color: var(--admin-primary); /* Color de las letras */
+}
+
+/* campo, imagen, ayuda */
+.campo-imagen-ayuda {
+  color: var(--admin-muted); /* Color de las letras */
+  font-size: .72rem; /* Tamaño de la letra */
+}
+
+/* celda, miniatura */
+.celda-miniatura {
+  width: 44px; /* Ancho */
+  height: 44px; /* Alto */
+  object-fit: cover; /* Cómo se ajusta la imagen a su caja */
+  object-position: top; /* Posición de la imagen en su caja */
+  border-radius: 8px; /* Esquinas redondeadas */
+  border: 1px solid var(--admin-border); /* Borde (grosor, estilo y color) */
+}
+
+/* ============================================================
+   Estética "vidrio": paneles translúcidos pero opacados
+   ============================================================ */
+
+/* inicio de sesión, tarjeta, panel admin, barra lateral, barra superior, contenido */
+.login-card,
+.admin-sidebar,
+.admin-topbar,
+.admin-content,
+.modal-card,
+.panel-contenido {
+  background-color: color-mix(in oklab, var(--admin-panel) 62%, transparent); /* Color de fondo */
+  -webkit-backdrop-filter: blur(18px) saturate(140%); /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: blur(18px) saturate(140%); /* Desenfoque del fondo detrás (vidrio) */
+  border: 1px solid color-mix(in oklab, var(--admin-border) 85%, transparent); /* Borde (grosor, estilo y color) */
+}
+
+/* inicio de sesión, tarjeta, ventana emergente */
+.login-card,
+.modal-card {
+  box-shadow: 0 28px 70px -30px rgba(0, 0, 0, .85); /* Sombra */
+}
+
+/* ventana emergente, overlay */
+.modal-overlay {
+  background-color: rgba(0, 0, 0, .55); /* Color de fondo */
+  -webkit-backdrop-filter: blur(8px); /* Desenfoque del fondo detrás (vidrio, Safari) */
+  backdrop-filter: blur(8px); /* Desenfoque del fondo detrás (vidrio) */
+}
+
+/* panel admin, contenido */
+.admin-content {
+  border-radius: 16px; /* Esquinas redondeadas */
+}
+
+/* panel admin, tabla, tbody, filas de tabla (al pasar el mouse) */
+.admin-tabla tbody tr:hover {
+  background-color: color-mix(in oklab, var(--admin-primary) 8%, transparent); /* Color de fondo */
+}
+
+/* ventana emergente, formulario, etiquetas, panel/tarjeta, contenido */
+.modal-form label,
+.panel-contenido label {
+  background-color: rgba(255, 255, 255, .025); /* Color de fondo */
+  border-radius: 10px; /* Esquinas redondeadas */
+  padding: .55rem .7rem; /* Espacio interior */
+}
+
+/* TEMA CLARO · tema claro, campo, imagen, ventana emergente, formulario, etiquetas */
+:root.light .campo-imagen,
+:root.light .modal-form label,
+:root.light .panel-contenido label {
+  background-color: rgba(0, 0, 0, .03); /* Color de fondo */
+}
+
+/* TEMA CLARO · tema claro, ventana emergente, overlay */
+:root.light .modal-overlay {
+  background-color: rgba(0, 0, 0, .35); /* Color de fondo */
+}
+
+/* Mensajes de validación del campo de imagen */
+
+/* campo, imagen, error */
+.campo-imagen-error {
+  color: #9bdb4d; /* Color de las letras */
+  font-size: .74rem; /* Tamaño de la letra */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+}
+
+/* campo, imagen, error */
+.campo-imagen--error {
+  border-color: #9bdb4d; /* Color del borde */
+}
+
+/* ============================================================
+   Modo discreto del panel
+   Sin rojo llamativo, sin brillos ni logo grande: gris pizarra con
+   un único acento apagado. Solo afecta a admin.html.
+   ============================================================ */
+
+/* estilo general */
+:root {
+  --admin-bg: #0f1114; /* Variable «panel admin, fondo» */
+  --admin-panel: #16191d; /* Variable «panel admin, panel/tarjeta» */
+  --admin-border: #23272d; /* Variable «panel admin, borde» */
+  --admin-text: #d5d9de; /* Variable «panel admin, text» */
+  --admin-muted: #7d858f; /* Variable «panel admin, atenuado» */
+  --admin-primary: #4b5563; /* Variable «panel admin, color principal» */
+  --admin-primary-fg: #eef1f4; /* Variable «panel admin, color principal, fondo animado» */
+}
+
+/* TEMA CLARO · tema claro */
+:root.light {
+  --admin-bg: #f3f4f6; /* Variable «panel admin, fondo» */
+  --admin-panel: #ffffff; /* Variable «panel admin, panel/tarjeta» */
+  --admin-border: #dfe2e6; /* Variable «panel admin, borde» */
+  --admin-text: #23272d; /* Variable «panel admin, text» */
+  --admin-muted: #6b7280; /* Variable «panel admin, atenuado» */
+  --admin-primary: #4b5563; /* Variable «panel admin, color principal» */
+  --admin-primary-fg: #ffffff; /* Variable «panel admin, color principal, fondo animado» */
+}
+
+/* cuerpo de la página */
+body {
+  font-size: 14px; /* Tamaño de la letra */
+}
+
+/* Sin marca vistosa */
+
+/* inicio de sesión, logo */
+.login-logo {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+}
+
+/* panel admin, marca, imágenes */
+.admin-brand img {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+}
+
+/* panel admin, marca, span */
+.admin-brand span {
+  font-weight: 600; /* Grosor de la letra (negrita) */
+  font-size: 0.85rem; /* Tamaño de la letra */
+  letter-spacing: 0.02em; /* Espacio entre letras */
+  color: var(--admin-muted); /* Color de las letras */
+}
+
+/* inicio de sesión, tarjeta */
+.login-card {
+  max-width: 340px; /* Ancho máximo */
+  box-shadow: none; /* Sombra */
+}
+
+/* inicio de sesión, tarjeta, título 1 */
+.login-card h1 {
+  font-size: 1.05rem; /* Tamaño de la letra */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+}
+
+/* inicio de sesión, sub */
+.login-sub {
+  display: none; /* Tipo de caja (cómo se muestra) → Oculta el elemento */
+}
+
+/* inicio de sesión, tarjeta, botones, botón, principal */
+.login-card button,
+.btn-primario {
+  text-transform: none; /* Mayúsculas / minúsculas → Sin cambiar mayúsculas */
+  letter-spacing: 0; /* Espacio entre letras */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+}
+
+/* inicio de sesión, error */
+.login-error {
+  color: #74a439; /* Color de las letras */
+}
+
+/* Menú lateral más estrecho y sobrio */
+
+/* panel admin, barra lateral */
+.admin-sidebar {
+  width: 210px; /* Ancho */
+}
+
+/* panel admin, menú, botones */
+.admin-nav button {
+  font-size: 0.8rem; /* Tamaño de la letra */
+  padding: 0.45rem 0.6rem; /* Espacio interior */
+}
+
+/* panel admin, menú, botones (al pasar el mouse) */
+.admin-nav button:hover {
+  background: color-mix(in oklab, var(--admin-text) 6%, transparent); /* Fondo (color, imagen o degradado) */
+}
+
+/* panel admin, menú, botones, activo */
+.admin-nav button.activo {
+  background: color-mix(in oklab, var(--admin-text) 12%, transparent); /* Fondo (color, imagen o degradado) */
+  color: var(--admin-text); /* Color de las letras */
+}
+
+/* panel admin, contenido principal */
+.admin-main {
+  padding: 1.4rem 1.6rem; /* Espacio interior */
+}
+
+/* panel admin, barra superior, título 1 */
+.admin-topbar h1 {
+  font-size: 1.05rem; /* Tamaño de la letra */
+  font-weight: 600; /* Grosor de la letra (negrita) */
+}
+
+/* panel admin, tabla */
+.admin-tabla {
+  font-size: 0.8rem; /* Tamaño de la letra */
+}
+
+/* panel admin, tabla, encabezado de tabla */
+.admin-tabla th {
+  font-size: 0.65rem; /* Tamaño de la letra */
+}
+
+/* panel admin, tabla, tbody, filas de tabla (al pasar el mouse) */
+.admin-tabla tbody tr:hover {
+  background: color-mix(in oklab, var(--admin-text) 4%, transparent); /* Fondo (color, imagen o degradado) */
+}
+
+/* panel admin, tabla, columna, acciones, botón, eliminar (al pasar el mouse) */
+.admin-tabla .col-acciones .btn-eliminar:hover {
+  color: #74a439; /* Color de las letras */
+  border-color: #74a439; /* Color del borde */
+}
+
+/* panel admin, contenido */
+.admin-content {
+  border-radius: 8px; /* Esquinas redondeadas */
+}
+
+/* Nada de vidrio, sombras ni animaciones aquí */
+
+/* panel admin, shell, inicio de sesión, contenedor */
+.admin-shell *,
+.login-wrap * {
+  text-shadow: none; /* Sombra del texto */
+}
+
+/* Permisos por rol */
+
+/* permisos, tabla, celdas de tabla, encabezado de tabla (el primero) */
+.permisos-tabla td:not(:first-child),
+.permisos-tabla th:not(:first-child) {
+  text-align: center; /* Alineación del texto → Texto centrado */
+}
+
+/* permisos, tabla, campos de texto */
+.permisos-tabla input[type=checkbox] {
+  width: 1.1rem; /* Ancho */
+  height: 1.1rem; /* Alto */
+  accent-color: var(--verde, #b6ff3c); /* Color de checkbox/radio */
+  cursor: pointer; /* Forma del cursor del mouse → Cursor de manito (clicable) */
+}
+
+/* permisos, ayuda */
+.permisos-ayuda {
+  color: var(--admin-muted); /* Color de las letras */
+  margin-bottom: 0.5rem; /* Espacio exterior abajo */
+}
+
+/* panel/tarjeta, permisos, título 3 */
+#panel-permisos h3 {
+  margin: 1.2rem 0 0.4rem; /* Espacio exterior */
+}
+
+
+/* ============================================================
+   Notificaciones por tipo · Ver recibo · QR
+   ============================================================ */
+
+/* pestañas de tipo (Notificaciones) */
+.filtro-tipos {
+  display: flex; /* Caja flexible */
+  flex-wrap: wrap; /* Pasa a otra línea si no caben */
+  gap: .5rem; /* Separación entre pestañas */
+  margin-bottom: 1rem; /* Espacio exterior abajo */
+}
+
+/* pestañas de tipo, botón */
+.filtro-tipos button {
+  display: inline-flex; /* Caja en línea flexible */
+  align-items: center; /* Alineación vertical */
+  gap: .45rem; /* Separación entre texto y contador */
+  background: transparent; /* Fondo */
+  border: 1px solid var(--admin-border); /* Borde */
+  color: var(--admin-muted); /* Color de las letras */
+  border-radius: 999px; /* Píldora */
+  padding: .4rem .85rem; /* Espacio interior */
+  font-size: .8rem; /* Tamaño de la letra */
+  cursor: pointer; /* Manito */
+}
+
+/* pestañas de tipo, contador */
+.filtro-tipos button span {
+  background: rgba(255, 255, 255, .08); /* Fondo del contador */
+  border-radius: 999px; /* Píldora */
+  padding: 0 .45rem; /* Espacio interior */
+  font-size: .72rem; /* Tamaño de la letra */
+  font-weight: 700; /* Negrita */
+}
+
+/* pestañas de tipo, al pasar el mouse */
+.filtro-tipos button:hover {
+  color: var(--admin-text); /* Color de las letras */
+  border-color: var(--admin-text); /* Color del borde */
+}
+
+/* pestañas de tipo, activa */
+.filtro-tipos button.activo {
+  background: var(--admin-primary); /* Fondo de marca */
+  border-color: var(--admin-primary); /* Borde de marca */
+  color: var(--admin-primary-fg); /* Letras sobre el color de marca */
+  font-weight: 700; /* Negrita */
+}
+
+.filtro-tipos button.activo span {
+  background: rgba(0, 0, 0, .18); /* Contador sobre fondo de marca */
+}
+
+/* etiqueta de tipo dentro de la tabla */
+.chip-tipo {
+  display: inline-block; /* Caja en línea */
+  padding: .15rem .6rem; /* Espacio interior */
+  border-radius: 999px; /* Píldora */
+  font-size: .72rem; /* Tamaño de la letra */
+  font-weight: 700; /* Negrita */
+  border: 1px solid currentColor; /* Borde del mismo color */
+  white-space: nowrap; /* No parte el texto */
+}
+.chip-tipo--pago { color: #4ade80; }
+.chip-tipo--solicitud { color: #fbbf24; }
+.chip-tipo--inicio_sesion { color: #60a5fa; }
+.chip-tipo--reserva { color: #c084fc; }
+.chip-tipo--mensaje { color: #f472b6; }
+.chip-tipo--otro { color: var(--admin-muted); }
+
+/* botón "Ver recibo" bajo la membresía (tabla de Pagos) */
+.btn-recibo {
+  margin-top: .35rem; /* Separación con el nombre de la membresía */
+  background: transparent; /* Fondo */
+  border: 1px solid var(--admin-primary); /* Borde de marca */
+  color: var(--admin-primary); /* Letras de marca */
+  border-radius: 6px; /* Esquinas */
+  padding: .2rem .55rem; /* Espacio interior */
+  font-size: .72rem; /* Tamaño de la letra */
+  font-weight: 700; /* Negrita */
+  cursor: pointer; /* Manito */
+}
+.btn-recibo:hover {
+  background: var(--admin-primary); /* Fondo de marca */
+  color: var(--admin-primary-fg); /* Letras sobre marca */
+}
+
+/* ventana del recibo */
+.modal-card--recibo {
+  max-width: 520px; /* Un poco más ancha */
+}
+.recibo {
+  padding: 1.3rem; /* Espacio interior */
+  display: flex; /* Caja flexible */
+  flex-direction: column; /* En columna */
+  gap: 1rem; /* Separación */
+}
+.recibo-cabecera {
+  display: flex; /* Caja flexible */
+  justify-content: space-between; /* Título a la izquierda, estado a la derecha */
+  align-items: flex-start; /* Arriba */
+  gap: 1rem; /* Separación */
+}
+.recibo-cabecera h3 {
+  margin: .15rem 0 0; /* Espacio exterior */
+  font-size: 1.2rem; /* Tamaño de la letra */
+}
+.recibo-marca {
+  font-size: .7rem; /* Tamaño de la letra */
+  letter-spacing: .3em; /* Espacio entre letras */
+  color: var(--admin-primary); /* Color de marca */
+  font-weight: 700; /* Negrita */
+}
+.recibo-datos {
+  display: grid; /* Cuadrícula */
+  grid-template-columns: 1fr 1fr; /* Dos columnas */
+  gap: .8rem 1.2rem; /* Separación */
+  margin: 0; /* Sin margen */
+  padding: 1rem; /* Espacio interior */
+  border: 1px solid var(--admin-border); /* Borde */
+  border-radius: 10px; /* Esquinas */
+}
+.recibo-datos dt {
+  font-size: .7rem; /* Tamaño de la letra */
+  color: var(--admin-muted); /* Color apagado */
+  text-transform: uppercase; /* Mayúsculas */
+  letter-spacing: .06em; /* Espacio entre letras */
+}
+.recibo-datos dd {
+  margin: .15rem 0 0; /* Espacio exterior */
+  font-weight: 600; /* Seminegrita */
+  word-break: break-word; /* No se sale de la caja */
+}
+.recibo-subtitulo {
+  margin: 0; /* Sin margen */
+  font-size: .8rem; /* Tamaño de la letra */
+  color: var(--admin-muted); /* Color apagado */
+}
+.recibo-imagen {
+  display: block; /* Caja de bloque */
+  border: 1px solid var(--admin-border); /* Borde */
+  border-radius: 10px; /* Esquinas */
+  overflow: hidden; /* Recorta la imagen a la caja */
+  background: #fff; /* Fondo blanco (por si el comprobante es transparente) */
+}
+.recibo-imagen img {
+  display: block; /* Sin hueco debajo */
+  width: 100%; /* Ancho completo */
+  max-height: 380px; /* Alto máximo */
+  object-fit: contain; /* Se ve completa */
+}
+.btn-link {
+  text-decoration: none; /* Sin subrayado */
+  display: inline-flex; /* Caja en línea */
+  align-items: center; /* Alineación vertical */
+}
+
+/* estado dentro del recibo */
+.chip-estado {
+  padding: .2rem .7rem; /* Espacio interior */
+  border-radius: 999px; /* Píldora */
+  font-size: .72rem; /* Tamaño de la letra */
+  font-weight: 700; /* Negrita */
+  text-transform: uppercase; /* Mayúsculas */
+  border: 1px solid currentColor; /* Borde del mismo color */
+}
+.chip-estado--pagado { color: #4ade80; }
+.chip-estado--pendiente { color: #fbbf24; }
+.chip-estado--vencido { color: #f87171; }
+
+/* campo de imagen del QR: se ve completo, sobre blanco */
+.campo-imagen[data-formato="png"] .campo-imagen-preview {
+  width: 180px; /* Más grande */
+  height: 180px; /* Más alto */
+  object-fit: contain; /* Se ve completo, sin recortar */
+  background: #fff; /* Fondo blanco */
+}
+
+@media (max-width: 520px) {
+  .recibo-datos { grid-template-columns: 1fr; } /* Una columna en celular */
+}
